@@ -106,8 +106,8 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         case 0xc4...0xc6:
             let size = 1 << Int(value - 0xc4)
             if let length = joinUInt64(&generator, size) {
-                if let array = joinArrayUnpack(&generator, Int(length)) {
-                    return .Array(array)
+                if let bytes = joinArrayRaw(&generator, Int(length)) {
+                    return .Binary(bytes)
                 }
             }
         case 0xc7...0xc9:
@@ -312,9 +312,9 @@ public func ==(lhs: MessagePackValue, rhs: MessagePackValue) -> Bool {
         return true
     case let (.UInt(lhv), .UInt(rhv)) where lhv == rhv:
         return true
-    case let (.Int(lhv), .UInt(rhv)) where lhv > 0 && UInt64(lhv) == rhv:
+    case let (.Int(lhv), .UInt(rhv)) where lhv >= 0 && UInt64(lhv) == rhv:
         return true
-    case let (.UInt(lhv), .Int(rhv)) where rhv > 0 && lhv == UInt64(rhv):
+    case let (.UInt(lhv), .Int(rhv)) where rhv >= 0 && lhv == UInt64(rhv):
         return true
     case let (.Float(lhv), .Float(rhv)) where lhv == rhv:
         return true
@@ -332,6 +332,12 @@ public func ==(lhs: MessagePackValue, rhs: MessagePackValue) -> Bool {
         return true
     default:
         return false
+    }
+}
+
+extension MessagePackValue: ArrayLiteralConvertible {
+    public init(arrayLiteral elements: MessagePackValue...) {
+        self = .Array(elements)
     }
 }
 
@@ -365,8 +371,8 @@ extension MessagePackValue: FloatLiteralConvertible {
 }
 
 extension MessagePackValue: IntegerLiteralConvertible {
-    public init(integerLiteral value: Swift.Int) {
-        self = .Int(Int64(value))
+    public init(integerLiteral value: Int64) {
+        self = .Int(value)
     }
 }
 
@@ -402,15 +408,11 @@ extension MessagePackValue {
 
     public subscript (i: Swift.Int) -> MessagePackValue? {
         switch self {
-        case .Array(let array) where array.count < i:
+        case .Array(let array) where i < array.count:
             return array[i]
         default:
             return nil
         }
-    }
-
-    public var isNil: Swift.Bool {
-        return self == .Nil
     }
 
     public subscript (key: MessagePackValue) -> MessagePackValue? {
@@ -420,6 +422,10 @@ extension MessagePackValue {
         default:
             return nil
         }
+    }
+
+    public var isNil: Swift.Bool {
+        return self == .Nil
     }
 
     public var integerValue: Int64? {
@@ -535,6 +541,35 @@ extension MessagePackValue {
             return dict
         default:
             return nil
+        }
+    }
+}
+
+extension MessagePackValue: DebugPrintable {
+    public var debugDescription: Swift.String {
+        switch self {
+        case .Nil:
+            return ".Nil"
+        case .Bool(let value):
+            return ".Bool(\(value))"
+        case .Int(let value):
+            return ".Int(\(value))"
+        case .UInt(let value):
+            return ".UInt(\(value))"
+        case .Float(let value):
+            return ".Float(\(value))"
+        case .Double(let value):
+            return ".Double(\(value))"
+        case .String(let string):
+            return ".String(\"\(string)\")"
+        case .Binary(let bytes):
+            return ".Binary(\(bytes))"
+        case .Array(let array):
+            return ".Array(\(array))"
+        case .Map(let dict):
+            return ".Map(\(dict))"
+        case .Extended(let type, let bytes):
+            return ".Extended(type: \(type), bytes: \(bytes))"
         }
     }
 }
