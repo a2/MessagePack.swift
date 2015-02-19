@@ -387,3 +387,154 @@ extension MessagePackValue: UnicodeScalarLiteralConvertible {
         self = .String(value)
     }
 }
+
+extension MessagePackValue {
+    public var count: Swift.Int? {
+        switch self {
+        case .Array(let array):
+            return array.count
+        case .Map(let dict):
+            return dict.count
+        default:
+            return nil
+        }
+    }
+
+    public subscript (i: Swift.Int) -> MessagePackValue? {
+        switch self {
+        case .Array(let array) where array.count < i:
+            return array[i]
+        default:
+            return nil
+        }
+    }
+
+    public var isNil: Swift.Bool {
+        return self == .Nil
+    }
+
+    public subscript (key: MessagePackValue) -> MessagePackValue? {
+        switch self {
+        case .Map(let dict):
+            return dict[key]
+        default:
+            return nil
+        }
+    }
+
+    public var integerValue: Int64? {
+        switch self {
+        case .Int(let value):
+            return value
+        case .UInt(let value) where value < UInt64(Swift.Int64.max):
+            return Int64(value)
+        default:
+            return nil
+        }
+    }
+
+    public var unsignedIntegerValue: UInt64? {
+        switch self {
+        case .Int(let value) where value > 0:
+            return UInt64(value)
+        case .UInt(let value):
+            return value
+        default:
+            return nil
+        }
+    }
+
+    public var arrayValue: [MessagePackValue]? {
+        switch self {
+        case .Array(let array):
+            return array
+        default:
+            return nil
+        }
+    }
+
+    public var boolValue: Swift.Bool? {
+        switch self {
+        case .Bool(let value):
+            return value
+        default:
+            return nil
+        }
+    }
+
+    public var floatValue: Swift.Float? {
+        switch self {
+        case .Float(let value):
+            return value
+        case .Double(let value):
+            return Swift.Float(value)
+        default:
+            return nil
+        }
+    }
+
+    public var doubleValue: Swift.Double? {
+        switch self {
+        case .Float(let value):
+            return Swift.Double(value)
+        case .Double(let value):
+            return value
+        default:
+            return nil
+        }
+    }
+
+    public var stringValue: Swift.String? {
+        switch self {
+        case .String(let string):
+            return string
+        default:
+            return nil
+        }
+    }
+
+    public var binaryValue: [UInt8]? {
+        switch self {
+        case .Binary(let bytes):
+            return bytes
+        default:
+            return nil
+        }
+    }
+
+    public var extendedValue: (type: Int8, data: [UInt8])? {
+        switch self {
+        case .Extended(type: let type, data: let data):
+            return (type, data)
+        default:
+            return nil
+        }
+    }
+
+    public var extendedType: Int8? {
+        switch self {
+        case .Extended(type: let type, data: _):
+            return type
+        default:
+            return nil
+        }
+    }
+
+    public var extendedData: [UInt8]? {
+        switch self {
+        case .Extended(type: _, data: let data):
+            return data
+        default:
+            return nil
+        }
+    }
+
+    public var dictionaryValue: [MessagePackValue : MessagePackValue]? {
+        switch self {
+        case .Map(let dict):
+            return dict
+        default:
+            return nil
+        }
+    }
+}
