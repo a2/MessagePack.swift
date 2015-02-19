@@ -41,32 +41,34 @@ private func packIntNeg(value: Int64) -> [UInt8] {
     }
 }
 
-public enum MessagePackValue: Equatable, Hashable {
-    case MPNil
-    case MPBool(Bool)
-    case MPInt(Int64)
-    case MPUInt(UInt64)
-    case MPFloat32(Float32)
-    case MPFloat64(Float64)
-    case MPString(String)
-    case MPBinary([UInt8])
-    case MPArray([MessagePackValue])
-    case MPMap([MessagePackValue : MessagePackValue])
-    case MPExtended(type: Int8, data: [UInt8])
+public enum MessagePackValue: Equatable {
+    case Nil
+    case Bool(Swift.Bool)
+    case Int(Int64)
+    case UInt(UInt64)
+    case Float(Float32)
+    case Double(Float64)
+    case String(Swift.String)
+    case Binary([UInt8])
+    case Array([MessagePackValue])
+    case Map([MessagePackValue : MessagePackValue])
+    case Extended(type: Int8, data: [UInt8])
+}
 
-    public var hashValue: Int {
+extension MessagePackValue: Hashable {
+    public var hashValue: Swift.Int {
         switch self {
-        case .MPNil: return 0
-        case .MPBool(let value): return value.hashValue
-        case .MPInt(let value): return value.hashValue
-        case .MPUInt(let value): return value.hashValue
-        case .MPFloat32(let value): return value.hashValue
-        case .MPFloat64(let value): return value.hashValue
-        case .MPString(let string): return string.hashValue
-        case .MPBinary(let bytes): return hashBytes(bytes)
-        case .MPArray(let array): return array.count
-        case .MPMap(let dict): return dict.count
-        case .MPExtended(let type, let bytes): return type.hashValue ^ hashBytes(bytes)
+        case .Nil: return 0
+        case .Bool(let value): return value.hashValue
+        case .Int(let value): return value.hashValue
+        case .UInt(let value): return value.hashValue
+        case .Float(let value): return value.hashValue
+        case .Double(let value): return value.hashValue
+        case .String(let string): return string.hashValue
+        case .Binary(let bytes): return hashBytes(bytes)
+        case .Array(let array): return array.count
+        case .Map(let dict): return dict.count
+        case .Extended(let type, let bytes): return type.hashValue ^ hashBytes(bytes)
         }
     }
 }
@@ -79,33 +81,33 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
     if let value = generator.next() {
         switch value {
         case 0x00...0x7f:
-            return .MPUInt(UInt64(value))
+            return .UInt(UInt64(value))
         case 0x80...0x8f:
             let length = Int(value - 0x80)
             if let dict = joinMap(&generator, length) {
-                return .MPMap(dict)
+                return .Map(dict)
             }
         case 0x90...0x9f:
             let length = Int(value - 0x90)
             if let array = joinArrayUnpack(&generator, length) {
-                return .MPArray(array)
+                return .Array(array)
             }
         case 0xa0...0xbf:
             let length = Int(value - 0xa0)
             if let string = joinString(&generator, length) {
-                return .MPString(string)
+                return .String(string)
             }
         case 0xc0:
-            return .MPNil
+            return .Nil
         case 0xc2:
-            return .MPBool(false)
+            return .Bool(false)
         case 0xc3:
-            return .MPBool(true)
+            return .Bool(true)
         case 0xc4...0xc6:
             let size = 1 << Int(value - 0xc4)
             if let length = joinUInt64(&generator, size) {
                 if let array = joinArrayUnpack(&generator, Int(length)) {
-                    return .MPArray(array)
+                    return .Array(array)
                 }
             }
         case 0xc7...0xc9:
@@ -114,76 +116,76 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
                 if let typeByte = generator.next() {
                     let type = Int8(bitPattern: typeByte)
                     if let bytes = joinArrayRaw(&generator, Int(length)) {
-                        return .MPExtended(type: type, data: bytes)
+                        return .Extended(type: type, data: bytes)
                     }
                 }
             }
         case 0xca:
             if let bytes = joinUInt64(&generator, 4) {
                 let float = unsafeBitCast(UInt32(truncatingBitPattern: bytes), Float32.self)
-                return .MPFloat32(float)
+                return .Float(float)
             }
         case 0xcb:
             if let bytes = joinUInt64(&generator, 8) {
                 let double = unsafeBitCast(bytes, Float64.self)
-                return .MPFloat64(double)
+                return .Double(double)
             }
         case 0xcc...0xcf:
             let length = 1 << (value - 0xcc)
             if let integer = joinUInt64(&generator, length) {
-                return .MPUInt(integer)
+                return .UInt(integer)
             }
         case 0xd0:
             if let byte = generator.next() {
                 let integer = Int8(bitPattern: byte)
-                return .MPInt(Int64(integer))
+                return .Int(Int64(integer))
             }
         case 0xd1:
             if let bytes = joinUInt64(&generator, 2) {
                 let integer = Int16(bitPattern: UInt16(truncatingBitPattern: bytes))
-                return .MPInt(Int64(integer))
+                return .Int(Int64(integer))
             }
         case 0xd2:
             if let bytes = joinUInt64(&generator, 4) {
                 let integer = Int32(bitPattern: UInt32(truncatingBitPattern: bytes))
-                return .MPInt(Int64(integer))
+                return .Int(Int64(integer))
             }
         case 0xd3:
             if let bytes = joinUInt64(&generator, 2) {
                 let integer = Int64(bitPattern: bytes)
-                return .MPInt(integer)
+                return .Int(integer)
             }
         case 0xd4...0xd8:
             let length = 1 << Int(value - 0xd4)
             if let typeByte = generator.next() {
                 let type = Int8(bitPattern: typeByte)
                 if let bytes = joinArrayRaw(&generator, length) {
-                    return .MPExtended(type: type, data: bytes)
+                    return .Extended(type: type, data: bytes)
                 }
             }
         case 0xd9...0xdb:
             let lengthSize = 1 << Int(value - 0xd9)
             if let length = joinUInt64(&generator, lengthSize) {
                 if let string = joinString(&generator, Int(length)) {
-                    return .MPString(string)
+                    return .String(string)
                 }
             }
         case 0xdc...0xdd:
             let lengthSize = 1 << Int(value - 0xdc)
             if let length = joinUInt64(&generator, lengthSize) {
                 if let array = joinArrayUnpack(&generator, Int(length)) {
-                    return .MPArray(array)
+                    return .Array(array)
                 }
             }
         case 0xde...0xdf:
             let lengthSize = 1 << Int(value - 0xdc)
             if let length = joinUInt64(&generator, lengthSize) {
                 if let dict = joinMap(&generator, Int(length)) {
-                    return .MPMap(dict)
+                    return .Map(dict)
                 }
             }
         case 0xe0...0xff:
-            return .MPInt(Int64(value) - 0x100)
+            return .Int(Int64(value) - 0x100)
         default:
             break
         }
@@ -194,21 +196,21 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
 
 public func pack(value: MessagePackValue) -> [UInt8] {
     switch value {
-    case .MPNil:
+    case .Nil:
         return [0xc0]
-    case .MPBool(let value):
+    case .Bool(let value):
         return [value ? 0xc3 : 0xc2]
-    case .MPInt(let value):
+    case .Int(let value):
         return value >= 0 ? packIntPos(UInt64(value)) : packIntNeg(value)
-    case .MPUInt(let value):
+    case .UInt(let value):
         return packIntPos(value)
-    case .MPFloat32(let value):
+    case .Float(let value):
         let integerValue = unsafeBitCast(value, UInt32.self)
         return [0xca] + splitInt(UInt64(integerValue), parts: 4)
-    case .MPFloat64(let value):
+    case .Double(let value):
         let integerValue = unsafeBitCast(value, UInt64.self)
         return [0xcb] + splitInt(integerValue, parts: 8)
-    case .MPString(let string):
+    case .String(let string):
         let utf8 = string.utf8
         var prefix: [UInt8]
         switch UInt32(countElements(utf8)) {
@@ -225,7 +227,7 @@ public func pack(value: MessagePackValue) -> [UInt8] {
             preconditionFailure()
         }
         return prefix + utf8
-    case .MPBinary(let bytes):
+    case .Binary(let bytes):
         var prefix: [UInt8]
         switch UInt32(bytes.count) {
         case let count where count <= 0xff:
@@ -239,7 +241,7 @@ public func pack(value: MessagePackValue) -> [UInt8] {
             preconditionFailure()
         }
         return prefix + bytes
-    case .MPArray(let array):
+    case .Array(let array):
         var prefix: [UInt8]
         switch UInt32(array.count) {
         case let count where count <= 0xe:
@@ -253,7 +255,7 @@ public func pack(value: MessagePackValue) -> [UInt8] {
             preconditionFailure()
         }
         return prefix + array.map(pack).reduce([], combine: +)
-    case .MPMap(let dict):
+    case .Map(let dict):
         var prefix: [UInt8]
         switch UInt32(dict.count) {
         case let count where count <= 0xe:
@@ -267,7 +269,7 @@ public func pack(value: MessagePackValue) -> [UInt8] {
             preconditionFailure()
         }
         return prefix + flatten(dict).map(pack).reduce([], +)
-    case .MPExtended(let type, let bytes):
+    case .Extended(let type, let bytes):
         let unsignedType = UInt8(bitPattern: type)
         var prefix: [UInt8]
         switch UInt32(bytes.count) {
@@ -302,31 +304,31 @@ public func unpack<S: SequenceType where S.Generator.Element == UInt8>(data: S) 
 
 public func ==(lhs: MessagePackValue, rhs: MessagePackValue) -> Bool {
     switch (lhs, rhs) {
-    case (.MPNil, .MPNil):
+    case (.Nil, .Nil):
         return true
-    case let (.MPBool(lhv), .MPBool(rhv)) where lhv == rhv:
+    case let (.Bool(lhv), .Bool(rhv)) where lhv == rhv:
         return true
-    case let (.MPInt(lhv), .MPInt(rhv)) where lhv == rhv:
+    case let (.Int(lhv), .Int(rhv)) where lhv == rhv:
         return true
-    case let (.MPUInt(lhv), .MPUInt(rhv)) where lhv == rhv:
+    case let (.UInt(lhv), .UInt(rhv)) where lhv == rhv:
         return true
-    case let (.MPInt(lhv), .MPUInt(rhv)) where lhv > 0 && UInt64(lhv) == rhv:
+    case let (.Int(lhv), .UInt(rhv)) where lhv > 0 && UInt64(lhv) == rhv:
         return true
-    case let (.MPUInt(lhv), .MPInt(rhv)) where rhv > 0 && lhv == UInt64(rhv):
+    case let (.UInt(lhv), .Int(rhv)) where rhv > 0 && lhv == UInt64(rhv):
         return true
-    case let (.MPFloat32(lhv), .MPFloat32(rhv)) where lhv == rhv:
+    case let (.Float(lhv), .Float(rhv)) where lhv == rhv:
         return true
-    case let (.MPFloat64(lhv), .MPFloat64(rhv)) where lhv == rhv:
+    case let (.Double(lhv), .Double(rhv)) where lhv == rhv:
         return true
-    case let (.MPString(lhv), .MPString(rhv)) where lhv == rhv:
+    case let (.String(lhv), .String(rhv)) where lhv == rhv:
         return true
-    case let (.MPBinary(lhv), .MPBinary(rhv)) where lhv == rhv:
+    case let (.Binary(lhv), .Binary(rhv)) where lhv == rhv:
         return true
-    case let (.MPArray(lhv), .MPArray(rhv)) where lhv == rhv:
+    case let (.Array(lhv), .Array(rhv)) where lhv == rhv:
         return true
-    case let (.MPMap(lhv), .MPMap(rhv)) where lhv == rhv:
+    case let (.Map(lhv), .Map(rhv)) where lhv == rhv:
         return true
-    case let (.MPExtended(lht, lhb), .MPExtended(rht, rhb)) where lht == rht && lhb == rhb:
+    case let (.Extended(lht, lhb), .Extended(rht, rhb)) where lht == rht && lhb == rhb:
         return true
     default:
         return false
@@ -334,8 +336,8 @@ public func ==(lhs: MessagePackValue, rhs: MessagePackValue) -> Bool {
 }
 
 extension MessagePackValue: BooleanLiteralConvertible {
-    public init(booleanLiteral value: Bool) {
-        self = .MPBool(value)
+    public init(booleanLiteral value: Swift.Bool) {
+        self = .Bool(value)
     }
 }
 
@@ -346,42 +348,42 @@ extension MessagePackValue: DictionaryLiteralConvertible {
             dict[key] = value
             return dict
         }
-        self = .MPMap(dict)
+        self = .Map(dict)
     }
 }
 
 extension MessagePackValue: ExtendedGraphemeClusterLiteralConvertible {
-    public init(extendedGraphemeClusterLiteral value: String) {
-        self = .MPString(value)
+    public init(extendedGraphemeClusterLiteral value: Swift.String) {
+        self = .String(value)
     }
 }
 
 extension MessagePackValue: FloatLiteralConvertible {
-    public init(floatLiteral value: Double) {
-        self = .MPFloat64(value)
+    public init(floatLiteral value: Swift.Double) {
+        self = .Double(value)
     }
 }
 
 extension MessagePackValue: IntegerLiteralConvertible {
-    public init(integerLiteral value: Int) {
-        self = .MPInt(Int64(value))
+    public init(integerLiteral value: Swift.Int) {
+        self = .Int(Int64(value))
     }
 }
 
 extension MessagePackValue: NilLiteralConvertible {
     public init(nilLiteral: ()) {
-        self = .MPNil
+        self = .Nil
     }
 }
 
 extension MessagePackValue: StringLiteralConvertible {
-    public init(stringLiteral value: String) {
-        self = .MPString(value)
+    public init(stringLiteral value: Swift.String) {
+        self = .String(value)
     }
 }
 
 extension MessagePackValue: UnicodeScalarLiteralConvertible {
-    public init(unicodeScalarLiteral value: String) {
-        self = .MPString(value)
+    public init(unicodeScalarLiteral value: Swift.String) {
+        self = .String(value)
     }
 }

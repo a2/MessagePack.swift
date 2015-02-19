@@ -21,17 +21,17 @@ class MessagePackSpec: QuickSpec {
         describe("nil") {
             it("converts from literal") {
                 let value: MessagePackValue = nil
-                let explicitValue = MessagePackValue.MPNil
+                let explicitValue = MessagePackValue.Nil
                 expect(value) == explicitValue
             }
 
             it("packs correctly") {
-                let value = MessagePackValue.MPNil
+                let value = MessagePackValue.Nil
                 expect(pack(value)) == [0xc0]
             }
 
             it("unpacks correctly") {
-                let value = MessagePackValue.MPNil
+                let value = MessagePackValue.Nil
                 expect(unpack(pack(value))) == value
             }
         }
@@ -39,17 +39,17 @@ class MessagePackSpec: QuickSpec {
         describe("true") {
             it("converts from literal") {
                 let value: MessagePackValue = true
-                let explicitValue = MessagePackValue.MPBool(true)
+                let explicitValue = MessagePackValue.Bool(true)
                 expect(value) == explicitValue
             }
 
             it("packs correctly") {
-                let value = MessagePackValue.MPBool(true)
+                let value = MessagePackValue.Bool(true)
                 expect(pack(value)) == [0xc3]
             }
 
             it("unpacks correctly") {
-                let value = MessagePackValue.MPBool(true)
+                let value = MessagePackValue.Bool(true)
                 expect(unpack(pack(value))) == value
             }
         }
@@ -57,17 +57,17 @@ class MessagePackSpec: QuickSpec {
         describe("false") {
             it("converts from literal") {
                 let value: MessagePackValue = false
-                let explicitValue = MessagePackValue.MPBool(false)
+                let explicitValue = MessagePackValue.Bool(false)
                 expect(value) == explicitValue
             }
 
             it("packs correctly") {
-                let value = MessagePackValue.MPBool(false)
+                let value = MessagePackValue.Bool(false)
                 expect(pack(value)) == [0xc2]
             }
 
             it("unpacks correctly") {
-                let value = MessagePackValue.MPBool(false)
+                let value = MessagePackValue.Bool(false)
                 expect(unpack(pack(value))) == value
             }
         }
@@ -75,23 +75,23 @@ class MessagePackSpec: QuickSpec {
         describe("int") {
             it("converts from positive literal") {
                 let value: MessagePackValue = 42
-                let explicitValue = MessagePackValue.MPUInt(42)
+                let explicitValue = MessagePackValue.UInt(42)
                 expect(value) == explicitValue
             }
 
             it("converts from negative literal") {
                 let value: MessagePackValue = -1
-                let explicitValue = MessagePackValue.MPInt(-1)
+                let explicitValue = MessagePackValue.Int(-1)
                 expect(value) == explicitValue
             }
 
             it("packs correctly") {
-                let value = MessagePackValue.MPUInt(0x42)
+                let value = MessagePackValue.UInt(0x42)
                 expect(pack(value)) == [0x42]
             }
 
             it("unpacks correctly") {
-                let value = MessagePackValue.MPUInt(0x42)
+                let value = MessagePackValue.UInt(0x42)
                 expect(unpack(pack(value))) == value
             }
         }
