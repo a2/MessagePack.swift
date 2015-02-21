@@ -395,6 +395,48 @@ extension MessagePackValue: UnicodeScalarLiteralConvertible {
 }
 
 extension MessagePackValue {
+    public init() {
+        self = .Nil
+    }
+
+    public init<B: BooleanType>(_ value: B) {
+        self = .Bool(value.boolValue)
+    }
+
+    public init<S: SignedIntegerType>(_ value: S) {
+        self = .Int(Int64(value.toIntMax()))
+    }
+
+    public init<U: UnsignedIntegerType>(_ value: U) {
+        self = .UInt(UInt64(value.toUIntMax()))
+    }
+
+    public init(_ value: Swift.Float) {
+        self = .Float(value)
+    }
+
+    public init(_ value: Swift.Double) {
+        self = .Double(value)
+    }
+
+    public init(_ value: Swift.String) {
+        self = .String(value)
+    }
+
+    public init(_ value: [MessagePackValue]) {
+        self = .Array(value)
+    }
+
+    public init(_ value: [MessagePackValue : MessagePackValue]) {
+        self = .Map(value)
+    }
+
+    public init(_ value: [UInt8]) {
+        self = .Binary(value)
+    }
+}
+
+extension MessagePackValue {
     public var count: Swift.Int? {
         switch self {
         case .Array(let array):
@@ -541,6 +583,35 @@ extension MessagePackValue {
             return dict
         default:
             return nil
+        }
+    }
+}
+
+extension MessagePackValue: Printable {
+    public var description: Swift.String {
+        switch self {
+        case .Nil:
+            return "<Nil>"
+        case .Bool(let value):
+            return value ? "true" : "false"
+        case .Int(let value):
+            return "\(value)"
+        case .UInt(let value):
+            return "\(value)"
+        case .Float(let value):
+            return "\(value)"
+        case .Double(let value):
+            return "\(value)"
+        case .String(let string):
+            return string
+        case .Binary(let bytes):
+            return "<Data: \(bytes.count) byte(s)>"
+        case .Array(let array):
+            return "<Array: \(array.count) element(s)>"
+        case .Map(let dict):
+            return "<Map: \(dict.count) pair(s)>"
+        case .Extended(let type, let bytes):
+            return "<ExtendedType: type \(type); \(bytes.count) byte(s)>"
         }
     }
 }
