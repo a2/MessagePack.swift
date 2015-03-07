@@ -1,3 +1,11 @@
+/**
+    Computes a hash of the specified data.
+
+    :param: bytes A pointer to the first byte to hash.
+    :param: length The numnber of bytes to hash.
+
+    :returns: A data hash.
+*/
 func hashBytes(bytes: UnsafePointer<UInt8>, length: Int) -> Int {
     // Borrowed from CFUtilities.c
     // http://git.io/AUjk
@@ -34,6 +42,13 @@ func hashBytes(bytes: UnsafePointer<UInt8>, length: Int) -> Int {
     return Int(H)
 }
 
+/**
+    Computes a hash of the specified data.
+
+    :param: data An array of bytes to hash.
+
+    :returns: A data hash.
+*/
 func hashBytes(data: [UInt8]) -> Int {
     return data.withUnsafeBufferPointer { hashBytes($0.baseAddress, min($0.count, 80)) }
 }

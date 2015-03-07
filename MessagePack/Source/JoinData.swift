@@ -1,3 +1,11 @@
+/**
+    Joins `size` values from `generator` to form a `UInt64`.
+
+    :param: generator The generator that yields bytes.
+    :param: size The number of bytes to yield.
+
+    :returns: A `UInt64`, or `nil` if the generator runs out of elements.
+*/
 func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, size: Int) -> UInt64? {
     var int: UInt64 = 0
     for _ in 0..<size {
@@ -11,6 +19,14 @@ func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, s
     return int
 }
 
+/**
+    Joins `length` values from `generator` to form a `String`.
+
+    :param: generator The generator that yields bytes.
+    :param: length The length of the resulting string.
+
+    :returns: A `String`, or `nil` if the generator runs out of elements.
+*/
 func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> String? {
     let ptrCount = length + 1 // +1 for \0-termination
     let ptr = UnsafeMutablePointer<CChar>.alloc(ptrCount)
@@ -31,6 +47,14 @@ func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, l
     return string
 }
 
+/**
+    Joins bytes from `generator` to form an `Array` of size `length`.
+
+    :param: generator The generator that yields bytes.
+    :param: length The length of the array.
+
+    :returns: An `Array`, or `nil` if the generator runs out of elements.
+*/
 func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [UInt8]? {
     var array = [UInt8]()
     array.reserveCapacity(length)
@@ -46,6 +70,14 @@ func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout generator: G,
     return array
 }
 
+/**
+    Joins bytes from `generator` to form an `Array` of size `length` containing `MessagePackValue` values.
+
+    :param: generator The generator that yields bytes.
+    :param: length The length of the array.
+
+    :returns: An `Array`, or `nil` if the generator runs out of elements.
+*/
 func joinArrayUnpack<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue]? {
     var array = [MessagePackValue]()
     array.reserveCapacity(length)
@@ -61,6 +93,14 @@ func joinArrayUnpack<G: GeneratorType where G.Element == UInt8>(inout generator:
     return array
 }
 
+/**
+    Joins bytes from `generator` to form a `Dictionary` of size `length` containing `MessagePackValue` keys and values.
+
+    :param: generator The generator that yields bytes.
+    :param: length The length of the array.
+
+    :returns: A `Dictionary`, or `nil` if the generator runs out of elements.
+*/
 func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue : MessagePackValue]? {
     let doubleLength = length * 2
     if let array = joinArrayUnpack(&generator, length * 2) {

@@ -1,6 +1,6 @@
 import MessagePack
-import Quick
 import Nimble
+import Quick
 
 class MessagePackSpec: QuickSpec {
     override func spec() {
