@@ -1,4 +1,4 @@
-internal func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, size: Int) -> UInt64? {
+func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, size: Int) -> UInt64? {
     var int: UInt64 = 0
     for _ in 0..<size {
         if let byte = generator.next() {
@@ -11,7 +11,7 @@ internal func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout genera
     return int
 }
 
-internal func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> String? {
+func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> String? {
     let ptrCount = length + 1 // +1 for \0-termination
     let ptr = UnsafeMutablePointer<CChar>.alloc(ptrCount)
 
@@ -31,7 +31,7 @@ internal func joinString<G: GeneratorType where G.Element == UInt8>(inout genera
     return string
 }
 
-internal func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [UInt8]? {
+func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [UInt8]? {
     var array = [UInt8]()
     array.reserveCapacity(length)
 
@@ -46,7 +46,7 @@ internal func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout gene
     return array
 }
 
-internal func joinArrayUnpack<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue]? {
+func joinArrayUnpack<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue]? {
     var array = [MessagePackValue]()
     array.reserveCapacity(length)
 
@@ -61,7 +61,7 @@ internal func joinArrayUnpack<G: GeneratorType where G.Element == UInt8>(inout g
     return array
 }
 
-internal func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue : MessagePackValue]? {
+func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue : MessagePackValue]? {
     let doubleLength = length * 2
     if let array = joinArrayUnpack(&generator, length * 2) {
         var dict = [MessagePackValue : MessagePackValue]()

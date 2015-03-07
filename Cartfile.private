@@ -1,2 +1,2 @@
-github "Quick/Quick" "swift-1.1"
-github "Quick/Nimble" "swift-1.1"
+github "Quick/Quick" "v0.3.0"
+github "Quick/Nimble" "v0.4.0"

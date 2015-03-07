@@ -74,7 +74,7 @@ extension MessagePackValue: Hashable {
 }
 
 private func flatten<T>(dict: [T : T]) -> [T] {
-    return map(dict) { [$0.0, $0.1] }.reduce([], +)
+    return map(dict) { [$0.0, $0.1] }.reduce([], combine: +)
 }
 
 public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
@@ -105,19 +105,15 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
             return .Bool(true)
         case 0xc4...0xc6:
             let size = 1 << Int(value - 0xc4)
-            if let length = joinUInt64(&generator, size) {
-                if let bytes = joinArrayRaw(&generator, Int(length)) {
-                    return .Binary(bytes)
-                }
+            if let length = joinUInt64(&generator, size), bytes = joinArrayRaw(&generator, Int(length)) {
+                return .Binary(bytes)
             }
         case 0xc7...0xc9:
             let size = 1 << Int(value - 0xc7)
-            if let length = joinUInt64(&generator, size) {
-                if let typeByte = generator.next() {
-                    let type = Int8(bitPattern: typeByte)
-                    if let bytes = joinArrayRaw(&generator, Int(length)) {
-                        return .Extended(type: type, data: bytes)
-                    }
+            if let length = joinUInt64(&generator, size), typeByte = generator.next() {
+                let type = Int8(bitPattern: typeByte)
+                if let bytes = joinArrayRaw(&generator, Int(length)) {
+                    return .Extended(type: type, data: bytes)
                 }
             }
         case 0xca:
@@ -131,7 +127,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
                 return .Double(double)
             }
         case 0xcc...0xcf:
-            let length = 1 << (value - 0xcc)
+            let length = 1 << (Int(value) - 0xcc)
             if let integer = joinUInt64(&generator, length) {
                 return .UInt(integer)
             }
@@ -165,24 +161,18 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
             }
         case 0xd9...0xdb:
             let lengthSize = 1 << Int(value - 0xd9)
-            if let length = joinUInt64(&generator, lengthSize) {
-                if let string = joinString(&generator, Int(length)) {
-                    return .String(string)
-                }
+            if let length = joinUInt64(&generator, lengthSize), string = joinString(&generator, Int(length)) {
+                return .String(string)
             }
         case 0xdc...0xdd:
             let lengthSize = 1 << Int(value - 0xdc)
-            if let length = joinUInt64(&generator, lengthSize) {
-                if let array = joinArrayUnpack(&generator, Int(length)) {
-                    return .Array(array)
-                }
+            if let length = joinUInt64(&generator, lengthSize), array = joinArrayUnpack(&generator, Int(length)) {
+                return .Array(array)
             }
         case 0xde...0xdf:
             let lengthSize = 1 << Int(value - 0xdc)
-            if let length = joinUInt64(&generator, lengthSize) {
-                if let dict = joinMap(&generator, Int(length)) {
-                    return .Map(dict)
-                }
+            if let length = joinUInt64(&generator, lengthSize), dict = joinMap(&generator, Int(length)) {
+                return .Map(dict)
             }
         case 0xe0...0xff:
             return .Int(Int64(value) - 0x100)
@@ -213,7 +203,7 @@ public func pack(value: MessagePackValue) -> [UInt8] {
     case .String(let string):
         let utf8 = string.utf8
         var prefix: [UInt8]
-        switch UInt32(countElements(utf8)) {
+        switch UInt32(count(utf8)) {
         case let count where count <= 0x19:
             prefix = [0xa0 | UInt8(count)]
         case let count where count <= 0xff:
@@ -268,7 +258,7 @@ public func pack(value: MessagePackValue) -> [UInt8] {
         default:
             preconditionFailure()
         }
-        return prefix + flatten(dict).map(pack).reduce([], +)
+        return prefix + flatten(dict).map(pack).reduce([], combine: +)
     case .Extended(let type, let bytes):
         let unsignedType = UInt8(bitPattern: type)
         var prefix: [UInt8]
