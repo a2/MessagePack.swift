@@ -1,6 +1,19 @@
 import Foundation
 
 /**
+    Creates a data object from the underlying storage of the array.
+
+    :param: array An array to convert to data.
+
+    :returns: A data object.
+*/
+func makeData(array: [UInt8]) -> NSData {
+    return array.withUnsafeBufferPointer { (ptr: UnsafeBufferPointer<UInt8>) -> NSData in
+        NSData(bytes: ptr.baseAddress, length: ptr.count)
+    }
+}
+
+/**
     Joins `size` values from `generator` to form a `UInt64`.
 
     :param: generator The generator that yields bytes.
@@ -121,4 +134,80 @@ func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, leng
     } else {
         return nil
     }
+}
+
+/**
+    Splits an integer into `parts` bytes.
+
+    :param: value The integer to split.
+    :param: parts The number of bytes into which to split.
+
+    :returns: An byte array representation of `value`.
+*/
+func splitInt(value: UInt64, #parts: Int) -> [UInt8] {
+    return map(stride(from: 8 * (parts - 1), through: 0, by: -8)) { (shift: Int) -> UInt8 in
+        return UInt8(truncatingBitPattern: value >> UInt64(shift))
+    }
+}
+
+/**
+    Encodes a positive integer into MessagePack bytes.
+
+    :param: value The integer to split.
+
+    :returns: A MessagePack byte representation of `value`.
+*/
+func packIntPos(value: UInt64) -> NSData {
+    switch value {
+    case let value where value <= 0x7f:
+        return makeData([UInt8(truncatingBitPattern: value)])
+    case let value where value <= 0xff:
+        return makeData([0xcc, UInt8(truncatingBitPattern: value)])
+    case let value where value <= 0xffff:
+        return makeData([0xcd] + splitInt(value, parts: 2))
+    case let value where value <= 0xffff_ffff:
+        return makeData([0xce] + splitInt(value, parts: 4))
+    case let value where value <= 0xffff_ffff_ffff_ffff:
+        return makeData([0xcf] + splitInt(value, parts: 8))
+    default:
+        preconditionFailure()
+    }
+}
+
+/**
+    Encodes a negative integer into MessagePack bytes.
+
+    :param: value The integer to split.
+
+    :returns: A MessagePack byte representation of `value`.
+*/
+func packIntNeg(value: Int64) -> NSData {
+    switch value {
+    case let value where value >= -0x20:
+        return makeData([0xe0 + UInt8(truncatingBitPattern: value)])
+    case let value where value >= -0x7f:
+        return makeData([0xd0, UInt8(bitPattern: Int8(value))])
+    case let value where value >= -0x7fff:
+        let truncated = UInt16(bitPattern: Int16(value))
+        return makeData([0xd1] + splitInt(UInt64(truncated), parts: 2))
+    case let value where value >= -0x7fff_ffff:
+        let truncated = UInt32(bitPattern: Int32(value))
+        return makeData([0xd2] + splitInt(UInt64(truncated), parts: 4))
+    case let value where value >= -0x7fff_ffff_ffff_ffff:
+        let truncated = UInt64(bitPattern: value)
+        return makeData([0xd3] + splitInt(truncated, parts: 8))
+    default:
+        preconditionFailure()
+    }
+}
+
+/**
+    Flattens a dictionary into an array of alternating keys and values.
+
+    :param: dict The dictionary to flatten.
+
+    :returns: An array of keys and values.
+*/
+func flatten<T>(dict: [T : T]) -> [T] {
+    return map(dict) { [$0.0, $0.1] }.reduce([], combine: +)
 }

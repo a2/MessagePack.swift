@@ -7,15 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		837295121A960F1F00D9AB85 /* JoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837295111A960F1F00D9AB85 /* JoinData.swift */; };
+		837295121A960F1F00D9AB85 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837295111A960F1F00D9AB85 /* Helpers.swift */; };
 		837295191A963CF500D9AB85 /* Nimble.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 83EA81D11A96012100FC16C1 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8372951A1A963CF500D9AB85 /* Quick.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 83EA81D21A96012100FC16C1 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		83937F241A92C48B00F16F13 /* MessagePack.h in Headers */ = {isa = PBXBuildFile; fileRef = 83937F231A92C48B00F16F13 /* MessagePack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83937F2A1A92C48B00F16F13 /* MessagePack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83937F1E1A92C48B00F16F13 /* MessagePack.framework */; };
 		83937F311A92C48B00F16F13 /* MessagePackSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83937F301A92C48B00F16F13 /* MessagePackSpec.swift */; };
 		83937F3D1A92C59F00F16F13 /* MessagePack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83937F3C1A92C59F00F16F13 /* MessagePack.swift */; };
-		83AA746E1AABB7EF00CA0AC1 /* MakeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AA746D1AABB7EF00CA0AC1 /* MakeData.swift */; };
-		83AA746F1AABBC4500CA0AC1 /* MakeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AA746D1AABB7EF00CA0AC1 /* MakeData.swift */; };
 		83EA81D61A96013300FC16C1 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83EA81D11A96012100FC16C1 /* Nimble.framework */; };
 		83EA81D71A96013300FC16C1 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83EA81D21A96012100FC16C1 /* Quick.framework */; };
 		83EA81D91A96032900FC16C1 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EA81D81A96032900FC16C1 /* Matchers.swift */; };
@@ -48,7 +46,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		837295111A960F1F00D9AB85 /* JoinData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinData.swift; sourceTree = "<group>"; };
+		837295111A960F1F00D9AB85 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		83937F1E1A92C48B00F16F13 /* MessagePack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessagePack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83937F221A92C48B00F16F13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83937F231A92C48B00F16F13 /* MessagePack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessagePack.h; sourceTree = "<group>"; };
@@ -56,7 +54,6 @@
 		83937F2F1A92C48B00F16F13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83937F301A92C48B00F16F13 /* MessagePackSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagePackSpec.swift; sourceTree = "<group>"; };
 		83937F3C1A92C59F00F16F13 /* MessagePack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePack.swift; sourceTree = "<group>"; };
-		83AA746D1AABB7EF00CA0AC1 /* MakeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MakeData.swift; sourceTree = "<group>"; };
 		83EA81D11A96012100FC16C1 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		83EA81D21A96012100FC16C1 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		83EA81D81A96032900FC16C1 /* Matchers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matchers.swift; sourceTree = "<group>"; };
@@ -144,8 +141,7 @@
 		83937F3A1A92C55800F16F13 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				837295111A960F1F00D9AB85 /* JoinData.swift */,
-				83AA746D1AABB7EF00CA0AC1 /* MakeData.swift */,
+				837295111A960F1F00D9AB85 /* Helpers.swift */,
 				83937F231A92C48B00F16F13 /* MessagePack.h */,
 				83937F3C1A92C59F00F16F13 /* MessagePack.swift */,
 			);
@@ -280,8 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83937F3D1A92C59F00F16F13 /* MessagePack.swift in Sources */,
-				837295121A960F1F00D9AB85 /* JoinData.swift in Sources */,
-				83AA746E1AABB7EF00CA0AC1 /* MakeData.swift in Sources */,
+				837295121A960F1F00D9AB85 /* Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,7 +285,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				83EA81D91A96032900FC16C1 /* Matchers.swift in Sources */,
-				83AA746F1AABBC4500CA0AC1 /* MakeData.swift in Sources */,
 				83EA81DB1A9608B400FC16C1 /* Helpers.swift in Sources */,
 				83937F311A92C48B00F16F13 /* MessagePackSpec.swift in Sources */,
 			);

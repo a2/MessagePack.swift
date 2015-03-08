@@ -1,71 +1,6 @@
 import Foundation
 
 /**
-    Splits an integer into `parts` bytes.
-
-    :param: value The integer to split.
-    :param: parts The number of bytes into which to split.
-
-    :returns: An byte array representation of `value`.
-*/
-private func splitInt(value: UInt64, #parts: Int) -> [UInt8] {
-    return map(stride(from: 8 * (parts - 1), through: 0, by: -8)) { (shift: Int) -> UInt8 in
-        return UInt8(truncatingBitPattern: value >> UInt64(shift))
-    }
-}
-
-/**
-    Encodes a positive integer into MessagePack bytes.
-
-    :param: value The integer to split.
-
-    :returns: A MessagePack byte representation of `value`.
-*/
-private func packIntPos(value: UInt64) -> NSData {
-    switch value {
-    case let value where value <= 0x7f:
-        return makeData([UInt8(truncatingBitPattern: value)])
-    case let value where value <= 0xff:
-        return makeData([0xcc, UInt8(truncatingBitPattern: value)])
-    case let value where value <= 0xffff:
-        return makeData([0xcd] + splitInt(value, parts: 2))
-    case let value where value <= 0xffff_ffff:
-        return makeData([0xce] + splitInt(value, parts: 4))
-    case let value where value <= 0xffff_ffff_ffff_ffff:
-        return makeData([0xcf] + splitInt(value, parts: 8))
-    default:
-        preconditionFailure()
-    }
-}
-
-/**
-    Encodes a negative integer into MessagePack bytes.
-
-    :param: value The integer to split.
-
-    :returns: A MessagePack byte representation of `value`.
-*/
-private func packIntNeg(value: Int64) -> NSData {
-    switch value {
-    case let value where value >= -0x20:
-        return makeData([0xe0 + UInt8(truncatingBitPattern: value)])
-    case let value where value >= -0x7f:
-        return makeData([0xd0, UInt8(bitPattern: Int8(value))])
-    case let value where value >= -0x7fff:
-        let truncated = UInt16(bitPattern: Int16(value))
-        return makeData([0xd1] + splitInt(UInt64(truncated), parts: 2))
-    case let value where value >= -0x7fff_ffff:
-        let truncated = UInt32(bitPattern: Int32(value))
-        return makeData([0xd2] + splitInt(UInt64(truncated), parts: 4))
-    case let value where value >= -0x7fff_ffff_ffff_ffff:
-        let truncated = UInt64(bitPattern: value)
-        return makeData([0xd3] + splitInt(truncated, parts: 8))
-    default:
-        preconditionFailure()
-    }
-}
-
-/**
     The MessagePackValue enum encapsulates the following types:
 
     - Nil
@@ -113,24 +48,13 @@ extension MessagePackValue: Hashable {
 }
 
 /**
-    Flattens a dictionary into an array of alternating keys and values.
-
-    :param: dict The dictionary to flatten.
-
-    :returns: An array of keys and values.
-*/
-private func flatten<T>(dict: [T : T]) -> [T] {
-    return map(dict) { [$0.0, $0.1] }.reduce([], combine: +)
-}
-
-/**
     Unpacks a generator of bytes into a MessagePackValue.
 
     :param: generator The generator that yields bytes.
 
     :returns: A MessagePackValue, or `nil` if the generator runs out of bytes.
 */
-func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
+public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
     if let value = generator.next() {
         switch value {
 
