@@ -271,7 +271,7 @@ class MessagePackSpec: QuickSpec {
             }
 
             context("ext 8") {
-                let payload = Array(count: 7, repeatedValue: UInt8())
+                let payload = [UInt8](count: 7, repeatedValue: 0)
                 let value = MessagePackValue.Extended(type: 5, data: makeData(payload))
                 let packed = makeData([0xc7, 0x07, 0x05] + payload)
 
@@ -285,7 +285,7 @@ class MessagePackSpec: QuickSpec {
             }
 
             context("ext 16") {
-                let payload = Array(count: 0x100, repeatedValue: UInt8())
+                let payload = [UInt8](count: 0x100, repeatedValue: 0)
                 let value = MessagePackValue.Extended(type: 5, data: makeData(payload))
                 let packed = makeData([0xc8, 0x01, 0x00, 0x05] + payload)
 
@@ -299,7 +299,7 @@ class MessagePackSpec: QuickSpec {
             }
 
             context("ext 32") {
-                let payload = Array(count: 0x10000, repeatedValue: UInt8())
+                let payload = [UInt8](count: 0x10000, repeatedValue: 0)
                 let value = MessagePackValue.Extended(type: 5, data: makeData(payload))
                 let packed = makeData([0xc9, 0x00, 0x01, 0x00, 0x00, 0x05] + payload)
 
