@@ -1,13 +1,7 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
+#import <Foundation/Foundation.h>
 
 //! Project version number for MessagePack.
-extern double MessagePackVersionNumber;
+FOUNDATION_EXPORT double MessagePackVersionNumber;
 
 //! Project version string for MessagePack.
-extern const unsigned char MessagePackVersionString[];
-
-#ifdef __cplusplus
-}
-#endif
+FOUNDATION_EXPORT const unsigned char MessagePackVersionString[];

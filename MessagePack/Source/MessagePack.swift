@@ -1,3 +1,5 @@
+import Foundation
+
 /**
     Splits an integer into `parts` bytes.
 
@@ -19,18 +21,18 @@ private func splitInt(value: UInt64, #parts: Int) -> [UInt8] {
 
     :returns: A MessagePack byte representation of `value`.
 */
-private func packIntPos(value: UInt64) -> [UInt8] {
+private func packIntPos(value: UInt64) -> NSData {
     switch value {
     case let value where value <= 0x7f:
-        return [UInt8(truncatingBitPattern: value)]
+        return makeData([UInt8(truncatingBitPattern: value)])
     case let value where value <= 0xff:
-        return [0xcc, UInt8(truncatingBitPattern: value)]
+        return makeData([0xcc, UInt8(truncatingBitPattern: value)])
     case let value where value <= 0xffff:
-        return [0xcd] + splitInt(value, parts: 2)
-    case let value where value <= 0xffffffff:
-        return [0xce] + splitInt(value, parts: 4)
-    case let value where value <= 0xffffffffffffffff:
-        return [0xcf] + splitInt(value, parts: 8)
+        return makeData([0xcd] + splitInt(value, parts: 2))
+    case let value where value <= 0xffff_ffff:
+        return makeData([0xce] + splitInt(value, parts: 4))
+    case let value where value <= 0xffff_ffff_ffff_ffff:
+        return makeData([0xcf] + splitInt(value, parts: 8))
     default:
         preconditionFailure()
     }
@@ -43,21 +45,21 @@ private func packIntPos(value: UInt64) -> [UInt8] {
 
     :returns: A MessagePack byte representation of `value`.
 */
-private func packIntNeg(value: Int64) -> [UInt8] {
+private func packIntNeg(value: Int64) -> NSData {
     switch value {
     case let value where value >= -0x20:
-        return [0xe0 + UInt8(truncatingBitPattern: value)]
+        return makeData([0xe0 + UInt8(truncatingBitPattern: value)])
     case let value where value >= -0x7f:
-        return [0xd0, UInt8(bitPattern: Int8(value))]
+        return makeData([0xd0, UInt8(bitPattern: Int8(value))])
     case let value where value >= -0x7fff:
         let truncated = UInt16(bitPattern: Int16(value))
-        return [0xd1] + splitInt(UInt64(truncated), parts: 2)
-    case let value where value >= -0x7fffffff:
+        return makeData([0xd1] + splitInt(UInt64(truncated), parts: 2))
+    case let value where value >= -0x7fff_ffff:
         let truncated = UInt32(bitPattern: Int32(value))
-        return [0xd2] + splitInt(UInt64(truncated), parts: 4)
-    case let value where value >= -0x7fffffffffffffff:
+        return makeData([0xd2] + splitInt(UInt64(truncated), parts: 4))
+    case let value where value >= -0x7fff_ffff_ffff_ffff:
         let truncated = UInt64(bitPattern: value)
-        return [0xd3] + splitInt(truncated, parts: 8)
+        return makeData([0xd3] + splitInt(truncated, parts: 8))
     default:
         preconditionFailure()
     }
@@ -86,10 +88,10 @@ public enum MessagePackValue: Equatable {
     case Float(Float32)
     case Double(Float64)
     case String(Swift.String)
-    case Binary([UInt8])
+    case Binary(NSData)
     case Array([MessagePackValue])
     case Map([MessagePackValue : MessagePackValue])
-    case Extended(type: Int8, data: [UInt8])
+    case Extended(type: Int8, data: NSData)
 }
 
 extension MessagePackValue: Hashable {
@@ -102,10 +104,10 @@ extension MessagePackValue: Hashable {
         case .Float(let value): return value.hashValue
         case .Double(let value): return value.hashValue
         case .String(let string): return string.hashValue
-        case .Binary(let bytes): return hashBytes(bytes)
+        case .Binary(let data): return data.hash
         case .Array(let array): return array.count
         case .Map(let dict): return dict.count
-        case .Extended(let type, let bytes): return type.hashValue ^ hashBytes(bytes)
+        case .Extended(let type, let data): return type.hashValue ^ data.hash
         }
     }
 }
@@ -114,7 +116,7 @@ extension MessagePackValue: Hashable {
     Flattens a dictionary into an array of alternating keys and values.
 
     :param: dict The dictionary to flatten.
-    
+
     :returns: An array of keys and values.
 */
 private func flatten<T>(dict: [T : T]) -> [T] {
@@ -128,7 +130,7 @@ private func flatten<T>(dict: [T : T]) -> [T] {
 
     :returns: A MessagePackValue, or `nil` if the generator runs out of bytes.
 */
-public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
+func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
     if let value = generator.next() {
         switch value {
 
@@ -146,7 +148,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // fixarray
         case 0x90...0x9f:
             let length = Int(value - 0x90)
-            if let array = joinArrayUnpack(&generator, length) {
+            if let array = joinArray(&generator, length) {
                 return .Array(array)
             }
 
@@ -176,8 +178,8 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // bin 8, 16, 32
         case 0xc4...0xc6:
             let size = 1 << Int(value - 0xc4)
-            if let length = joinUInt64(&generator, size), bytes = joinArrayRaw(&generator, Int(length)) {
-                return .Binary(bytes)
+            if let length = joinUInt64(&generator, size), data = joinData(&generator, Int(length)) {
+                return .Binary(data)
             }
 
         // ext 8, 16, 32
@@ -185,8 +187,8 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
             let size = 1 << Int(value - 0xc7)
             if let length = joinUInt64(&generator, size), typeByte = generator.next() {
                 let type = Int8(bitPattern: typeByte)
-                if let bytes = joinArrayRaw(&generator, Int(length)) {
-                    return .Extended(type: type, data: bytes)
+                if let data = joinData(&generator, Int(length)) {
+                    return .Extended(type: type, data: data)
                 }
             }
 
@@ -244,7 +246,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
             let length = 1 << Int(value - 0xd4)
             if let typeByte = generator.next() {
                 let type = Int8(bitPattern: typeByte)
-                if let bytes = joinArrayRaw(&generator, length) {
+                if let bytes = joinData(&generator, length) {
                     return .Extended(type: type, data: bytes)
                 }
             }
@@ -259,7 +261,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // array 16, 32
         case 0xdc...0xdd:
             let lengthSize = 1 << Int(value - 0xdc)
-            if let length = joinUInt64(&generator, lengthSize), array = joinArrayUnpack(&generator, Int(length)) {
+            if let length = joinUInt64(&generator, lengthSize), array = joinArray(&generator, Int(length)) {
                 return .Array(array)
             }
 
@@ -283,14 +285,16 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
 }
 
 /**
-    Unpacks a seequence of bytes into a MessagePackValue.
+    Unpacks a data object into a MessagePackValue.
 
-    :param: data The sequence of bytes.
+    :param: data A data object to unpack.
 
-    :returns: A MessagePackValue, or `nil` if the sequence runs out of bytes.
+    :returns: A MessagePackValue, or `nil` if the data is malformed.
 */
-public func unpack<S: SequenceType where S.Generator.Element == UInt8>(data: S) -> MessagePackValue? {
-    var generator = data.generate()
+public func unpack(data: NSData) -> MessagePackValue? {
+    let immutableData = data.copy() as! NSData
+    let ptr = UnsafeBufferPointer<UInt8>(start: UnsafePointer<UInt8>(immutableData.bytes), count: immutableData.length)
+    var generator = ptr.generate()
     return unpack(&generator)
 }
 
@@ -298,34 +302,34 @@ public func unpack<S: SequenceType where S.Generator.Element == UInt8>(data: S) 
     Packs a MessagePackValue into an array of bytes.
 
     :param: value The value to encode
-    
+
     :returns: An array of bytes.
 */
-public func pack(value: MessagePackValue) -> [UInt8] {
+public func pack(value: MessagePackValue) -> NSData {
     switch value {
     case .Nil:
-        return [0xc0]
+        return makeData([0xc0])
 
     case .Bool(let value):
-        return [value ? 0xc3 : 0xc2]
+        return makeData([value ? 0xc3 : 0xc2])
 
     case .Int(let value):
         return value >= 0 ? packIntPos(UInt64(value)) : packIntNeg(value)
 
     case .UInt(let value):
         return packIntPos(value)
-        
+
     case .Float(let value):
         let integerValue = unsafeBitCast(value, UInt32.self)
-        return [0xca] + splitInt(UInt64(integerValue), parts: 4)
+        return makeData([0xca] + splitInt(UInt64(integerValue), parts: 4))
 
     case .Double(let value):
         let integerValue = unsafeBitCast(value, UInt64.self)
-        return [0xcb] + splitInt(integerValue, parts: 8)
+        return makeData([0xcb] + splitInt(integerValue, parts: 8))
 
     case .String(let string):
         let utf8 = string.utf8
-        var prefix: [UInt8]
+        let prefix: [UInt8]
         switch UInt32(count(utf8)) {
         case let count where count <= 0x19:
             prefix = [0xa0 | UInt8(count)]
@@ -334,42 +338,53 @@ public func pack(value: MessagePackValue) -> [UInt8] {
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: Int16(count))
             prefix = [0xda] + splitInt(UInt64(truncated), parts: 2)
-        case let count where count <= 0xffffffff:
+        case let count where count <= 0xffff_ffff:
             prefix = [0xdb] + splitInt(UInt64(count), parts: 4)
         default:
             preconditionFailure()
         }
-        return prefix + utf8
+        return makeData(prefix + utf8)
 
-    case .Binary(let bytes):
-        var prefix: [UInt8]
-        switch UInt32(bytes.count) {
+    case .Binary(let data):
+        let prefix: [UInt8]
+        switch Int(data.length) {
         case let count where count <= 0xff:
             prefix = [0xc4, UInt8(count)]
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: Int16(count))
             prefix = [0xc5] + splitInt(UInt64(truncated), parts: 2)
-        case let count where count <= 0xffffffff:
+        case let count where count <= 0xffff_ffff:
             prefix = [0xc6] + splitInt(UInt64(count), parts: 4)
         default:
             preconditionFailure()
         }
-        return prefix + bytes
+
+        let mutableData = NSMutableData()
+        mutableData.appendData(makeData(prefix))
+        mutableData.appendData(data)
+        return mutableData
 
     case .Array(let array):
-        var prefix: [UInt8]
+        let prefix: [UInt8]
         switch UInt32(array.count) {
         case let count where count <= 0xe:
             prefix = [0x90 | UInt8(count)]
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: Int16(count))
             prefix = [0xdc] + splitInt(UInt64(truncated), parts: 2)
-        case let count where count <= 0xffffffff:
+        case let count where count <= 0xffff_ffff:
             prefix = [0xdd] + splitInt(UInt64(count), parts: 4)
         default:
             preconditionFailure()
         }
-        return prefix + array.map(pack).reduce([], combine: +)
+
+        let mutableData = NSMutableData()
+        mutableData.appendData(makeData(prefix))
+
+        return reduce(array.map(pack), mutableData) { (mutableData, data) in
+            mutableData.appendData(data)
+            return mutableData
+        }
 
     case .Map(let dict):
         var prefix: [UInt8]
@@ -379,17 +394,24 @@ public func pack(value: MessagePackValue) -> [UInt8] {
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: Int16(count))
             prefix = [0xde] + splitInt(UInt64(truncated), parts: 2)
-        case let count where count <= 0xffffffff:
+        case let count where count <= 0xffff_ffff:
             prefix = [0xdf] + splitInt(UInt64(count), parts: 4)
         default:
             preconditionFailure()
         }
-        return prefix + flatten(dict).map(pack).reduce([], combine: +)
 
-    case .Extended(let type, let bytes):
+        let mutableData = NSMutableData()
+        mutableData.appendData(makeData(prefix))
+
+        return reduce(flatten(dict).map(pack), mutableData) { (mutableData, data) in
+            mutableData.appendData(data)
+            return mutableData
+        }
+
+    case .Extended(let type, let data):
         let unsignedType = UInt8(bitPattern: type)
         var prefix: [UInt8]
-        switch UInt32(bytes.count) {
+        switch UInt32(data.length) {
         case 1:
             prefix = [0xd4, unsignedType]
         case 2:
@@ -405,23 +427,19 @@ public func pack(value: MessagePackValue) -> [UInt8] {
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: Int16(count))
             prefix = [0xc8] + splitInt(UInt64(truncated), parts: 2) + [unsignedType]
-        case let count where count <= 0xffffffff:
+        case let count where count <= 0xffff_ffff:
             prefix = [0xc9] + splitInt(UInt64(count), parts: 4) + [unsignedType]
         default:
             preconditionFailure()
         }
-        return prefix + bytes
+
+        let mutableData = NSMutableData()
+        mutableData.appendData(makeData(prefix))
+        mutableData.appendData(data)
+        return mutableData
     }
 }
 
-/**
-    Tests the equality of two MessagePackValue values.
-    
-    :param: lhs The left-hand value.
-    :param: rhs The right-hand value.
-
-    :returns: True if the values are of the same type and have equal contents.
-*/
 public func ==(lhs: MessagePackValue, rhs: MessagePackValue) -> Bool {
     switch (lhs, rhs) {
     case (.Nil, .Nil):
@@ -551,7 +569,7 @@ extension MessagePackValue {
         self = .Map(value)
     }
 
-    public init(_ value: [UInt8]) {
+    public init(_ value: NSData) {
         self = .Binary(value)
     }
 }
@@ -672,18 +690,20 @@ extension MessagePackValue {
         }
     }
 
-    /// The contained binary data if `.Binary`, `nil` otherwise.
-    public var binaryValue: [UInt8]? {
+    /// The contained data if `.Binary` or `.Extended`, `nil` otherwise.
+    public var dataValue: NSData? {
         switch self {
         case .Binary(let bytes):
             return bytes
+        case .Extended(type: _, data: let data):
+            return data
         default:
             return nil
         }
     }
 
     /// The contained type and data if Extended, `nil` otherwise.
-    public var extendedValue: (type: Int8, data: [UInt8])? {
+    public var extendedValue: (type: Int8, data: NSData)? {
         switch self {
         case .Extended(type: let type, data: let data):
             return (type, data)
@@ -697,16 +717,6 @@ extension MessagePackValue {
         switch self {
         case .Extended(type: let type, data: _):
             return type
-        default:
-            return nil
-        }
-    }
-
-    /// The contained data if `.Extended`, `nil` otherwise.
-    public var extendedData: [UInt8]? {
-        switch self {
-        case .Extended(type: _, data: let data):
-            return data
         default:
             return nil
         }
@@ -740,14 +750,14 @@ extension MessagePackValue: Printable {
             return "\(value)"
         case .String(let string):
             return string
-        case .Binary(let bytes):
-            return "<Data: \(bytes.count) byte(s)>"
+        case .Binary(let data):
+            return "<Data: \(data.length) byte(s)>"
         case .Array(let array):
             return "<Array: \(array.count) element(s)>"
         case .Map(let dict):
             return "<Map: \(dict.count) pair(s)>"
-        case .Extended(let type, let bytes):
-            return "<ExtendedType: type \(type); \(bytes.count) byte(s)>"
+        case .Extended(let type, let data):
+            return "<ExtendedType: type \(type); \(data.length) byte(s)>"
         }
     }
 }

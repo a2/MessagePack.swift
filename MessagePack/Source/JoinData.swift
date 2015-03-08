@@ -1,3 +1,5 @@
+import Foundation
+
 /**
     Joins `size` values from `generator` to form a `UInt64`.
 
@@ -55,7 +57,7 @@ func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, l
 
     :returns: An `Array`, or `nil` if the generator runs out of elements.
 */
-func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [UInt8]? {
+func joinData<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> NSData? {
     var array = [UInt8]()
     array.reserveCapacity(length)
 
@@ -67,7 +69,7 @@ func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout generator: G,
         }
     }
 
-    return array
+    return makeData(array)
 }
 
 /**
@@ -78,7 +80,7 @@ func joinArrayRaw<G: GeneratorType where G.Element == UInt8>(inout generator: G,
 
     :returns: An `Array`, or `nil` if the generator runs out of elements.
 */
-func joinArrayUnpack<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue]? {
+func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue]? {
     var array = [MessagePackValue]()
     array.reserveCapacity(length)
 
@@ -103,7 +105,7 @@ func joinArrayUnpack<G: GeneratorType where G.Element == UInt8>(inout generator:
 */
 func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue : MessagePackValue]? {
     let doubleLength = length * 2
-    if let array = joinArrayUnpack(&generator, length * 2) {
+    if let array = joinArray(&generator, length * 2) {
         var dict = [MessagePackValue : MessagePackValue]()
         var lastKey: MessagePackValue? = nil
         for item in array {
