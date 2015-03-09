@@ -207,14 +207,14 @@
 		83937F151A92C48B00F16F13 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Pandamonia LLC";
 				TargetAttributes = {
 					83937F1D1A92C48B00F16F13 = {
-						CreatedOnToolsVersion = 6.1.1;
+						CreatedOnToolsVersion = 6.3;
 					};
 					83937F281A92C48B00F16F13 = {
-						CreatedOnToolsVersion = 6.1.1;
+						CreatedOnToolsVersion = 6.3;
 					};
 				};
 			};
