@@ -271,7 +271,7 @@ public func pack(value: MessagePackValue) -> NSData {
 
     case .Binary(let data):
         let prefix: [UInt8]
-        switch Int(data.length) {
+        switch UInt32(data.length) {
         case let count where count <= 0xff:
             prefix = [0xc4, UInt8(count)]
         case let count where count <= 0xffff:
