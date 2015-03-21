@@ -7,33 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		83284C081AAE0DB800A11C91 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83284C041AAE0DAE00A11C91 /* Nimble.framework */; };
-		83284C091AAE0DB800A11C91 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83284C051AAE0DAE00A11C91 /* Quick.framework */; };
-		838663061AAE0C9900FADC19 /* MessagePack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 838662FA1AAE0C9900FADC19 /* MessagePack.framework */; };
 		8386631A1AAE0CF400FADC19 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838663171AAE0CF400FADC19 /* Helpers.swift */; };
 		8386631B1AAE0CF400FADC19 /* MessagePack.h in Headers */ = {isa = PBXBuildFile; fileRef = 838663181AAE0CF400FADC19 /* MessagePack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8386631C1AAE0CF400FADC19 /* MessagePack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838663191AAE0CF400FADC19 /* MessagePack.swift */; };
-		838663211AAE0D0500FADC19 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8386631E1AAE0D0500FADC19 /* Helpers.swift */; };
-		838663221AAE0D0500FADC19 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8386631F1AAE0D0500FADC19 /* Matchers.swift */; };
-		838663231AAE0D0500FADC19 /* MessagePackSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838663201AAE0D0500FADC19 /* MessagePackSpec.swift */; };
+		83CEDDB21ABDEBAF00664CC8 /* MessagePack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83CEDDA71ABDEBAF00664CC8 /* MessagePack.framework */; };
+		83CEDDC01ABDEC3D00664CC8 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838663171AAE0CF400FADC19 /* Helpers.swift */; };
+		83CEDDC11ABDEC3D00664CC8 /* MessagePack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838663191AAE0CF400FADC19 /* MessagePack.swift */; };
+		83CEDDC41ABDEF0200664CC8 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8386631E1AAE0D0500FADC19 /* Helpers.swift */; };
+		83CEDDC51ABDEF0200664CC8 /* Matchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8386631F1AAE0D0500FADC19 /* Matchers.swift */; };
+		83CEDDC61ABDEF0200664CC8 /* MessagePackSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838663201AAE0D0500FADC19 /* MessagePackSpec.swift */; };
+		EA64156FBF8A2D1CA37E6A40 /* Pods_MessagePackTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3D3015C6064AA5D04CA1458 /* Pods_MessagePackTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		838663071AAE0C9900FADC19 /* PBXContainerItemProxy */ = {
+		83CEDDB31ABDEBAF00664CC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 838662F11AAE0C9900FADC19 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 838662F91AAE0C9900FADC19;
+			remoteGlobalIDString = 83CEDDA61ABDEBAF00664CC8;
 			remoteInfo = MessagePack;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		83284C041AAE0DAE00A11C91 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
-		83284C051AAE0DAE00A11C91 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		4516D9ED59D2F1F70A0F444C /* Pods-MessagePackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagePackTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MessagePackTests/Pods-MessagePackTests.debug.xcconfig"; sourceTree = "<group>"; };
 		838662FA1AAE0C9900FADC19 /* MessagePack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessagePack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		838662FE1AAE0C9900FADC19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		838663051AAE0C9900FADC19 /* MessagePackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessagePackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8386630B1AAE0C9900FADC19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		838663171AAE0CF400FADC19 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		838663181AAE0CF400FADC19 /* MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePack.h; sourceTree = "<group>"; };
@@ -41,6 +40,10 @@
 		8386631E1AAE0D0500FADC19 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		8386631F1AAE0D0500FADC19 /* Matchers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matchers.swift; sourceTree = "<group>"; };
 		838663201AAE0D0500FADC19 /* MessagePackSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePackSpec.swift; sourceTree = "<group>"; };
+		83CEDDA71ABDEBAF00664CC8 /* MessagePack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessagePack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		83CEDDB11ABDEBAF00664CC8 /* MessagePackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessagePackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3D3015C6064AA5D04CA1458 /* Pods_MessagePackTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessagePackTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C35A09336F2C17D62FB2F665 /* Pods-MessagePackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessagePackTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MessagePackTests/Pods-MessagePackTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,24 +54,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		838663021AAE0C9900FADC19 /* Frameworks */ = {
+		83CEDDA31ABDEBAF00664CC8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				838663061AAE0C9900FADC19 /* MessagePack.framework in Frameworks */,
-				83284C081AAE0DB800A11C91 /* Nimble.framework in Frameworks */,
-				83284C091AAE0DB800A11C91 /* Quick.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83CEDDAE1ABDEBAF00664CC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83CEDDB21ABDEBAF00664CC8 /* MessagePack.framework in Frameworks */,
+				EA64156FBF8A2D1CA37E6A40 /* Pods_MessagePackTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		74829C129DC80B143D6C86D6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4516D9ED59D2F1F70A0F444C /* Pods-MessagePackTests.debug.xcconfig */,
+				C35A09336F2C17D62FB2F665 /* Pods-MessagePackTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		83284C031AAE0D9F00A11C91 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83284C041AAE0DAE00A11C91 /* Nimble.framework */,
-				83284C051AAE0DAE00A11C91 /* Quick.framework */,
+				B3D3015C6064AA5D04CA1458 /* Pods_MessagePackTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -80,6 +97,7 @@
 				838663091AAE0C9900FADC19 /* MessagePackTests */,
 				83284C031AAE0D9F00A11C91 /* Frameworks */,
 				838662FB1AAE0C9900FADC19 /* Products */,
+				74829C129DC80B143D6C86D6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,7 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				838662FA1AAE0C9900FADC19 /* MessagePack.framework */,
-				838663051AAE0C9900FADC19 /* MessagePackTests.xctest */,
+				83CEDDA71ABDEBAF00664CC8 /* MessagePack.framework */,
+				83CEDDB11ABDEBAF00664CC8 /* MessagePackTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,12 +176,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		83CEDDA41ABDEBAF00664CC8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		838662F91AAE0C9900FADC19 /* MessagePack */ = {
+		838662F91AAE0C9900FADC19 /* MessagePack-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 838663101AAE0C9900FADC19 /* Build configuration list for PBXNativeTarget "MessagePack" */;
+			buildConfigurationList = 838663101AAE0C9900FADC19 /* Build configuration list for PBXNativeTarget "MessagePack-iOS" */;
 			buildPhases = (
 				838662F51AAE0C9900FADC19 /* Sources */,
 				838662F61AAE0C9900FADC19 /* Frameworks */,
@@ -173,28 +199,48 @@
 			);
 			dependencies = (
 			);
-			name = MessagePack;
+			name = "MessagePack-iOS";
 			productName = MessagePack;
 			productReference = 838662FA1AAE0C9900FADC19 /* MessagePack.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		838663041AAE0C9900FADC19 /* MessagePackTests */ = {
+		83CEDDA61ABDEBAF00664CC8 /* MessagePack-OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 838663131AAE0C9900FADC19 /* Build configuration list for PBXNativeTarget "MessagePackTests" */;
+			buildConfigurationList = 83CEDDBA1ABDEBAF00664CC8 /* Build configuration list for PBXNativeTarget "MessagePack-OSX" */;
 			buildPhases = (
-				838663011AAE0C9900FADC19 /* Sources */,
-				838663021AAE0C9900FADC19 /* Frameworks */,
-				838663031AAE0C9900FADC19 /* Resources */,
-				83284C0A1AAE0DC400A11C91 /* ShellScript */,
+				83CEDDA21ABDEBAF00664CC8 /* Sources */,
+				83CEDDA31ABDEBAF00664CC8 /* Frameworks */,
+				83CEDDA41ABDEBAF00664CC8 /* Headers */,
+				83CEDDA51ABDEBAF00664CC8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				838663081AAE0C9900FADC19 /* PBXTargetDependency */,
+			);
+			name = "MessagePack-OSX";
+			productName = MessagePack;
+			productReference = 83CEDDA71ABDEBAF00664CC8 /* MessagePack.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		83CEDDB01ABDEBAF00664CC8 /* MessagePackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83CEDDBD1ABDEBAF00664CC8 /* Build configuration list for PBXNativeTarget "MessagePackTests" */;
+			buildPhases = (
+				B53623AA51F296E3824EF1FF /* Check Pods Manifest.lock */,
+				83CEDDAD1ABDEBAF00664CC8 /* Sources */,
+				83CEDDAE1ABDEBAF00664CC8 /* Frameworks */,
+				83CEDDAF1ABDEBAF00664CC8 /* Resources */,
+				2743A12A47840790D9EBA8B4 /* Embed Pods Frameworks */,
+				1EEB73E72D2618360D1477FC /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				83CEDDB41ABDEBAF00664CC8 /* PBXTargetDependency */,
 			);
 			name = MessagePackTests;
 			productName = MessagePackTests;
-			productReference = 838663051AAE0C9900FADC19 /* MessagePackTests.xctest */;
+			productReference = 83CEDDB11ABDEBAF00664CC8 /* MessagePackTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -209,8 +255,11 @@
 					838662F91AAE0C9900FADC19 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
-					838663041AAE0C9900FADC19 = {
-						CreatedOnToolsVersion = 6.1.1;
+					83CEDDA61ABDEBAF00664CC8 = {
+						CreatedOnToolsVersion = 6.3;
+					};
+					83CEDDB01ABDEBAF00664CC8 = {
+						CreatedOnToolsVersion = 6.3;
 					};
 				};
 			};
@@ -226,8 +275,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				838662F91AAE0C9900FADC19 /* MessagePack */,
-				838663041AAE0C9900FADC19 /* MessagePackTests */,
+				838662F91AAE0C9900FADC19 /* MessagePack-iOS */,
+				83CEDDA61ABDEBAF00664CC8 /* MessagePack-OSX */,
+				83CEDDB01ABDEBAF00664CC8 /* MessagePackTests */,
 			);
 		};
 /* End PBXProject section */
@@ -240,7 +290,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		838663031AAE0C9900FADC19 /* Resources */ = {
+		83CEDDA51ABDEBAF00664CC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83CEDDAF1ABDEBAF00664CC8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -250,20 +307,50 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		83284C0A1AAE0DC400A11C91 /* ShellScript */ = {
+		1EEB73E72D2618360D1477FC /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
 			);
+			name = "Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MessagePackTests/Pods-MessagePackTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2743A12A47840790D9EBA8B4 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MessagePackTests/Pods-MessagePackTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B53623AA51F296E3824EF1FF /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -277,23 +364,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		838663011AAE0C9900FADC19 /* Sources */ = {
+		83CEDDA21ABDEBAF00664CC8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				838663221AAE0D0500FADC19 /* Matchers.swift in Sources */,
-				838663231AAE0D0500FADC19 /* MessagePackSpec.swift in Sources */,
-				838663211AAE0D0500FADC19 /* Helpers.swift in Sources */,
+				83CEDDC01ABDEC3D00664CC8 /* Helpers.swift in Sources */,
+				83CEDDC11ABDEC3D00664CC8 /* MessagePack.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83CEDDAD1ABDEBAF00664CC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83CEDDC41ABDEF0200664CC8 /* Helpers.swift in Sources */,
+				83CEDDC51ABDEF0200664CC8 /* Matchers.swift in Sources */,
+				83CEDDC61ABDEF0200664CC8 /* MessagePackSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		838663081AAE0C9900FADC19 /* PBXTargetDependency */ = {
+		83CEDDB41ABDEBAF00664CC8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 838662F91AAE0C9900FADC19 /* MessagePack */;
-			targetProxy = 838663071AAE0C9900FADC19 /* PBXContainerItemProxy */;
+			target = 83CEDDA61ABDEBAF00664CC8 /* MessagePack-OSX */;
+			targetProxy = 83CEDDB31ABDEBAF00664CC8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -390,14 +486,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = "MessagePack/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MessagePack;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -409,47 +501,93 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = "MessagePack/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MessagePack;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
-		838663141AAE0C9900FADC19 /* Debug */ = {
+		83CEDDBB1ABDEBAF00664CC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				INFOPLIST_FILE = "$(SRCROOT)/MessagePack/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = MessagePack;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		83CEDDBC1ABDEBAF00664CC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/MessagePack/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = MessagePack;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		83CEDDBE1ABDEBAF00664CC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4516D9ED59D2F1F70A0F444C /* Pods-MessagePackTests.debug.xcconfig */;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "MessagePackTests/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = MessagePackTests;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
-		838663151AAE0C9900FADC19 /* Release */ = {
+		83CEDDBF1ABDEBAF00664CC8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C35A09336F2C17D62FB2F665 /* Pods-MessagePackTests.release.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "MessagePackTests/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = MessagePackTests;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -465,7 +603,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		838663101AAE0C9900FADC19 /* Build configuration list for PBXNativeTarget "MessagePack" */ = {
+		838663101AAE0C9900FADC19 /* Build configuration list for PBXNativeTarget "MessagePack-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				838663111AAE0C9900FADC19 /* Debug */,
@@ -474,11 +612,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		838663131AAE0C9900FADC19 /* Build configuration list for PBXNativeTarget "MessagePackTests" */ = {
+		83CEDDBA1ABDEBAF00664CC8 /* Build configuration list for PBXNativeTarget "MessagePack-OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				838663141AAE0C9900FADC19 /* Debug */,
-				838663151AAE0C9900FADC19 /* Release */,
+				83CEDDBB1ABDEBAF00664CC8 /* Debug */,
+				83CEDDBC1ABDEBAF00664CC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83CEDDBD1ABDEBAF00664CC8 /* Build configuration list for PBXNativeTarget "MessagePackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83CEDDBE1ABDEBAF00664CC8 /* Debug */,
+				83CEDDBF1ABDEBAF00664CC8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
