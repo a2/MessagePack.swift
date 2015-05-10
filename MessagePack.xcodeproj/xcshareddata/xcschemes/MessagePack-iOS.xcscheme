@@ -20,20 +20,6 @@
                ReferencedContainer = "container:MessagePack.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "838663041AAE0C9900FADC19"
-               BuildableName = "MessagePackTests.xctest"
-               BlueprintName = "MessagePackTests-iOS"
-               ReferencedContainer = "container:MessagePack.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "838663041AAE0C9900FADC19"
-               BuildableName = "MessagePackTests.xctest"
-               BlueprintName = "MessagePackTests-iOS"
-               ReferencedContainer = "container:MessagePack.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
