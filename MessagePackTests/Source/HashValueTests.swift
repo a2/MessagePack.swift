@@ -41,16 +41,13 @@ class HashValueTests: XCTestCase {
     }
 
     func testBinaryHashValue() {
-        let empty = makeData([])
-        XCTAssertEqual(MessagePackValue.Binary(empty).hashValue, empty.hashValue)
-
-        let data = makeData([0x00, 0x01, 0x02, 0x03, 0x04])
-        XCTAssertEqual(MessagePackValue.Binary(data).hashValue, data.hashValue)
+        XCTAssertEqual(MessagePackValue.Binary([]).hashValue, 0)
+        XCTAssertEqual(MessagePackValue.Binary([0x00, 0x01, 0x02, 0x03, 0x04]).hashValue, 5)
     }
 
     func testArrayHashValue() {
         let values: [MessagePackValue] = [1, true, ""]
-        XCTAssertEqual(MessagePackValue.Array(values).hashValue, values.count)
+        XCTAssertEqual(MessagePackValue.Array(values).hashValue, 3)
     }
 
     func testMapHashValue() {
@@ -59,14 +56,11 @@ class HashValueTests: XCTestCase {
             "b": "banana",
             "c": "cookie",
         ]
-        XCTAssertEqual(MessagePackValue.Map(values).hashValue, values.count)
+        XCTAssertEqual(MessagePackValue.Map(values).hashValue, 3)
     }
 
     func testExtendedHashValue() {
-        let empty = makeData([])
-        XCTAssertEqual(MessagePackValue.Extended(5, empty).hashValue, Int(5).hashValue ^ empty.hashValue)
-
-        let data = makeData([0x00, 0x01, 0x02, 0x03, 0x04])
-        XCTAssertEqual(MessagePackValue.Extended(5, data).hashValue, Int(5).hashValue ^ data.hashValue)
+        XCTAssertEqual(MessagePackValue.Extended(5, []).hashValue, Int(5).hashValue ^ Int(0))
+        XCTAssertEqual(MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04]).hashValue, Int(5).hashValue ^ Int(5))
     }
 }

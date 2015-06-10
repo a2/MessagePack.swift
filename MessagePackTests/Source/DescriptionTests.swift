@@ -24,13 +24,13 @@ class DescriptionTests: XCTestCase {
     }
 
     func testFloatDescription() {
-        XCTAssertEqual(MessagePackValue.Float(0).description, "Float(0.0)")
+        XCTAssertEqual(MessagePackValue.Float(0.0).description, "Float(0.0)")
         XCTAssertEqual(MessagePackValue.Float(1.618).description, "Float(1.618)")
         XCTAssertEqual(MessagePackValue.Float(3.14).description, "Float(3.14)")
     }
 
     func testDoubleDescription() {
-        XCTAssertEqual(MessagePackValue.Double(0).description, "Double(0.0)")
+        XCTAssertEqual(MessagePackValue.Double(0.0).description, "Double(0.0)")
         XCTAssertEqual(MessagePackValue.Double(1.618).description, "Double(1.618)")
         XCTAssertEqual(MessagePackValue.Double(3.14).description, "Double(3.14)")
     }
@@ -41,11 +41,8 @@ class DescriptionTests: XCTestCase {
     }
 
     func testBinaryDescription() {
-        let empty = makeData([])
-        XCTAssertEqual(MessagePackValue.Binary(empty).description, "Data(<>)")
-
-        let data = makeData([0x00, 0x01, 0x02, 0x03, 0x04])
-        XCTAssertEqual(MessagePackValue.Binary(data).description, "Data(<00010203 04>)")
+        XCTAssertEqual(MessagePackValue.Binary([]).description, "Data([])")
+        XCTAssertEqual(MessagePackValue.Binary([0x00, 0x01, 0x02, 0x03, 0x04]).description, "Data([0x00, 0x01, 0x02, 0x03, 0x04])")
     }
 
     func testArrayDescription() {
@@ -91,10 +88,7 @@ class DescriptionTests: XCTestCase {
     }
 
     func testExtendedDescription() {
-        let empty = makeData([])
-        XCTAssertEqual(MessagePackValue.Extended(5, empty).description, "Extended(5, <>)")
-
-        let data = makeData([0x00, 0x01, 0x02, 0x03, 0x04])
-        XCTAssertEqual(MessagePackValue.Extended(5, data).description, "Extended(5, <00010203 04>)")
+        XCTAssertEqual(MessagePackValue.Extended(5, []).description, "Extended(5, [])")
+        XCTAssertEqual(MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04]).description, "Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04])")
     }
 }

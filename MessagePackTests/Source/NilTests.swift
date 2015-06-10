@@ -2,7 +2,7 @@
 import XCTest
 
 class NilTests: XCTestCase {
-    let packed = makeData([0xc0])
+    let packed: Data = [0xc0]
 
     func testLiteralConversion() {
         let implicitValue: MessagePackValue = nil
@@ -14,8 +14,11 @@ class NilTests: XCTestCase {
     }
 
     func testUnpack() {
-        let unpacked = unpack(packed)
-        XCTAssertTrue(unpacked != nil)
-        XCTAssertEqual(unpacked!, MessagePackValue.Nil)
+        do {
+            let unpacked = try unpack(packed)
+            XCTAssertEqual(unpacked, MessagePackValue.Nil)
+        } catch let error {
+            XCTFail("Caught error: \(error)")
+        }
     }
 }

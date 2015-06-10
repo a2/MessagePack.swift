@@ -7,15 +7,18 @@ class DoubleTests: XCTestCase {
         XCTAssertEqual(implicitValue, MessagePackValue.Double(3.14))
     }
 
-    let packed = makeData([0xcb, 0x40, 0x09, 0x1e, 0xb8, 0x51, 0xeb, 0x85, 0x1f])
+    let packed: Data = [0xcb, 0x40, 0x09, 0x1e, 0xb8, 0x51, 0xeb, 0x85, 0x1f]
 
     func testPack() {
         XCTAssertEqual(pack(.Double(3.14)), packed)
     }
 
     func testUnpack() {
-        let unpacked = unpack(packed)
-        XCTAssertTrue(unpacked != nil)
-        XCTAssertEqual(unpacked!, MessagePackValue.Double(3.14))
+        do {
+            let unpacked = try unpack(packed)
+            XCTAssertEqual(unpacked, MessagePackValue.Double(3.14))
+        } catch let error {
+            XCTFail("Caught error: \(error)")
+        }
     }
 }
