@@ -1,5 +1,10 @@
 import Foundation
 
+enum MessagePackError: ErrorType {
+    case NotEnoughData
+    case InvalidString
+}
+
 /**
     Creates a data object from the underlying storage of the array.
 
@@ -19,15 +24,15 @@ func makeData(array: [UInt8]) -> NSData {
     - parameter generator: The generator that yields bytes.
     - parameter size: The number of bytes to yield.
 
-    - returns: A `UInt64`, or `nil` if the generator runs out of elements.
+    - returns: A `UInt64` representing an integer of `size` bytes.
 */
-func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, size: Int) -> UInt64? {
+func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, size: Int) throws -> UInt64 {
     var int: UInt64 = 0
     for _ in 0..<size {
         if let byte = generator.next() {
             int = int << 8 | numericCast(byte)
         } else {
-            return nil
+            throw MessagePackError.NotEnoughData
         }
     }
 
@@ -40,9 +45,9 @@ func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, s
     - parameter generator: The generator that yields bytes.
     - parameter length: The length of the resulting string.
 
-    - returns: A `String`, or `nil` if the generator runs out of elements.
+    - returns: A `String` representing `length` bytes.
 */
-func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> String? {
+func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) throws -> String {
     let ptrCount = length + 1 // +1 for \0-termination
     let ptr = UnsafeMutablePointer<CChar>.alloc(ptrCount)
     defer {
@@ -53,23 +58,27 @@ func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, l
         if let byte = generator.next() {
             ptr[i] = CChar(bitPattern: byte)
         } else {
-            return nil
+            throw MessagePackError.NotEnoughData
         }
     }
     ptr[length] = 0
 
-    return String.fromCString(ptr)
+    guard let string = String.fromCString(ptr) else {
+        throw MessagePackError.InvalidString
+    }
+
+    return string
 }
 
 /**
-    Joins bytes from `generator` to form an `Array` of size `length`.
+    Joins bytes from `generator` to form a data object of size `length`.
 
     - parameter generator: The generator that yields bytes.
-    - parameter length: The length of the array.
+    - parameter length: The length of the data.
 
-    - returns: An `Array`, or `nil` if the generator runs out of elements.
+    - returns: A data object with length `length`.
 */
-func joinData<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> NSData? {
+func joinData<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) throws -> NSData {
     var array = [UInt8]()
     array.reserveCapacity(length)
 
@@ -77,7 +86,7 @@ func joinData<G: GeneratorType where G.Element == UInt8>(inout generator: G, len
         if let value = generator.next() {
             array.append(value)
         } else {
-            return nil
+            throw MessagePackError.NotEnoughData
         }
     }
 
@@ -90,9 +99,9 @@ func joinData<G: GeneratorType where G.Element == UInt8>(inout generator: G, len
     - parameter generator: The generator that yields bytes.
     - parameter length: The length of the array.
 
-    - returns: An `Array`, or `nil` if the generator runs out of elements.
+    - returns: An `Array` of length `length`.
 */
-func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue]? {
+func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) throws -> [MessagePackValue] {
     var array = [MessagePackValue]()
     array.reserveCapacity(length)
 
@@ -100,7 +109,7 @@ func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, le
         if let value = unpack(&generator) {
             array.append(value)
         } else {
-            return nil
+            throw MessagePackError.NotEnoughData
         }
     }
 
@@ -113,16 +122,12 @@ func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, le
     - parameter generator: The generator that yields bytes.
     - parameter length: The length of the array.
 
-    - returns: A `Dictionary`, or `nil` if the generator runs out of elements.
+    - returns: A `Dictionary` of count `length`.
 */
-func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue : MessagePackValue]? {
-    guard let array = joinArray(&generator, length: length * 2) else {
-        return nil
-    }
-
+func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) throws -> [MessagePackValue : MessagePackValue] {
     var dict = [MessagePackValue : MessagePackValue](minimumCapacity: length)
     var lastKey: MessagePackValue? = nil
-    for item in array {
+    for item in try joinArray(&generator, length: length * 2) {
         if let key = lastKey {
             dict[key] = item
             lastKey = nil

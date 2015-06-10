@@ -20,8 +20,8 @@ public enum MessagePackValue {
     case Bool(Swift.Bool)
     case Int(Int64)
     case UInt(UInt64)
-    case Float(Float32)
-    case Double(Float64)
+    case Float(Swift.Float)
+    case Double(Swift.Double)
     case String(Swift.String)
     case Binary(NSData)
     case Array([MessagePackValue])
@@ -55,162 +55,157 @@ extension MessagePackValue: Hashable {
     - returns: A MessagePackValue, or `nil` if the generator runs out of bytes.
 */
 public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
-    guard let value = generator.next() else { return nil }
-
-    switch value {
-
-    // positive fixint
-    case 0x00...0x7f:
-        return .UInt(numericCast(value))
-
-    // fixmap
-    case 0x80...0x8f:
-        let length = Int(value - 0x80)
-        if let dict = joinMap(&generator, length: length) {
-            return .Map(dict)
-        }
-
-    // fixarray
-    case 0x90...0x9f:
-        let length = Int(value - 0x90)
-        if let array = joinArray(&generator, length: length) {
-            return .Array(array)
-        }
-
-    // fixstr
-    case 0xa0...0xbf:
-        let length = Int(value - 0xa0)
-        if let string = joinString(&generator, length: length) {
-            return .String(string)
-        }
-
-    // nil
-    case 0xc0:
-        return .Nil
-
-    // false
-    case 0xc2:
-        return .Bool(false)
-
-    // true
-    case 0xc3:
-        return .Bool(true)
-
-    // bin 8, 16, 32
-    case 0xc4...0xc6:
-        let size = 1 << numericCast(value - 0xc4)
-        if let length = joinUInt64(&generator, size: size),
-            data = joinData(&generator, length: numericCast(length)) {
-                return .Binary(data)
-        }
-
-    // ext 8, 16, 32
-    case 0xc7...0xc9:
-        let size = 1 << Int(value - 0xc7)
-        if let length = joinUInt64(&generator, size: size),
-            typeByte = generator.next() {
-                let type = Int8(bitPattern: typeByte)
-                if let data = joinData(&generator, length: numericCast(length)) {
-                    return .Extended(type, data)
-                }
-        }
-
-    // float 32
-    case 0xca:
-        if let bytes = joinUInt64(&generator, size: 4) {
-            let float = unsafeBitCast(UInt32(truncatingBitPattern: bytes), Float32.self)
-            return .Float(float)
-        }
-
-    // float 64
-    case 0xcb:
-        if let bytes = joinUInt64(&generator, size: 8) {
-            let double = unsafeBitCast(bytes, Float64.self)
-            return .Double(double)
-        }
-
-    // uint 8, 16, 32, 64
-    case 0xcc...0xcf:
-        let length = 1 << (numericCast(value) - 0xcc)
-        if let integer = joinUInt64(&generator, size: length) {
-            return .UInt(integer)
-        }
-
-    // int 8
-    case 0xd0:
-        if let byte = generator.next() {
-            let integer = Int8(bitPattern: byte)
-            return .Int(numericCast(integer))
-        }
-
-    // int 16
-    case 0xd1:
-        if let bytes = joinUInt64(&generator, size: 2) {
-            let integer = Int16(bitPattern: UInt16(truncatingBitPattern: bytes))
-            return .Int(numericCast(integer))
-        }
-
-    // int 32
-    case 0xd2:
-        if let bytes = joinUInt64(&generator, size: 4) {
-            let integer = Int32(bitPattern: UInt32(truncatingBitPattern: bytes))
-            return .Int(numericCast(integer))
-        }
-
-    // int 64
-    case 0xd3:
-        if let bytes = joinUInt64(&generator, size: 8) {
-            let integer = Int64(bitPattern: bytes)
-            return .Int(integer)
-        }
-
-    // fixent 1, 2, 4, 8, 16
-    case 0xd4...0xd8:
-        let length = 1 << Int(value - 0xd4)
-        if let typeByte = generator.next() {
-            let type = Int8(bitPattern: typeByte)
-            if let bytes = joinData(&generator, length: length) {
-                return .Extended(type, bytes)
-            }
-        }
-
-    // str 8, 16, 32
-    case 0xd9...0xdb:
-        let lengthSize = 1 << Int(value - 0xd9)
-        if let length = joinUInt64(&generator, size: lengthSize),
-            string = joinString(&generator, length: numericCast(length)) {
-                return .String(string)
-        }
-
-    // array 16, 32
-    case 0xdc...0xdd:
-        let lengthSize = 1 << Int(value - 0xdb)
-        if let length = joinUInt64(&generator, size: lengthSize),
-            array = joinArray(&generator, length: numericCast(length)) {
-                return .Array(array)
-        }
-
-    // map 16, 32
-    case 0xde...0xdf:
-        let lengthSize = 1 << Int(value - 0xdd)
-        if let length = joinUInt64(&generator, size: lengthSize),
-            dict = joinMap(&generator, length: numericCast(length)) {
-                return .Map(dict)
-        }
-
-    // negative fixint
-    case 0xe0..<0xff:
-        return .Int(numericCast(value) - 0x100)
-
-    // negative fixint (workaround for rdar://19779978)
-    case 0xff:
-        return .Int(numericCast(value) - 0x100)
-
-    default:
-        break
+    guard let value = generator.next() else {
+        return nil
     }
 
-    return nil
+    do {
+        switch value {
+
+        // positive fixint
+        case 0x00...0x7f:
+            return .UInt(numericCast(value))
+
+        // fixmap
+        case 0x80...0x8f:
+            let length = Int(value - 0x80)
+            let dict = try joinMap(&generator, length: length)
+            return .Map(dict)
+
+        // fixarray
+        case 0x90...0x9f:
+            let length = Int(value - 0x90)
+            let array = try joinArray(&generator, length: length)
+            return .Array(array)
+
+        // fixstr
+        case 0xa0...0xbf:
+            let length = Int(value - 0xa0)
+            let string = try joinString(&generator, length: length)
+            return .String(string)
+
+        // nil
+        case 0xc0:
+            return .Nil
+
+        // false
+        case 0xc2:
+            return .Bool(false)
+
+        // true
+        case 0xc3:
+            return .Bool(true)
+
+        // bin 8, 16, 32
+        case 0xc4...0xc6:
+            let size = 1 << numericCast(value - 0xc4)
+            let length = try joinUInt64(&generator, size: size)
+            let data = try joinData(&generator, length: numericCast(length))
+            return .Binary(data)
+
+        // ext 8, 16, 32
+        case 0xc7...0xc9:
+            let size = 1 << Int(value - 0xc7)
+            let length = try joinUInt64(&generator, size: size)
+            guard let typeByte = generator.next() else {
+                return nil
+            }
+
+            let type = Int8(bitPattern: typeByte)
+            let data = try joinData(&generator, length: numericCast(length))
+            return .Extended(type, data)
+
+        // float 32
+        case 0xca:
+            let bytes = try joinUInt64(&generator, size: 4)
+            let float = unsafeBitCast(UInt32(truncatingBitPattern: bytes), Float.self)
+            return .Float(float)
+
+        // float 64
+        case 0xcb:
+            let bytes = try joinUInt64(&generator, size: 8)
+            let double = unsafeBitCast(bytes, Double.self)
+            return .Double(double)
+
+        // uint 8, 16, 32, 64
+        case 0xcc...0xcf:
+            let length = 1 << (numericCast(value) - 0xcc)
+            let integer = try joinUInt64(&generator, size: length)
+            return .UInt(integer)
+
+        // int 8
+        case 0xd0:
+            guard let byte = generator.next() else {
+                return nil
+            }
+
+            let integer = Int8(bitPattern: byte)
+            return .Int(numericCast(integer))
+
+        // int 16
+        case 0xd1:
+            let bytes = try joinUInt64(&generator, size: 2)
+            let integer = Int16(bitPattern: UInt16(truncatingBitPattern: bytes))
+            return .Int(numericCast(integer))
+
+        // int 32
+        case 0xd2:
+            let bytes = try joinUInt64(&generator, size: 4)
+            let integer = Int32(bitPattern: UInt32(truncatingBitPattern: bytes))
+            return .Int(numericCast(integer))
+
+        // int 64
+        case 0xd3:
+            let bytes = try joinUInt64(&generator, size: 8)
+            let integer = Int64(bitPattern: bytes)
+            return .Int(integer)
+
+        // fixent 1, 2, 4, 8, 16
+        case 0xd4...0xd8:
+            let length = 1 << Int(value - 0xd4)
+            guard let typeByte = generator.next() else {
+                return nil
+            }
+
+            let type = Int8(bitPattern: typeByte)
+            let bytes = try joinData(&generator, length: length)
+            return .Extended(type, bytes)
+
+        // str 8, 16, 32
+        case 0xd9...0xdb:
+            let lengthSize = 1 << Int(value - 0xd9)
+            let length = try joinUInt64(&generator, size: lengthSize)
+            let string = try joinString(&generator, length: numericCast(length))
+            return .String(string)
+
+        // array 16, 32
+        case 0xdc...0xdd:
+            let lengthSize = 1 << Int(value - 0xdb)
+            let length = try joinUInt64(&generator, size: lengthSize)
+            let array = try joinArray(&generator, length: numericCast(length))
+            return .Array(array)
+
+        // map 16, 32
+        case 0xde...0xdf:
+            let lengthSize = 1 << Int(value - 0xdd)
+            let length = try joinUInt64(&generator, size: lengthSize)
+            let dict = try joinMap(&generator, length: numericCast(length))
+            return .Map(dict)
+
+        // negative fixint
+        case 0xe0..<0xff:
+            return .Int(numericCast(value) - 0x100)
+
+        // negative fixint (workaround for rdar://19779978)
+        case 0xff:
+            return .Int(numericCast(value) - 0x100)
+
+        default:
+            return nil
+        }
+    } catch {
+        return nil
+    }
 }
 
 /**
@@ -224,6 +219,7 @@ public func unpack(data: NSData) -> MessagePackValue? {
     let immutableData = data.copy() as! NSData
     let ptr = UnsafeBufferPointer<UInt8>(start: UnsafePointer<UInt8>(immutableData.bytes), count: immutableData.length)
     var generator = ptr.generate()
+
     return unpack(&generator)
 }
 

@@ -14,95 +14,117 @@ class HelpersTests: XCTestCase {
         let bytes: [UInt8] = [0x12, 0x34, 0x56, 0x78]
         var generator = bytes.generate()
 
-        let integer = joinUInt64(&generator, size: 4)
-        XCTAssert(integer != nil)
-        XCTAssertEqual(integer!, 0x12345678)
+        do {
+            let integer = try joinUInt64(&generator, size: 4)
+            XCTAssertEqual(integer, 0x12345678)
+        } catch let error {
+            XCTFail("Caught error: \(error)")
+        }
     }
 
     func testJoinUInt64Failure() {
         let bytes: [UInt8] = [0x12, 0x34, 0x56]
         var generator = bytes.generate()
 
-        let integer = joinUInt64(&generator, size: 4)
-        XCTAssert(integer == nil)
+        do {
+            try joinUInt64(&generator, size: 4)
+            XCTFail("joinUInt64 did not throw")
+        } catch {}
     }
 
     func testJoinString() {
         let bytes: [UInt8] = [0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]
         var generator = bytes.generate()
 
-        let string = joinString(&generator, length: 13)
-        XCTAssert(string != nil)
-        XCTAssertEqual(string!, "Hello, world!")
+        do {
+            let string = try joinString(&generator, length: 13)
+            XCTAssertEqual(string, "Hello, world!")
+        } catch let error {
+            XCTFail("Caught error: \(error)")
+        }
     }
 
     func testJoinStringFailure() {
         let bytes: [UInt8] = [0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]
         var generator = bytes.generate()
 
-        let string = joinString(&generator, length: 14)
-        XCTAssert(string == nil)
+        do {
+            try joinString(&generator, length: 14)
+            XCTFail("joinString did not throw")
+        } catch {}
     }
 
     func testJoinData() {
         let bytes: [UInt8] = [0x00, 0x01, 0x02, 0x03, 0x04]
         var generator = bytes.generate()
 
-        let data = joinData(&generator, length: 5)
-        XCTAssert(data != nil)
+        do {
+            let data = try joinData(&generator, length: 5)
 
-        var dataBytes = [UInt8](count: 5, repeatedValue: 0x00)
-        data!.getBytes(&dataBytes, range: NSRange(0..<5))
+            var dataBytes = [UInt8](count: 5, repeatedValue: 0x00)
+            data.getBytes(&dataBytes, range: NSRange(0..<5))
 
-        XCTAssertEqual(dataBytes, bytes)
+            XCTAssertEqual(dataBytes, bytes)
+        } catch let error {
+            XCTFail("Caught error: \(error)")
+        }
     }
 
     func testJoinDataFailure() {
         let bytes: [UInt8] = [0x00, 0x01, 0x02, 0x03, 0x04]
         var generator = bytes.generate()
 
-        let data = joinData(&generator, length: 6)
-        XCTAssert(data == nil)
+        do {
+            try joinData(&generator, length: 6)
+            XCTFail("joinData did not throw")
+        } catch {}
     }
 
     func testJoinArray() {
         let bytes: [UInt8] = [0xc0, 0xc0, 0xc0, 0xc0, 0xc0]
         var generator = bytes.generate()
 
-        let array = joinArray(&generator, length: 5)
-        XCTAssert(array != nil)
-
-        let expectedArray: [MessagePackValue] = [nil, nil, nil, nil, nil]
-        XCTAssertEqual(array!, expectedArray)
+        do {
+            let array = try joinArray(&generator, length: 5)
+            let expectedArray: [MessagePackValue] = [nil, nil, nil, nil, nil]
+            XCTAssertEqual(array, expectedArray)
+        } catch {
+            XCTFail("Caught error: \(error)")
+        }
+        
     }
 
     func testJoinArrayFailure() {
         let bytes: [UInt8] = [0xc0, 0xc0, 0xc0, 0xc0, 0xc0]
         var generator = bytes.generate()
 
-        let array = joinArray(&generator, length: 6)
-        XCTAssert(array == nil)
+        do {
+            try joinArray(&generator, length: 6)
+            XCTFail("joinArray did not throw")
+        } catch {}
     }
 
     func testJoinMap() {
         let bytes: [UInt8] = [0x00, 0xc0, 0x01, 0xc0, 0x02, 0xc0, 0x03, 0xc0, 0x04, 0xc0]
         var generator = bytes.generate()
 
-        let map = joinMap(&generator, length: 5)
-        XCTAssert(map != nil)
-
-        let expectedMap: [MessagePackValue : MessagePackValue] = [
-            0: nil, 1: nil, 2: nil, 3: nil, 4: nil,
-        ]
-        XCTAssertEqual(map!, expectedMap)
+        do {
+            let map = try joinMap(&generator, length: 5)
+            let expectedMap: [MessagePackValue : MessagePackValue] = [0: nil, 1: nil, 2: nil, 3: nil, 4: nil]
+            XCTAssertEqual(map, expectedMap)
+        } catch let error {
+            XCTFail("Caught error: \(error)")
+        }
     }
 
     func testJoinMapFailure() {
         let bytes: [UInt8] = [0x00, 0xc0, 0x01, 0xc0, 0x02, 0xc0, 0x03, 0xc0, 0x04, 0xc0]
         var generator = bytes.generate()
 
-        let map = joinMap(&generator, length: 6)
-        XCTAssert(map == nil)
+        do {
+            try joinMap(&generator, length: 6)
+            XCTFail("joinMap did not throw")
+        } catch {}
     }
 
     func testSplitInt() {
