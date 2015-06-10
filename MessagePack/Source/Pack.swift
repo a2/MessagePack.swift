@@ -1,8 +1,53 @@
+/// Packs an unsigned integer into an array of bytes.
+///
+/// - parameter value: The value to encode
+///
+/// - returns: A MessagePack byte representation.
+func packPositiveInt(value: UInt64) -> Data {
+    switch value {
+    case let value where value <= 0x7f:
+        return [Byte(truncatingBitPattern: value)]
+    case let value where value <= 0xff:
+        return [0xcc, Byte(truncatingBitPattern: value)]
+    case let value where value <= 0xffff:
+        return [0xcd] + splitInt(value, parts: 2)
+    case let value where value <= 0xffff_ffff:
+        return [0xce] + splitInt(value, parts: 4)
+    default:
+        return [0xcf] + splitInt(value, parts: 8)
+    }
+}
+
+/// Packs a signed integer into an array of bytes.
+///
+/// - parameter value: The value to encode
+///
+/// - returns: A MessagePack byte representation.
+func packNegativeInt(value: Int64) -> Data {
+    precondition(value < 0)
+
+    switch value {
+    case let value where value >= -0x20:
+        return [0xe0 + 0x1f & Byte(truncatingBitPattern: value)]
+    case let value where value >= -0x7f:
+        return [0xd0, Byte(bitPattern: numericCast(value))]
+    case let value where value >= -0x7fff:
+        let truncated = UInt16(bitPattern: numericCast(value))
+        return [0xd1] + splitInt(numericCast(truncated), parts: 2)
+    case let value where value >= -0x7fff_ffff:
+        let truncated = UInt32(bitPattern: numericCast(value))
+        return [0xd2] + splitInt(numericCast(truncated), parts: 4)
+    default:
+        let truncated = UInt64(bitPattern: value)
+        return [0xd3] + splitInt(truncated, parts: 8)
+    }
+}
+
 /// Packs a MessagePackValue into an array of bytes.
 ///
 /// - parameter value: The value to encode
 ///
-/// - returns: An array of bytes.
+/// - returns: A MessagePack byte representation.
 public func pack(value: MessagePackValue) -> Data {
     switch value {
     case .Nil:
@@ -12,10 +57,14 @@ public func pack(value: MessagePackValue) -> Data {
         return [value ? 0xc3 : 0xc2]
 
     case let .Int(value):
-        return value >= 0 ? packIntPos(numericCast(value)) : packIntNeg(value)
+        if value >= 0 {
+            return packPositiveInt(numericCast(value))
+        } else {
+            return packNegativeInt(value)
+        }
 
     case let .UInt(value):
-        return packIntPos(value)
+        return packPositiveInt(value)
 
     case let .Float(value):
         let integerValue = unsafeBitCast(value, UInt32.self)
