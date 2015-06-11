@@ -1,5 +1,3 @@
-import Foundation
-
 public typealias Byte = UInt8
 public typealias Data = [Byte]
 

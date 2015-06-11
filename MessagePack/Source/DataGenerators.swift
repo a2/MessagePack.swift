@@ -2,11 +2,10 @@ struct DispatchDataGenerator: GeneratorType {
     let data: dispatch_data_t
     var i: Int = 0
 
-    var hasRegion = false
     var region: dispatch_data_t?
-    var buffer: UnsafePointer<Byte>?
-    var offset: Int?
-    var size: Int?
+    var buffer: UnsafePointer<Byte>!
+    var offset: Int!
+    var size: Int!
 
     init(data: dispatch_data_t) {
         self.data = data
@@ -18,10 +17,10 @@ struct DispatchDataGenerator: GeneratorType {
         }
 
         if let offset = offset, size = size where i >= offset + size {
-            hasRegion = false
+            region = nil
         }
 
-        if !hasRegion {
+        if region == nil {
             var subregionOffset: Int = 0
             let subregion = dispatch_data_copy_region(data, i, &subregionOffset)
             offset = subregionOffset
@@ -31,14 +30,9 @@ struct DispatchDataGenerator: GeneratorType {
             region = dispatch_data_create_map(subregion, &mapBuffer, &mapSize)
             buffer = UnsafePointer(mapBuffer)
             size = mapSize
-            hasRegion = true
         }
 
-        if let buffer = buffer, offset = offset {
-            return buffer[i++ - offset]
-        } else {
-            return nil
-        }
+        return buffer[i++ - offset]
     }
 }
 
@@ -46,9 +40,8 @@ struct NSDataGenerator: GeneratorType {
     let data: NSData
     var i: Int = 0
 
-    var hasBuffer = false
-    var buffer: UnsafePointer<Byte>?
-    var range: Range<Int>?
+    var buffer: UnsafePointer<Byte>!
+    var range: Range<Int>!
 
     init(data: NSData) {
         self.data = data
@@ -60,24 +53,19 @@ struct NSDataGenerator: GeneratorType {
         }
 
         if let range = range where range ~= i {
-            hasBuffer = false
+            buffer = nil
         }
 
-        if !hasBuffer {
+        if buffer == nil {
             data.enumerateByteRangesUsingBlock { (bytes, byteRange, stop) in
                 if let range = byteRange.toRange() where range ~= self.i {
                     self.buffer = UnsafePointer(bytes)
                     self.range = range
-                    self.hasBuffer = true
                     stop.memory = true
                 }
             }
         }
 
-        if let buffer = buffer, range = range {
-            return buffer[i++ - range.startIndex]
-        } else {
-            return nil
-        }
+        return buffer[i++ - range.startIndex]
     }
 }

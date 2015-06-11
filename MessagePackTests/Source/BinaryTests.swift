@@ -69,4 +69,25 @@ class BinaryTests: XCTestCase {
             XCTFail("Caught error: \(error)")
         }
     }
+
+    func testUnpackInsufficientData() {
+        let dataArray: [Data] = [
+            // only type byte
+            [0xc4], [0xc5], [0xc6],
+
+            // type byte with no data
+            [0xc4, 0x01],
+            [0xc5, 0x00, 0x01],
+            [0xc6, 0x00, 0x00, 0x00, 0x01],
+        ]
+        for data in dataArray {
+            do {
+                try unpack(data)
+                XCTFail("Expected unpack to throw")
+            } catch MessagePackError.InsufficientData {
+            } catch {
+                XCTFail("Expected MessagePackError.InsufficientData to be thrown")
+            }
+        }
+    }
 }

@@ -3,7 +3,7 @@
    LastUpgradeVersion = "0700"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83CEDDA61ABDEBAF00664CC8"
+               BlueprintIdentifier = "838662F91AAE0C9900FADC19"
                BuildableName = "MessagePack.framework"
-               BlueprintName = "MessagePack-OSX"
-               ReferencedContainer = "container:MessagePack.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83CEDDB01ABDEBAF00664CC8"
-               BuildableName = "MessagePackTests.xctest"
-               BlueprintName = "MessagePackTests"
+               BlueprintName = "MobileMessagePack"
                ReferencedContainer = "container:MessagePack.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +33,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "83CEDDB01ABDEBAF00664CC8"
-               BuildableName = "MessagePackTests.xctest"
-               BlueprintName = "MessagePackTests"
+               BlueprintIdentifier = "8334F1AF1B29FE9A00BDE13D"
+               BuildableName = "MobileMessagePackTests.xctest"
+               BlueprintName = "MobileMessagePackTests"
                ReferencedContainer = "container:MessagePack.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -57,9 +43,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "83CEDDA61ABDEBAF00664CC8"
+            BlueprintIdentifier = "838662F91AAE0C9900FADC19"
             BuildableName = "MessagePack.framework"
-            BlueprintName = "MessagePack-OSX"
+            BlueprintName = "MobileMessagePack"
             ReferencedContainer = "container:MessagePack.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -79,9 +65,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "83CEDDA61ABDEBAF00664CC8"
+            BlueprintIdentifier = "838662F91AAE0C9900FADC19"
             BuildableName = "MessagePack.framework"
-            BlueprintName = "MessagePack-OSX"
+            BlueprintName = "MobileMessagePack"
             ReferencedContainer = "container:MessagePack.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -97,9 +83,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "83CEDDA61ABDEBAF00664CC8"
+            BlueprintIdentifier = "838662F91AAE0C9900FADC19"
             BuildableName = "MessagePack.framework"
-            BlueprintName = "MessagePack-OSX"
+            BlueprintName = "MobileMessagePack"
             ReferencedContainer = "container:MessagePack.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

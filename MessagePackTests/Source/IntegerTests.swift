@@ -161,4 +161,17 @@ class IntegerTests: XCTestCase {
             XCTFail("Caught error: \(error)")
         }
     }
+
+    func testUnpackInsufficientData() {
+        let dataArray: [Data] = [[0xd0], [0xd1], [0xd2], [0xd3], [0xd4]]
+        for data in dataArray {
+            do {
+                try unpack(data)
+                XCTFail("Expected unpack to throw")
+            } catch MessagePackError.InsufficientData {
+            } catch {
+                XCTFail("Expected MessagePackError.InsufficientData to be thrown")
+            }
+        }
+    }
 }

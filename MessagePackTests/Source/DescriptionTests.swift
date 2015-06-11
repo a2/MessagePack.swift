@@ -89,6 +89,6 @@ class DescriptionTests: XCTestCase {
 
     func testExtendedDescription() {
         XCTAssertEqual(MessagePackValue.Extended(5, []).description, "Extended(5, [])")
-        XCTAssertEqual(MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04]).description, "Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04])")
+        XCTAssertEqual(MessagePackValue.Extended(5, [0x00, 0x10, 0x20, 0x30, 0x40]).description, "Extended(5, [0x00, 0x10, 0x20, 0x30, 0x40])")
     }
 }

@@ -1,20 +1,33 @@
+/// Packs an integer into a byte array.
+///
+/// - parameter value: The integer to split.
+/// - parameter parts: The number of bytes into which to split.
+///
+/// - returns: An byte array representation.
+func packInteger(value: UInt64, parts: Int) -> Data {
+    precondition(parts > 0)
+    return stride(from: 8 * (parts - 1), through: 0, by: -8).map { shift in
+        return Byte(truncatingBitPattern: value >> numericCast(shift))
+    }
+}
+
 /// Packs an unsigned integer into an array of bytes.
 ///
 /// - parameter value: The value to encode
 ///
 /// - returns: A MessagePack byte representation.
-func packPositiveInt(value: UInt64) -> Data {
+func packPositiveInteger(value: UInt64) -> Data {
     switch value {
     case let value where value <= 0x7f:
         return [Byte(truncatingBitPattern: value)]
     case let value where value <= 0xff:
         return [0xcc, Byte(truncatingBitPattern: value)]
     case let value where value <= 0xffff:
-        return [0xcd] + splitInt(value, parts: 2)
+        return [0xcd] + packInteger(value, parts: 2)
     case let value where value <= 0xffff_ffff:
-        return [0xce] + splitInt(value, parts: 4)
+        return [0xce] + packInteger(value, parts: 4)
     default:
-        return [0xcf] + splitInt(value, parts: 8)
+        return [0xcf] + packInteger(value, parts: 8)
     }
 }
 
@@ -23,7 +36,7 @@ func packPositiveInt(value: UInt64) -> Data {
 /// - parameter value: The value to encode
 ///
 /// - returns: A MessagePack byte representation.
-func packNegativeInt(value: Int64) -> Data {
+func packNegativeInteger(value: Int64) -> Data {
     precondition(value < 0)
 
     switch value {
@@ -33,13 +46,13 @@ func packNegativeInt(value: Int64) -> Data {
         return [0xd0, Byte(bitPattern: numericCast(value))]
     case let value where value >= -0x7fff:
         let truncated = UInt16(bitPattern: numericCast(value))
-        return [0xd1] + splitInt(numericCast(truncated), parts: 2)
+        return [0xd1] + packInteger(numericCast(truncated), parts: 2)
     case let value where value >= -0x7fff_ffff:
         let truncated = UInt32(bitPattern: numericCast(value))
-        return [0xd2] + splitInt(numericCast(truncated), parts: 4)
+        return [0xd2] + packInteger(numericCast(truncated), parts: 4)
     default:
         let truncated = UInt64(bitPattern: value)
-        return [0xd3] + splitInt(truncated, parts: 8)
+        return [0xd3] + packInteger(truncated, parts: 8)
     }
 }
 
@@ -58,21 +71,21 @@ public func pack(value: MessagePackValue) -> Data {
 
     case let .Int(value):
         if value >= 0 {
-            return packPositiveInt(numericCast(value))
+            return packPositiveInteger(numericCast(value))
         } else {
-            return packNegativeInt(value)
+            return packNegativeInteger(value)
         }
 
     case let .UInt(value):
-        return packPositiveInt(value)
+        return packPositiveInteger(value)
 
     case let .Float(value):
         let integerValue = unsafeBitCast(value, UInt32.self)
-        return [0xca] + splitInt(numericCast(integerValue), parts: 4)
+        return [0xca] + packInteger(numericCast(integerValue), parts: 4)
 
     case let .Double(value):
         let integerValue = unsafeBitCast(value, UInt64.self)
-        return [0xcb] + splitInt(integerValue, parts: 8)
+        return [0xcb] + packInteger(integerValue, parts: 8)
 
     case let .String(string):
         let utf8 = string.utf8
@@ -87,9 +100,9 @@ public func pack(value: MessagePackValue) -> Data {
             prefix = [0xd9, numericCast(count)]
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xda] + splitInt(numericCast(truncated), parts: 2)
+            prefix = [0xda] + packInteger(numericCast(truncated), parts: 2)
         default:
-            prefix = [0xdb] + splitInt(numericCast(count), parts: 4)
+            prefix = [0xdb] + packInteger(numericCast(count), parts: 4)
         }
 
         return prefix + utf8
@@ -104,9 +117,9 @@ public func pack(value: MessagePackValue) -> Data {
             prefix = [0xc4, numericCast(count)]
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xc5] + splitInt(numericCast(truncated), parts: 2)
+            prefix = [0xc5] + packInteger(numericCast(truncated), parts: 2)
         default:
-            prefix = [0xc6] + splitInt(numericCast(count), parts: 4)
+            prefix = [0xc6] + packInteger(numericCast(count), parts: 4)
         }
 
         return prefix + data
@@ -121,9 +134,9 @@ public func pack(value: MessagePackValue) -> Data {
             prefix = [0x90 | numericCast(count)]
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xdc] + splitInt(numericCast(truncated), parts: 2)
+            prefix = [0xdc] + packInteger(numericCast(truncated), parts: 2)
         default:
-            prefix = [0xdd] + splitInt(numericCast(count), parts: 4)
+            prefix = [0xdd] + packInteger(numericCast(count), parts: 4)
         }
 
         return prefix + array.flatMap(pack)
@@ -138,9 +151,9 @@ public func pack(value: MessagePackValue) -> Data {
             prefix = [0x80 | numericCast(count)]
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xde] + splitInt(numericCast(truncated), parts: 2)
+            prefix = [0xde] + packInteger(numericCast(truncated), parts: 2)
         default:
-            prefix = [0xdf] + splitInt(numericCast(count), parts: 4)
+            prefix = [0xdf] + packInteger(numericCast(count), parts: 4)
         }
 
         return prefix + dict.flatMap { [$0, $1] }.flatMap(pack)
@@ -166,9 +179,9 @@ public func pack(value: MessagePackValue) -> Data {
             prefix = [0xc7, numericCast(count), unsignedType]
         case let count where count <= 0xffff:
             let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xc8] + splitInt(numericCast(truncated), parts: 2) + [unsignedType]
+            prefix = [0xc8] + packInteger(numericCast(truncated), parts: 2) + [unsignedType]
         default:
-            prefix = [0xc9] + splitInt(numericCast(count), parts: 4) + [unsignedType]
+            prefix = [0xc9] + packInteger(numericCast(count), parts: 4) + [unsignedType]
         }
 
         return prefix + data
