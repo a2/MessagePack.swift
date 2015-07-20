@@ -65,6 +65,8 @@
 		83D448961B5C8C9B00B0F923 /* MessagePack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838663191AAE0CF400FADC19 /* MessagePack.swift */; };
 		83D448971B5C8C9B00B0F923 /* Pack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838997471B28E2C6000FF79B /* Pack.swift */; };
 		83D448981B5C8C9B00B0F923 /* Unpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A0D51B1B28BB3F0037E355 /* Unpack.swift */; };
+		83D448991B5C8D7D00B0F923 /* ConvenienceInitializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334F1A81B29FCA000BDE13D /* ConvenienceInitializers.swift */; };
+		83D4489A1B5C8D7D00B0F923 /* ConvenienceProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334F1AA1B29FDD600BDE13D /* ConvenienceProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -471,6 +473,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83D448991B5C8D7D00B0F923 /* ConvenienceInitializers.swift in Sources */,
+				83D4489A1B5C8D7D00B0F923 /* ConvenienceProperties.swift in Sources */,
 				83A0D51D1B28BB3F0037E355 /* Unpack.swift in Sources */,
 				838997491B28E2C6000FF79B /* Pack.swift in Sources */,
 				838997461B28E276000FF79B /* LiteralConvertibles.swift in Sources */,
