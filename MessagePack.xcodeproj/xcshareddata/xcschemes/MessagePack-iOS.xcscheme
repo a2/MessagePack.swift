@@ -22,14 +22,14 @@
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
+            buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8334F1AF1B29FE9A00BDE13D"
-               BuildableName = "MessagePackTests-iOS.xctest"
+               BuildableName = "MessagePackTests.xctest"
                BlueprintName = "MessagePackTests-iOS"
                ReferencedContainer = "container:MessagePack.xcodeproj">
             </BuildableReference>
@@ -48,7 +48,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8334F1AF1B29FE9A00BDE13D"
-               BuildableName = "MessagePackTests-iOS.xctest"
+               BuildableName = "MessagePackTests.xctest"
                BlueprintName = "MessagePackTests-iOS"
                ReferencedContainer = "container:MessagePack.xcodeproj">
             </BuildableReference>
