@@ -181,11 +181,16 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
             if let length = joinUInt64(&generator, lengthSize), string = joinString(&generator, Int(length)) {
                 return .String(string)
             }
-
-        // array 16, 32
-        case 0xdc...0xdd:
-            let lengthSize = 1 << Int(value - 0xdc)
-            if let length = joinUInt64(&generator, lengthSize), array = joinArray(&generator, Int(length)) {
+            
+        // array 16
+        case 0xdc:
+            if let length = joinUInt64(&generator, 2), array = joinArray(&generator, Int(length)) {
+                return .Array(array)
+            }
+            
+        // array 32
+        case 0xdd:
+            if let length = joinUInt64(&generator, 4), array = joinArray(&generator, Int(length)) {
                 return .Array(array)
             }
 
@@ -196,9 +201,13 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
                 return .Map(dict)
             }
 
-        // negative fixint
-        case 0xe0...0xff:
-            return .Int(Int64(value) - 0x100)
+            // negative fixint
+        case 0xe0..<0xff:
+            return .Int(numericCast(value) - 0x100)
+            
+            // negative fixint (workaround for rdar://19779978)
+        case 0xff:
+            return .Int(numericCast(value) - 0x100)
 
         default:
             break

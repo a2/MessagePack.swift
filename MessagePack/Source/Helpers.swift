@@ -43,23 +43,18 @@ func joinUInt64<G: GeneratorType where G.Element == UInt8>(inout generator: G, s
     :returns: A `String`, or `nil` if the generator runs out of elements.
 */
 func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> String? {
-    let ptrCount = length + 1 // +1 for \0-termination
-    let ptr = UnsafeMutablePointer<CChar>.alloc(ptrCount)
-
-    for i in 0..<length {
+    var result = ""
+    
+    for _ in 0..<length {
         if let byte = generator.next() {
-            ptr[i] = CChar(bitPattern: byte)
-        } else {
-            ptr.dealloc(ptrCount)
+            result.append(Character(UnicodeScalar(byte)))
+        }
+        else {
             return nil
         }
     }
-    ptr[length] = 0
-
-    let string = String.fromCString(ptr)
-    ptr.dealloc(ptrCount)
-
-    return string
+    
+    return result
 }
 
 /**
