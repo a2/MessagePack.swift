@@ -28,4 +28,4 @@ MessagePack.swift is released under the [MIT license](https://github.com/a2/Mess
 
 ## Availability
 
-MessagePack.swift is intended for Swift 1.2. For compatibility with Swift 1.1, see the [`swift-1.1`](https://github.com/a2/MessagePack.swift/tree/swift-1.1) branch. Compatibility with future versions is not guaranteed.
+MessagePack.swift is intended for use with Swift 2.0. Compatibility with past and future versions is not guaranteed.
