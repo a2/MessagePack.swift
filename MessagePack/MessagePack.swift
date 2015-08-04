@@ -99,7 +99,6 @@ extension MessagePackValue: CustomStringConvertible {
 public enum MessagePackError: ErrorType {
     case InsufficientData
     case InvalidData
-    case InvalidString
 }
 
 func dataDescription(data: Data) -> String {

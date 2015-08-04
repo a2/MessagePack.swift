@@ -96,13 +96,4 @@ class StringTests: XCTestCase {
             XCTFail("Caught error: \(error)")
         }
     }
-
-    func testUnpackInvalidString() {
-        do {
-            try unpack([0xac, 0xc2, 0xaf, 0x5c, 0x5f, 0x28, 0xe3, 0x84, 0x29, 0x5f, 0x2f, 0xc2, 0xaf])
-        } catch MessagePackError.InvalidString {
-        } catch {
-            XCTFail("Expected MessagePackError.InvalidString to be thrown")
-        }
-    }
 }
