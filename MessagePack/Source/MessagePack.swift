@@ -201,11 +201,11 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
                 return .Map(dict)
             }
 
-            // negative fixint
+        // negative fixint
         case 0xe0..<0xff:
             return .Int(numericCast(value) - 0x100)
             
-            // negative fixint (workaround for rdar://19779978)
+        // negative fixint (workaround for rdar://19779978)
         case 0xff:
             return .Int(numericCast(value) - 0x100)
 
