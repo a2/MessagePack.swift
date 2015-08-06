@@ -631,11 +631,13 @@ extension MessagePackValue {
     public var stringValue: Swift.String? {
         switch self {
         case .Binary(let data):
-            if let string = NSString(data: data, encoding:NSASCIIStringEncoding) {
-                return string as Swift.String
-            } else {
-                return nil
+            var string = ""
+            let ptr = UnsafePointer<UInt8>(data.bytes)
+            let bytes = UnsafeBufferPointer<UInt8>(start:ptr, count:data.length)
+            for var i = 0; i < data.length; i++ {
+                string.append(Character(UnicodeScalar(bytes[i])))
             }
+            return string
         case .String(let string):
             return string
         default:
