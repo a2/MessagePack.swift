@@ -160,7 +160,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
 
         // int 64
         case 0xd3:
-            if let bytes = joinUInt64(&generator, 2) {
+            if let bytes = joinUInt64(&generator, 8) {
                 let integer = Int64(bitPattern: bytes)
                 return .Int(integer)
             }
