@@ -83,8 +83,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
                 if let data = joinData(&generator, length) {
                     return .Binary(data)
                 }
-            }
-            else {
+            } else {
                 if let string = joinString(&generator, length) {
                     return .String(string)
                 }
@@ -190,8 +189,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
                     if let data = joinData(&generator, Int(length)) {
                         return .Binary(data)
                     }
-                }
-                else {
+                } else {
                     if let string = joinString(&generator, Int(length)) {
                         return .String(string)
                     }
@@ -635,8 +633,7 @@ extension MessagePackValue {
         case .Binary(let data):
             if let string = NSString(data: data, encoding:NSASCIIStringEncoding) {
                 return string as Swift.String
-            }
-            else {
+            } else {
                 return nil
             }
         case .String(let string):
