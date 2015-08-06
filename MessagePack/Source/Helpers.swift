@@ -48,8 +48,7 @@ func joinString<G: GeneratorType where G.Element == UInt8>(inout generator: G, l
     for _ in 0..<length {
         if let byte = generator.next() {
             result.append(Character(UnicodeScalar(byte)))
-        }
-        else {
+        } else {
             return nil
         }
     }
