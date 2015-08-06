@@ -87,12 +87,12 @@ func joinData<G: GeneratorType where G.Element == UInt8>(inout generator: G, len
 
     :returns: An `Array`, or `nil` if the generator runs out of elements.
 */
-func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue]? {
+func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int, compatibility: Bool) -> [MessagePackValue]? {
     var array = [MessagePackValue]()
     array.reserveCapacity(length)
 
     for _ in 0..<length {
-        if let value = unpack(&generator) {
+        if let value = unpack(&generator, compatibility: compatibility) {
             array.append(value)
         } else {
             return nil
@@ -110,9 +110,9 @@ func joinArray<G: GeneratorType where G.Element == UInt8>(inout generator: G, le
 
     :returns: A `Dictionary`, or `nil` if the generator runs out of elements.
 */
-func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int) -> [MessagePackValue : MessagePackValue]? {
+func joinMap<G: GeneratorType where G.Element == UInt8>(inout generator: G, length: Int, compatibility: Bool) -> [MessagePackValue : MessagePackValue]? {
     let doubleLength = length * 2
-    if let array = joinArray(&generator, length * 2) {
+    if let array = joinArray(&generator, length * 2, compatibility) {
         var dict = [MessagePackValue : MessagePackValue]()
         var lastKey: MessagePackValue? = nil
         for item in array {

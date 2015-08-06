@@ -54,7 +54,7 @@ extension MessagePackValue: Hashable {
 
     :returns: A MessagePackValue, or `nil` if the generator runs out of bytes.
 */
-public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
+public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G, compatibility: Bool = false) -> MessagePackValue? {
     if let value = generator.next() {
         switch value {
 
@@ -65,22 +65,29 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // fixmap
         case 0x80...0x8f:
             let length = Int(value - 0x80)
-            if let dict = joinMap(&generator, length) {
+            if let dict = joinMap(&generator, length, compatibility) {
                 return .Map(dict)
             }
 
         // fixarray
         case 0x90...0x9f:
             let length = Int(value - 0x90)
-            if let array = joinArray(&generator, length) {
+            if let array = joinArray(&generator, length, compatibility) {
                 return .Array(array)
             }
 
         // fixstr
         case 0xa0...0xbf:
             let length = Int(value - 0xa0)
-            if let string = joinString(&generator, length) {
-                return .String(string)
+            if compatibility {
+                if let data = joinData(&generator, length) {
+                    return .Binary(data)
+                }
+            }
+            else {
+                if let string = joinString(&generator, length) {
+                    return .String(string)
+                }
             }
 
         // nil
@@ -178,26 +185,35 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // str 8, 16, 32
         case 0xd9...0xdb:
             let lengthSize = 1 << Int(value - 0xd9)
-            if let length = joinUInt64(&generator, lengthSize), string = joinString(&generator, Int(length)) {
-                return .String(string)
+            if let length = joinUInt64(&generator, lengthSize) {
+                if (compatibility) {
+                    if let data = joinData(&generator, Int(length)) {
+                        return .Binary(data)
+                    }
+                }
+                else {
+                    if let string = joinString(&generator, Int(length)) {
+                        return .String(string)
+                    }
+                }
             }
             
         // array 16
         case 0xdc:
-            if let length = joinUInt64(&generator, 2), array = joinArray(&generator, Int(length)) {
+            if let length = joinUInt64(&generator, 2), array = joinArray(&generator, Int(length), compatibility) {
                 return .Array(array)
             }
             
         // array 32
         case 0xdd:
-            if let length = joinUInt64(&generator, 4), array = joinArray(&generator, Int(length)) {
+            if let length = joinUInt64(&generator, 4), array = joinArray(&generator, Int(length), compatibility) {
                 return .Array(array)
             }
 
         // map 16, 32
         case 0xde...0xdf:
             let lengthSize = 1 << Int(value - 0xdc)
-            if let length = joinUInt64(&generator, lengthSize), dict = joinMap(&generator, Int(length)) {
+            if let length = joinUInt64(&generator, lengthSize), dict = joinMap(&generator, Int(length), compatibility) {
                 return .Map(dict)
             }
 
@@ -224,11 +240,11 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
 
     :returns: A MessagePackValue, or `nil` if the data is malformed.
 */
-public func unpack(data: NSData) -> MessagePackValue? {
+public func unpack(data: NSData, compatibility: Bool = false) -> MessagePackValue? {
     let immutableData = data.copy() as! NSData
     let ptr = UnsafeBufferPointer<UInt8>(start: UnsafePointer<UInt8>(immutableData.bytes), count: immutableData.length)
     var generator = ptr.generate()
-    return unpack(&generator)
+    return unpack(&generator, compatibility: compatibility)
 }
 
 /**
@@ -616,6 +632,13 @@ extension MessagePackValue {
     /// The contained string if `.String`, `nil` otherwise.
     public var stringValue: Swift.String? {
         switch self {
+        case .Binary(let data):
+            if let string = NSString(data: data, encoding:NSASCIIStringEncoding) {
+                return string as Swift.String
+            }
+            else {
+                return nil
+            }
         case .String(let string):
             return string
         default:
