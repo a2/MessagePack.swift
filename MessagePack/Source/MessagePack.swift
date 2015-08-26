@@ -65,14 +65,14 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // fixmap
         case 0x80...0x8f:
             let length = Int(value - 0x80)
-            if let dict = joinMap(&generator, length, compatibility) {
+            if let dict = joinMap(&generator, length, compatibility: compatibility) {
                 return .Map(dict)
             }
 
         // fixarray
         case 0x90...0x9f:
             let length = Int(value - 0x90)
-            if let array = joinArray(&generator, length, compatibility) {
+            if let array = joinArray(&generator, length, compatibility: compatibility) {
                 return .Array(array)
             }
 
@@ -198,20 +198,20 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
             
         // array 16
         case 0xdc:
-            if let length = joinUInt64(&generator, 2), array = joinArray(&generator, Int(length), compatibility) {
+            if let length = joinUInt64(&generator, 2), array = joinArray(&generator, Int(length), compatibility: compatibility) {
                 return .Array(array)
             }
             
         // array 32
         case 0xdd:
-            if let length = joinUInt64(&generator, 4), array = joinArray(&generator, Int(length), compatibility) {
+            if let length = joinUInt64(&generator, 4), array = joinArray(&generator, Int(length), compatibility: compatibility) {
                 return .Array(array)
             }
 
         // map 16, 32
         case 0xde...0xdf:
             let lengthSize = 1 << Int(value - 0xdc)
-            if let length = joinUInt64(&generator, lengthSize), dict = joinMap(&generator, Int(length), compatibility) {
+            if let length = joinUInt64(&generator, lengthSize), dict = joinMap(&generator, Int(length), compatibility: compatibility) {
                 return .Map(dict)
             }
 
@@ -633,9 +633,9 @@ extension MessagePackValue {
         case .Binary(let data):
             var string = ""
             let ptr = UnsafePointer<UInt8>(data.bytes)
-            let bytes = UnsafeBufferPointer<UInt8>(start:ptr, count:data.length)
-            for var i = 0; i < data.length; i++ {
-                string.append(Character(UnicodeScalar(bytes[i])))
+            let bytes = UnsafeBufferPointer<UInt8>(start: ptr, count: data.length)
+            for byte in bytes {
+                string.append(Character(UnicodeScalar(byte)))
             }
             return string
         case .String(let string):
