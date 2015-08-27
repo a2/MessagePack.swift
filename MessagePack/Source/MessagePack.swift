@@ -283,8 +283,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xff:
             prefix = [0xd9, UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xda] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xda] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xdb] + splitInt(UInt64(count), parts: 4)
         default:
@@ -298,8 +297,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xff:
             prefix = [0xc4, UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xc5] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xc5] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xc6] + splitInt(UInt64(count), parts: 4)
         default:
@@ -317,8 +315,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xe:
             prefix = [0x90 | UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xdc] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xdc] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xdd] + splitInt(UInt64(count), parts: 4)
         default:
@@ -339,8 +336,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xe:
             prefix = [0x80 | UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xde] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xde] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xdf] + splitInt(UInt64(count), parts: 4)
         default:
@@ -372,8 +368,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xff:
             prefix = [0xc7, UInt8(count), unsignedType]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xc8] + splitInt(UInt64(truncated), parts: 2) + [unsignedType]
+            prefix = [0xc8] + splitInt(UInt64(count), parts: 2) + [unsignedType]
         case let count where count <= 0xffff_ffff:
             prefix = [0xc9] + splitInt(UInt64(count), parts: 4) + [unsignedType]
         default:
