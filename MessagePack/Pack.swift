@@ -99,8 +99,7 @@ public func pack(value: MessagePackValue) -> Data {
         case let count where count <= 0xff:
             prefix = [0xd9, numericCast(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xda] + packInteger(numericCast(truncated), parts: 2)
+            prefix = [0xda] + packInteger(numericCast(count), parts: 2)
         default:
             prefix = [0xdb] + packInteger(numericCast(count), parts: 4)
         }
@@ -116,8 +115,7 @@ public func pack(value: MessagePackValue) -> Data {
         case let count where count <= 0xff:
             prefix = [0xc4, numericCast(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xc5] + packInteger(numericCast(truncated), parts: 2)
+            prefix = [0xc5] + packInteger(numericCast(count), parts: 2)
         default:
             prefix = [0xc6] + packInteger(numericCast(count), parts: 4)
         }
@@ -133,8 +131,7 @@ public func pack(value: MessagePackValue) -> Data {
         case let count where count <= 0xe:
             prefix = [0x90 | numericCast(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xdc] + packInteger(numericCast(truncated), parts: 2)
+            prefix = [0xdc] + packInteger(numericCast(count), parts: 2)
         default:
             prefix = [0xdd] + packInteger(numericCast(count), parts: 4)
         }
@@ -150,8 +147,7 @@ public func pack(value: MessagePackValue) -> Data {
         case let count where count <= 0xe:
             prefix = [0x80 | numericCast(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xde] + packInteger(numericCast(truncated), parts: 2)
+            prefix = [0xde] + packInteger(numericCast(count), parts: 2)
         default:
             prefix = [0xdf] + packInteger(numericCast(count), parts: 4)
         }
@@ -178,8 +174,7 @@ public func pack(value: MessagePackValue) -> Data {
         case let count where count <= 0xff:
             prefix = [0xc7, numericCast(count), unsignedType]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: numericCast(count))
-            prefix = [0xc8] + packInteger(numericCast(truncated), parts: 2) + [unsignedType]
+            prefix = [0xc8] + packInteger(numericCast(count), parts: 2) + [unsignedType]
         default:
             prefix = [0xc9] + packInteger(numericCast(count), parts: 4) + [unsignedType]
         }
