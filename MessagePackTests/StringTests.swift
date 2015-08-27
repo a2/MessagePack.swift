@@ -6,14 +6,14 @@ func string(length: Int, repeatedValue: String = "*") -> String {
     str.reserveCapacity(length * repeatedValue.characters.count)
 
     for _ in 0..<length {
-        str.extend(repeatedValue)
+        str.appendContentsOf(repeatedValue)
     }
 
     return str
 }
 
 func data(string: String) -> ArraySlice<Byte> {
-    return dropLast(string.nulTerminatedUTF8)
+    return string.nulTerminatedUTF8.dropLast()
 }
 
 class StringTests: XCTestCase {
