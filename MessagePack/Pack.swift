@@ -6,7 +6,7 @@
 /// - returns: An byte array representation.
 func packInteger(value: UInt64, parts: Int) -> Data {
     precondition(parts > 0)
-    return stride(from: 8 * (parts - 1), through: 0, by: -8).map { shift in
+    return (8 * (parts - 1)).stride(through: 0, by: -8).map { shift in
         return Byte(truncatingBitPattern: value >> numericCast(shift))
     }
 }
