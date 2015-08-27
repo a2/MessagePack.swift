@@ -113,5 +113,5 @@ func dataDescription(data: Data) -> String {
         return prefix + String(byte, radix: 16)
     }
 
-    return "[" + ", ".join(bytes) + "]"
+    return "[" + bytes.joinWithSeparator(", ") + "]"
 }
