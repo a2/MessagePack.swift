@@ -65,12 +65,12 @@ func unpackData<G: GeneratorType where G.Element == Byte>(inout generator: G, le
 /// - parameter count: The number of elements to unpack.
 ///
 /// - returns: An array of `count` elements.
-func unpackArray<G: GeneratorType where G.Element == Byte>(inout generator: G, count: Int) throws -> [MessagePackValue] {
+func unpackArray<G: GeneratorType where G.Element == Byte>(inout generator: G, count: Int, compatibility: Bool) throws -> [MessagePackValue] {
     var values = [MessagePackValue]()
     values.reserveCapacity(count)
 
     for _ in 0..<count {
-        let value = try unpack(&generator)
+        let value = try unpack(&generator, compatibility: compatibility)
         values.append(value)
     }
 
@@ -83,11 +83,11 @@ func unpackArray<G: GeneratorType where G.Element == Byte>(inout generator: G, c
 /// - parameter count: The number of elements to unpack.
 ///
 /// - returns: An dictionary of `count` entries.
-func unpackMap<G: GeneratorType where G.Element == Byte>(inout generator: G, count: Int) throws -> [MessagePackValue : MessagePackValue] {
+func unpackMap<G: GeneratorType where G.Element == Byte>(inout generator: G, count: Int, compatibility: Bool) throws -> [MessagePackValue : MessagePackValue] {
     var dict = [MessagePackValue : MessagePackValue](minimumCapacity: count)
     var lastKey: MessagePackValue? = nil
 
-    let array = try unpackArray(&generator, count: 2 * count)
+    let array = try unpackArray(&generator, count: 2 * count, compatibility: compatibility)
     for item in array {
         if let key = lastKey {
             dict[key] = item
@@ -105,7 +105,7 @@ func unpackMap<G: GeneratorType where G.Element == Byte>(inout generator: G, cou
 /// - parameter generator: The input generator to unpack.
 ///
 /// - returns: A `MessagePackValue`.
-public func unpack<G: GeneratorType where G.Element == Byte>(inout generator: G) throws -> MessagePackValue {
+public func unpack<G: GeneratorType where G.Element == Byte>(inout generator: G, compatibility: Bool = false) throws -> MessagePackValue {
     if let value = generator.next() {
         switch value {
 
@@ -116,20 +116,26 @@ public func unpack<G: GeneratorType where G.Element == Byte>(inout generator: G)
         // fixmap
         case 0x80...0x8f:
             let count = Int(value - 0x80)
-            let dict = try unpackMap(&generator, count: count)
+            let dict = try unpackMap(&generator, count: count, compatibility: compatibility)
             return .Map(dict)
 
         // fixarray
         case 0x90...0x9f:
             let count = Int(value - 0x90)
-            let array = try unpackArray(&generator, count: count)
+            let array = try unpackArray(&generator, count: count, compatibility: compatibility)
             return .Array(array)
 
         // fixstr
         case 0xa0...0xbf:
             let length = Int(value - 0xa0)
-            let string = try unpackString(&generator, length: length)
-            return .String(string)
+            if compatibility {
+                let data = try unpackData(&generator, length: length)
+                return .Binary(data)
+            } else {
+                let string = try unpackString(&generator, length: length)
+                return .String(string)
+            }
+
 
         // nil
         case 0xc0:
@@ -222,21 +228,26 @@ public func unpack<G: GeneratorType where G.Element == Byte>(inout generator: G)
         case 0xd9...0xdb:
             let lengthSize = 1 << Int(value - 0xd9)
             let length = try unpackInteger(&generator, size: lengthSize)
-            let string = try unpackString(&generator, length: numericCast(length))
-            return .String(string)
+            if compatibility {
+                let data = try unpackData(&generator, length: numericCast(length))
+                return .Binary(data)
+            } else {
+                let string = try unpackString(&generator, length: numericCast(length))
+                return .String(string)
+            }
 
         // array 16, 32
         case 0xdc...0xdd:
             let countSize = 1 << Int(value - 0xdb)
             let count = try unpackInteger(&generator, size: countSize)
-            let array = try unpackArray(&generator, count: numericCast(count))
+            let array = try unpackArray(&generator, count: numericCast(count), compatibility: compatibility)
             return .Array(array)
 
         // map 16, 32
         case 0xde...0xdf:
             let countSize = 1 << Int(value - 0xdd)
             let count = try unpackInteger(&generator, size: countSize)
-            let dict = try unpackMap(&generator, count: numericCast(count))
+            let dict = try unpackMap(&generator, count: numericCast(count), compatibility: compatibility)
             return .Map(dict)
 
         // negative fixint
@@ -260,9 +271,9 @@ public func unpack<G: GeneratorType where G.Element == Byte>(inout generator: G)
 /// - parameter data: The data to unpack.
 ///
 /// - returns: The contained `MessagePackValue`.
-public func unpack(data: NSData) throws -> MessagePackValue {
+public func unpack(data: NSData, compatibility: Bool = false) throws -> MessagePackValue {
     var generator = NSDataGenerator(data: data)
-    return try unpack(&generator)
+    return try unpack(&generator, compatibility: compatibility)
 }
 
 /// Unpacks a data object in the form of `dispatch_data_t` into a `MessagePackValue`.
@@ -270,9 +281,9 @@ public func unpack(data: NSData) throws -> MessagePackValue {
 /// - parameter data: The data to unpack.
 ///
 /// - returns: The contained `MessagePackValue`.
-public func unpack(data: dispatch_data_t) throws -> MessagePackValue {
+public func unpack(data: dispatch_data_t, compatibility: Bool = false) throws -> MessagePackValue {
     var generator = DispatchDataGenerator(data: data)
-    return try unpack(&generator)
+    return try unpack(&generator, compatibility: compatibility)
 }
 
 /// Unpacks a data object in the form of a byte array into a `MessagePackValue`.
@@ -280,7 +291,7 @@ public func unpack(data: dispatch_data_t) throws -> MessagePackValue {
 /// - parameter data: The data to unpack.
 ///
 /// - returns: The contained `MessagePackValue`.
-public func unpack<S: SequenceType where S.Generator.Element == Byte>(data: S) throws -> MessagePackValue {
+public func unpack<S: SequenceType where S.Generator.Element == Byte>(data: S, compatibility: Bool = false) throws -> MessagePackValue {
     var generator = data.generate()
-    return try unpack(&generator)
+    return try unpack(&generator, compatibility: compatibility)
 }
