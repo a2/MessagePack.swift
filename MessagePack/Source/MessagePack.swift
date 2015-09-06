@@ -54,7 +54,7 @@ extension MessagePackValue: Hashable {
 
     :returns: A MessagePackValue, or `nil` if the generator runs out of bytes.
 */
-public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G) -> MessagePackValue? {
+public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G, compatibility: Bool = false) -> MessagePackValue? {
     if let value = generator.next() {
         switch value {
 
@@ -65,22 +65,28 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // fixmap
         case 0x80...0x8f:
             let length = Int(value - 0x80)
-            if let dict = joinMap(&generator, length) {
+            if let dict = joinMap(&generator, length, compatibility: compatibility) {
                 return .Map(dict)
             }
 
         // fixarray
         case 0x90...0x9f:
             let length = Int(value - 0x90)
-            if let array = joinArray(&generator, length) {
+            if let array = joinArray(&generator, length, compatibility: compatibility) {
                 return .Array(array)
             }
 
         // fixstr
         case 0xa0...0xbf:
             let length = Int(value - 0xa0)
-            if let string = joinString(&generator, length) {
-                return .String(string)
+            if compatibility {
+                if let data = joinData(&generator, length) {
+                    return .Binary(data)
+                }
+            } else {
+                if let string = joinString(&generator, length) {
+                    return .String(string)
+                }
             }
 
         // nil
@@ -160,7 +166,7 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
 
         // int 64
         case 0xd3:
-            if let bytes = joinUInt64(&generator, 2) {
+            if let bytes = joinUInt64(&generator, 8) {
                 let integer = Int64(bitPattern: bytes)
                 return .Int(integer)
             }
@@ -178,26 +184,34 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
         // str 8, 16, 32
         case 0xd9...0xdb:
             let lengthSize = 1 << Int(value - 0xd9)
-            if let length = joinUInt64(&generator, lengthSize), string = joinString(&generator, Int(length)) {
-                return .String(string)
+            if let length = joinUInt64(&generator, lengthSize) {
+                if (compatibility) {
+                    if let data = joinData(&generator, Int(length)) {
+                        return .Binary(data)
+                    }
+                } else {
+                    if let string = joinString(&generator, Int(length)) {
+                        return .String(string)
+                    }
+                }
             }
             
         // array 16
         case 0xdc:
-            if let length = joinUInt64(&generator, 2), array = joinArray(&generator, Int(length)) {
+            if let length = joinUInt64(&generator, 2), array = joinArray(&generator, Int(length), compatibility: compatibility) {
                 return .Array(array)
             }
             
         // array 32
         case 0xdd:
-            if let length = joinUInt64(&generator, 4), array = joinArray(&generator, Int(length)) {
+            if let length = joinUInt64(&generator, 4), array = joinArray(&generator, Int(length), compatibility: compatibility) {
                 return .Array(array)
             }
 
         // map 16, 32
         case 0xde...0xdf:
             let lengthSize = 1 << Int(value - 0xdc)
-            if let length = joinUInt64(&generator, lengthSize), dict = joinMap(&generator, Int(length)) {
+            if let length = joinUInt64(&generator, lengthSize), dict = joinMap(&generator, Int(length), compatibility: compatibility) {
                 return .Map(dict)
             }
 
@@ -224,11 +238,11 @@ public func unpack<G: GeneratorType where G.Element == UInt8>(inout generator: G
 
     :returns: A MessagePackValue, or `nil` if the data is malformed.
 */
-public func unpack(data: NSData) -> MessagePackValue? {
+public func unpack(data: NSData, compatibility: Bool = false) -> MessagePackValue? {
     let immutableData = data.copy() as! NSData
     let ptr = UnsafeBufferPointer<UInt8>(start: UnsafePointer<UInt8>(immutableData.bytes), count: immutableData.length)
     var generator = ptr.generate()
-    return unpack(&generator)
+    return unpack(&generator, compatibility: compatibility)
 }
 
 /**
@@ -269,8 +283,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xff:
             prefix = [0xd9, UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xda] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xda] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xdb] + splitInt(UInt64(count), parts: 4)
         default:
@@ -284,8 +297,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xff:
             prefix = [0xc4, UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xc5] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xc5] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xc6] + splitInt(UInt64(count), parts: 4)
         default:
@@ -303,8 +315,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xe:
             prefix = [0x90 | UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xdc] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xdc] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xdd] + splitInt(UInt64(count), parts: 4)
         default:
@@ -325,8 +336,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xe:
             prefix = [0x80 | UInt8(count)]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xde] + splitInt(UInt64(truncated), parts: 2)
+            prefix = [0xde] + splitInt(UInt64(count), parts: 2)
         case let count where count <= 0xffff_ffff:
             prefix = [0xdf] + splitInt(UInt64(count), parts: 4)
         default:
@@ -358,8 +368,7 @@ public func pack(value: MessagePackValue) -> NSData {
         case let count where count <= 0xff:
             prefix = [0xc7, UInt8(count), unsignedType]
         case let count where count <= 0xffff:
-            let truncated = UInt16(bitPattern: Int16(count))
-            prefix = [0xc8] + splitInt(UInt64(truncated), parts: 2) + [unsignedType]
+            prefix = [0xc8] + splitInt(UInt64(count), parts: 2) + [unsignedType]
         case let count where count <= 0xffff_ffff:
             prefix = [0xc9] + splitInt(UInt64(count), parts: 4) + [unsignedType]
         default:
@@ -616,6 +625,14 @@ extension MessagePackValue {
     /// The contained string if `.String`, `nil` otherwise.
     public var stringValue: Swift.String? {
         switch self {
+        case .Binary(let data):
+            var string = ""
+            let ptr = UnsafePointer<UInt8>(data.bytes)
+            let bytes = UnsafeBufferPointer<UInt8>(start: ptr, count: data.length)
+            for byte in bytes {
+                string.append(Character(UnicodeScalar(byte)))
+            }
+            return string
         case .String(let string):
             return string
         default:
