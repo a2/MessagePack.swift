@@ -24,28 +24,18 @@ func unpackInteger<G: GeneratorType where G.Element == Byte>(inout generator: G,
 ///
 /// - returns: A string representation of `size` bytes of data.
 func unpackString<G: GeneratorType where G.Element == Byte>(inout generator: G, length: Int) throws -> String {
-    let ptrCount = length + 1 // +1 for \0-termination
-    let ptr = UnsafeMutablePointer<CChar>.alloc(ptrCount)
-    ptr[length] = 0
+    var result = ""
+    result.reserveCapacity(length)
 
-    defer {
-        ptr.dealloc(ptrCount)
-    }
-
-    for i in 0..<length {
+    for _ in 0..<length {
         if let byte = generator.next() {
-            ptr[i] = CChar(bitPattern: byte)
+            result.append(Character(UnicodeScalar(byte)))
         } else {
             throw MessagePackError.InsufficientData
         }
     }
-    ptr[length] = 0
-
-    if let string = String.fromCString(ptr) {
-        return string
-    } else {
-        throw MessagePackError.InvalidString
-    }
+    
+    return result
 }
 
 /// Joins bytes from the generator to form a data object.

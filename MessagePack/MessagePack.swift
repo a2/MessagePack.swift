@@ -99,7 +99,6 @@ extension MessagePackValue: CustomStringConvertible {
 public enum MessagePackError: ErrorType {
     case InsufficientData
     case InvalidData
-    case InvalidString
 }
 
 func dataDescription(data: Data) -> String {
@@ -114,5 +113,5 @@ func dataDescription(data: Data) -> String {
         return prefix + String(byte, radix: 16)
     }
 
-    return "[" + ", ".join(bytes) + "]"
+    return "[" + bytes.joinWithSeparator(", ") + "]"
 }

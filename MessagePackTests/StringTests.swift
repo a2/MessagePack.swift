@@ -6,14 +6,14 @@ func string(length: Int, repeatedValue: String = "*") -> String {
     str.reserveCapacity(length * repeatedValue.characters.count)
 
     for _ in 0..<length {
-        str.extend(repeatedValue)
+        str.appendContentsOf(repeatedValue)
     }
 
     return str
 }
 
 func data(string: String) -> ArraySlice<Byte> {
-    return dropLast(string.nulTerminatedUTF8)
+    return string.nulTerminatedUTF8.dropLast()
 }
 
 class StringTests: XCTestCase {
@@ -94,15 +94,6 @@ class StringTests: XCTestCase {
             XCTAssertEqual(unpacked, MessagePackValue.String(str))
         } catch let error {
             XCTFail("Caught error: \(error)")
-        }
-    }
-
-    func testUnpackInvalidString() {
-        do {
-            try unpack([0xac, 0xc2, 0xaf, 0x5c, 0x5f, 0x28, 0xe3, 0x84, 0x29, 0x5f, 0x2f, 0xc2, 0xaf])
-        } catch MessagePackError.InvalidString {
-        } catch {
-            XCTFail("Expected MessagePackError.InvalidString to be thrown")
         }
     }
 }

@@ -77,7 +77,7 @@ class DescriptionTests: XCTestCase {
         var isValid = false
         for indices in indexPermutations {
             let permutation = PermutationGenerator(elements: components, indices: indices)
-            let innerDescription = ", ".join(permutation)
+            let innerDescription = permutation.joinWithSeparator(", ")
             if description == "Map([\(innerDescription)])" {
                 isValid = true
                 break
