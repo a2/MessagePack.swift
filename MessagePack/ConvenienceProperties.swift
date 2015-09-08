@@ -112,6 +112,12 @@ extension MessagePackValue {
     /// The contained string if `.String`, `nil` otherwise.
     public var stringValue: Swift.String? {
         switch self {
+        case .Binary(let data):
+            var string = ""
+            for byte in data {
+                string.append(Character(UnicodeScalar(byte)))
+            }
+            return string
         case let .String(string):
             return string
         default:
