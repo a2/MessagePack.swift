@@ -3,8 +3,8 @@ extension MessagePackValue {
         self = .Nil
     }
 
-    public init<B: BooleanType>(_ value: B) {
-        self = .Bool(value.boolValue)
+    public init(_ value: Swift.Bool) {
+        self = .Bool(value)
     }
 
     public init<S: SignedIntegerType>(_ value: S) {

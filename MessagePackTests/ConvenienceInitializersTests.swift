@@ -1,18 +1,6 @@
 @testable import MessagePack
 import XCTest
 
-struct MyTrue: BooleanType {
-    var boolValue: Bool {
-        return true
-    }
-}
-
-struct MyFalse: BooleanType {
-    var boolValue: Bool {
-        return false
-    }
-}
-
 class ConvenienceInitializersTests: XCTestCase {
     func testNil() {
         XCTAssertEqual(MessagePackValue(), MessagePackValue.Nil)
@@ -21,8 +9,6 @@ class ConvenienceInitializersTests: XCTestCase {
     func testBool() {
         XCTAssertEqual(MessagePackValue(true), MessagePackValue.Bool(true))
         XCTAssertEqual(MessagePackValue(false), MessagePackValue.Bool(false))
-        XCTAssertEqual(MessagePackValue(MyTrue()), MessagePackValue.Bool(true))
-        XCTAssertEqual(MessagePackValue(MyFalse()), MessagePackValue.Bool(false))
     }
 
     func testUInt() {
