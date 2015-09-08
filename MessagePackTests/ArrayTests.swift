@@ -18,12 +18,8 @@ class ArrayTests: XCTestCase {
         let packed: Data = [0x95, 0x00, 0x01, 0x02, 0x03, 0x04]
         let value: [MessagePackValue] = [.UInt(0), .UInt(1), .UInt(2), .UInt(3), .UInt(4)]
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.Array(value))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.Array(value))
     }
 
     func testPackArray16() {
@@ -36,12 +32,8 @@ class ArrayTests: XCTestCase {
         let packed = [0xdc, 0x00, 0x10] + Data(count: 16, repeatedValue: 0xc0)
         let value = [MessagePackValue](count: 16, repeatedValue: nil)
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.Array(value))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.Array(value))
     }
 
     func testPackArray32() {
@@ -54,11 +46,7 @@ class ArrayTests: XCTestCase {
         let packed = [0xdd, 0x00, 0x01, 0x00, 0x00] + Data(count: 0x1_0000, repeatedValue: 0xc0)
         let value = [MessagePackValue](count: 0x1_0000, repeatedValue: nil)
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.Array(value))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.Array(value))
     }
 }

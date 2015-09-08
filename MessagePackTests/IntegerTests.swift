@@ -17,19 +17,11 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackNegFixint() {
-        do {
-            let unpacked = try unpack([0xff])
-            XCTAssertEqual(unpacked, MessagePackValue.Int(-1))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked1 = try? unpack([0xff])
+        XCTAssertEqual(unpacked1, MessagePackValue.Int(-1))
 
-        do {
-            let unpacked = try unpack([0xe0])
-            XCTAssertEqual(unpacked, MessagePackValue.Int(-32))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked2 = try? unpack([0xe0])
+        XCTAssertEqual(unpacked2, MessagePackValue.Int(-32))
     }
 
     func testPackPosFixintSigned() {
@@ -37,12 +29,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackPosFixintSigned() {
-        do {
-            let unpacked = try unpack([0x01])
-            XCTAssertEqual(unpacked, MessagePackValue.Int(1))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0x01])
+        XCTAssertEqual(unpacked, MessagePackValue.Int(1))
     }
 
     func testPackPosFixintUnsigned() {
@@ -50,12 +38,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackPosFixintUnsigned() {
-        do {
-            let unpacked = try unpack([0x2a])
-            XCTAssertEqual(unpacked, MessagePackValue.UInt(42))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0x2a])
+        XCTAssertEqual(unpacked, MessagePackValue.UInt(42))
     }
 
     func testPackUInt8() {
@@ -63,12 +47,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackUInt8() {
-        do {
-            let unpacked = try unpack([0xcc, 0xff])
-            XCTAssertEqual(unpacked, MessagePackValue.UInt(0xff))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xcc, 0xff])
+        XCTAssertEqual(unpacked, MessagePackValue.UInt(0xff))
     }
 
     func testPackUInt16() {
@@ -76,12 +56,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackUInt16() {
-        do {
-            let unpacked = try unpack([0xcd, 0xff, 0xff])
-            XCTAssertEqual(unpacked, MessagePackValue.UInt(0xffff))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xcd, 0xff, 0xff])
+        XCTAssertEqual(unpacked, MessagePackValue.UInt(0xffff))
     }
 
     func testPackUInt32() {
@@ -89,12 +65,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackUInt32() {
-        do {
-            let unpacked = try unpack([0xce, 0xff, 0xff, 0xff, 0xff])
-            XCTAssertEqual(unpacked, MessagePackValue.UInt(0xffff_ffff))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xce, 0xff, 0xff, 0xff, 0xff])
+        XCTAssertEqual(unpacked, MessagePackValue.UInt(0xffff_ffff))
     }
 
     func testPackUInt64() {
@@ -102,12 +74,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackUInt64() {
-        do {
-            let unpacked = try unpack([0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
-            XCTAssertEqual(unpacked, MessagePackValue.UInt(0xffff_ffff_ffff_ffff))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
+        XCTAssertEqual(unpacked, MessagePackValue.UInt(0xffff_ffff_ffff_ffff))
     }
 
     func testPackInt8() {
@@ -115,12 +83,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackInt8() {
-        do {
-            let unpacked = try unpack([0xd0, 0x81])
-            XCTAssertEqual(unpacked, MessagePackValue.Int(-0x7f))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xd0, 0x81])
+        XCTAssertEqual(unpacked, MessagePackValue.Int(-0x7f))
     }
 
     func testPackInt16() {
@@ -128,12 +92,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackInt16() {
-        do {
-            let unpacked = try unpack([0xd1, 0x80, 0x01])
-            XCTAssertEqual(unpacked, MessagePackValue.Int(-0x7fff))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xd1, 0x80, 0x01])
+        XCTAssertEqual(unpacked, MessagePackValue.Int(-0x7fff))
     }
 
     func testPackInt32() {
@@ -141,12 +101,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackInt32() {
-        do {
-            let unpacked = try unpack([0xd2, 0xff, 0xff, 0x00, 0x00])
-            XCTAssertEqual(unpacked, MessagePackValue.Int(-0x1_0000))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xd2, 0xff, 0xff, 0x00, 0x00])
+        XCTAssertEqual(unpacked, MessagePackValue.Int(-0x1_0000))
     }
 
     func testPackInt64() {
@@ -154,12 +110,8 @@ class IntegerTests: XCTestCase {
     }
 
     func testUnpackInt64() {
-        do {
-            let unpacked = try unpack([0xd3, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00])
-            XCTAssertEqual(unpacked, MessagePackValue.Int(-0x1_0000_0000))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xd3, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00])
+        XCTAssertEqual(unpacked, MessagePackValue.Int(-0x1_0000_0000))
     }
 
     func testUnpackInsufficientData() {

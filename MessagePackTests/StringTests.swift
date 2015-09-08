@@ -38,12 +38,8 @@ class StringTests: XCTestCase {
     func testUnpackFixstr() {
         let packed: Data = [0xad, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.String("Hello, world!"))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.String("Hello, world!"))
     }
 
     func testPackStr8() {
@@ -55,12 +51,8 @@ class StringTests: XCTestCase {
         let str = string(0x20)
         let packed = [0xd9, 0x20] + data(str)
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.String(str))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.String(str))
     }
 
     func testPackStr16() {
@@ -72,12 +64,8 @@ class StringTests: XCTestCase {
         let str = string(0x1000)
         let packed = [0xda, 0x10, 0x00] + data(str)
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.String(str))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.String(str))
     }
 
     func testPackStr32() {
@@ -89,11 +77,7 @@ class StringTests: XCTestCase {
         let str = string(0x10000)
         let packed = [0xdb, 0x00, 0x01, 0x00, 0x00] + data(str)
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.String(str))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.String(str))
     }
 }

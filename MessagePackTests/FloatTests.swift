@@ -9,11 +9,7 @@ class FloatTests: XCTestCase {
     }
 
     func testUnpack() {
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.Float(3.14))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.Float(3.14))
     }
 }

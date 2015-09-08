@@ -12,12 +12,8 @@ class ExtendedTests: XCTestCase {
         let packed: Data = [0xd4, 0x05, 0x00]
         let value = MessagePackValue.Extended(5, [0x00])
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testPackFixext2() {
@@ -30,12 +26,8 @@ class ExtendedTests: XCTestCase {
         let packed: Data = [0xd5, 0x05, 0x00, 0x01]
         let value = MessagePackValue.Extended(5, [0x00, 0x01])
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testPackFixext4() {
@@ -48,12 +40,8 @@ class ExtendedTests: XCTestCase {
         let packed: Data = [0xd6, 0x05, 0x00, 0x01, 0x02, 0x03]
         let value = MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03])
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testPackFixext8() {
@@ -66,12 +54,8 @@ class ExtendedTests: XCTestCase {
         let packed: Data = [0xd7, 0x05, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]
         let value = MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07])
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testPackFixext16() {
@@ -84,12 +68,8 @@ class ExtendedTests: XCTestCase {
         let value = MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f])
         let packed: Data = [0xd8, 0x05, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]
 
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testPackExt8() {
@@ -102,12 +82,8 @@ class ExtendedTests: XCTestCase {
         let payload = Data(count: 7, repeatedValue: 0)
         let value = MessagePackValue.Extended(5, payload)
 
-        do {
-            let unpacked = try unpack([0xc7, 0x07, 0x05] + payload)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xc7, 0x07, 0x05] + payload)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testPackExt16() {
@@ -120,12 +96,8 @@ class ExtendedTests: XCTestCase {
         let payload = Data(count: 0x100, repeatedValue: 0)
         let value = MessagePackValue.Extended(5, payload)
 
-        do {
-            let unpacked = try unpack([0xc8, 0x01, 0x00, 0x05] + payload)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xc8, 0x01, 0x00, 0x05] + payload)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testPackExt32() {
@@ -138,12 +110,8 @@ class ExtendedTests: XCTestCase {
         let payload = Data(count: 0x10000, repeatedValue: 0)
         let value = MessagePackValue.Extended(5, payload)
 
-        do {
-            let unpacked = try unpack([0xc9, 0x00, 0x01, 0x00, 0x00, 0x05] + payload)
-            XCTAssertEqual(unpacked, value)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack([0xc9, 0x00, 0x01, 0x00, 0x00, 0x05] + payload)
+        XCTAssertEqual(unpacked, value)
     }
 
     func testUnpackInsufficientData() {

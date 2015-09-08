@@ -14,11 +14,7 @@ class DoubleTests: XCTestCase {
     }
 
     func testUnpack() {
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.Double(3.14))
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.Double(3.14))
     }
 }

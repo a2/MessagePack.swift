@@ -14,19 +14,11 @@ class ExampleTests: XCTestCase {
     }
 
     func testUnpack() {
-        do {
-            let unpacked = try unpack(correctA)
-            XCTAssertEqual(unpacked, example)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked1 = try? unpack(correctA)
+        XCTAssertEqual(unpacked1, example)
 
-        do {
-            let unpacked = try unpack(correctB)
-            XCTAssertEqual(unpacked, example)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked2 = try? unpack(correctB)
+        XCTAssertEqual(unpacked2, example)
     }
 
     func testUnpackInvalidData() {
@@ -52,12 +44,8 @@ class ExampleTests: XCTestCase {
             return NSData(bytes: buffer.baseAddress, length: buffer.count)
         }
 
-        do {
-            let unpacked = try unpack(data)
-            XCTAssertEqual(unpacked, example)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(data)
+        XCTAssertEqual(unpacked, example)
     }
 
     func testUnpackInsufficientNSData() {
@@ -79,12 +67,8 @@ class ExampleTests: XCTestCase {
             return dispatch_data_create(buffer.baseAddress, buffer.count, nil, nil)
         }
 
-        do {
-            let unpacked = try unpack(data)
-            XCTAssertEqual(unpacked, example)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(data)
+        XCTAssertEqual(unpacked, example)
     }
 
     func testUnpackDiscontinuousDispatchData() {
@@ -100,12 +84,8 @@ class ExampleTests: XCTestCase {
 
         let data = dispatch_data_create_concat(dataA, dataB)
 
-        do {
-            let unpacked = try unpack(data)
-            XCTAssertEqual(unpacked, example)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(data)
+        XCTAssertEqual(unpacked, example)
     }
 
     func testUnpackInsufficientDispatchData() {
@@ -119,7 +99,6 @@ class ExampleTests: XCTestCase {
             XCTFail("Expected unpack to throw")
         } catch {
             XCTAssertEqual(error as? MessagePackError, .InsufficientData)
-        
         }
     }
 }

@@ -14,11 +14,7 @@ class NilTests: XCTestCase {
     }
 
     func testUnpack() {
-        do {
-            let unpacked = try unpack(packed)
-            XCTAssertEqual(unpacked, MessagePackValue.Nil)
-        } catch {
-            XCTFail("Caught error: \(error)")
-        }
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked, MessagePackValue.Nil)
     }
 }
