@@ -12,7 +12,7 @@ class FloatTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Float(3.14))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }

@@ -21,7 +21,7 @@ class ArrayTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Array(value))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -39,7 +39,7 @@ class ArrayTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Array(value))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -57,7 +57,7 @@ class ArrayTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Array(value))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }

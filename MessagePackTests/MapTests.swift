@@ -52,7 +52,7 @@ func testPackMap(count: Int, prefix: Data) {
             if try unpack(&generator) != .Nil {
                 XCTFail("Expected .Nil")
             }
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -77,7 +77,7 @@ class MapTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Map([.String("c"): .String("cookie")]))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -90,7 +90,7 @@ class MapTests: XCTestCase {
         do {
             let unpacked = try unpack([0xde, 0x00, 0x10] + payload(16))
             XCTAssertEqual(unpacked, MessagePackValue.Map(map(16)))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -103,7 +103,7 @@ class MapTests: XCTestCase {
         do {
             let unpacked = try unpack([0xdf, 0x00, 0x01, 0x00, 0x00] + payload(0x1_0000))
             XCTAssertEqual(unpacked, MessagePackValue.Map(map(0x1_0000)))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }

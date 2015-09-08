@@ -17,7 +17,7 @@ class FalseTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Bool(false))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }

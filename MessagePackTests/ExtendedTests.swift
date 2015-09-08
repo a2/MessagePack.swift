@@ -15,7 +15,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -33,7 +33,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -51,7 +51,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -69,7 +69,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -87,7 +87,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -105,7 +105,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack([0xc7, 0x07, 0x05] + payload)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -123,7 +123,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack([0xc8, 0x01, 0x00, 0x05] + payload)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -141,7 +141,7 @@ class ExtendedTests: XCTestCase {
         do {
             let unpacked = try unpack([0xc9, 0x00, 0x01, 0x00, 0x00, 0x05] + payload)
             XCTAssertEqual(unpacked, value)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -158,9 +158,8 @@ class ExtendedTests: XCTestCase {
             do {
                 try unpack(data)
                 XCTFail("Expected unpack to throw")
-            } catch MessagePackError.InsufficientData {
             } catch {
-                XCTFail("Expected MessagePackError.InsufficientData to be thrown")
+                XCTAssertEqual(error as? MessagePackError, .InsufficientData)
             }
         }
     }

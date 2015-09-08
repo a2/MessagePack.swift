@@ -17,7 +17,7 @@ class NilTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Nil)
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }

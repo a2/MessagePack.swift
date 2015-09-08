@@ -92,7 +92,7 @@
 		8334F1B01B29FE9A00BDE13D /* MessagePackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessagePackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8334F1C91B29FF8A00BDE13D /* EqualityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualityTests.swift; sourceTree = "<group>"; };
 		8334F1CC1B2A17C100BDE13D /* ConvenienceInitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvenienceInitializersTests.swift; sourceTree = "<group>"; };
-		8334F1CF1B2A1CD300BDE13D /* ConveniencePropertiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConveniencePropertiesTests.swift; sourceTree = "<group>"; };
+		8334F1CF1B2A1CD300BDE13D /* ConveniencePropertiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ConveniencePropertiesTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8372C3311B26C20900C6D6C5 /* ExampleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		8372C3331B26C44500C6D6C5 /* NilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NilTests.swift; sourceTree = "<group>"; };
 		8372C3371B26C5A000C6D6C5 /* TrueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrueTests.swift; sourceTree = "<group>"; };

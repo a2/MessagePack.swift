@@ -17,7 +17,7 @@ class DoubleTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.Double(3.14))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }

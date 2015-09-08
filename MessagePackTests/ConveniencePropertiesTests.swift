@@ -39,7 +39,7 @@ class ConveniencePropertiesTests: XCTestCase {
 
     func testArrayValue() {
         let arrayValue = MessagePackValue.Array([0]).arrayValue
-        XCTAssert(arrayValue != nil)
+        XCTAssertNotNil(arrayValue)
         XCTAssertEqual(arrayValue!, [0])
         XCTAssert(MessagePackValue.Nil.arrayValue == nil)
     }
@@ -54,11 +54,11 @@ class ConveniencePropertiesTests: XCTestCase {
         XCTAssert(MessagePackValue.Nil.floatValue == nil)
 
         var floatValue = MessagePackValue.Float(3.14).floatValue
-        XCTAssert(floatValue != nil)
+        XCTAssertNotNil(floatValue)
         XCTAssertEqualWithAccuracy(floatValue!, 3.14, accuracy: 0.0001)
 
         floatValue = MessagePackValue.Double(3.14).floatValue
-        XCTAssert(floatValue != nil)
+        XCTAssertNotNil(floatValue)
         XCTAssertEqualWithAccuracy(floatValue!, 3.14, accuracy: 0.0001)
     }
 
@@ -66,11 +66,11 @@ class ConveniencePropertiesTests: XCTestCase {
         XCTAssert(MessagePackValue.Nil.doubleValue == nil)
 
         var doubleValue = MessagePackValue.Float(3.14).doubleValue
-        XCTAssert(doubleValue != nil)
+        XCTAssertNotNil(doubleValue)
         XCTAssertEqualWithAccuracy(doubleValue!, 3.14, accuracy: 0.0001)
 
         doubleValue = MessagePackValue.Double(3.14).doubleValue
-        XCTAssert(doubleValue != nil)
+        XCTAssertNotNil(doubleValue)
         XCTAssertEqualWithAccuracy(doubleValue!, 3.14, accuracy: 0.0001)
     }
 
@@ -79,15 +79,20 @@ class ConveniencePropertiesTests: XCTestCase {
         XCTAssert(MessagePackValue.Nil.stringValue == nil)
     }
 
+    func testStringValueWithCompatibility() {
+        let stringValue = MessagePackValue.Binary([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]).stringValue
+        XCTAssertEqual(stringValue, "Hello, world!")
+    }
+
     func testDataValue() {
         XCTAssert(MessagePackValue.Nil.dataValue == nil)
 
         var dataValue = MessagePackValue.Binary([0x00, 0x01, 0x02, 0x03, 0x04]).dataValue
-        XCTAssert(dataValue != nil)
+        XCTAssertNotNil(dataValue)
         XCTAssertEqual(dataValue!, [0x00, 0x01, 0x02, 0x03, 0x04])
 
         dataValue = MessagePackValue.Extended(4, [0x00, 0x01, 0x02, 0x03, 0x04]).dataValue
-        XCTAssert(dataValue != nil)
+        XCTAssertNotNil(dataValue)
         XCTAssertEqual(dataValue!, [0x00, 0x01, 0x02, 0x03, 0x04])
     }
 
@@ -96,7 +101,7 @@ class ConveniencePropertiesTests: XCTestCase {
 
         let extended = MessagePackValue.Extended(4, [0x00, 0x01, 0x02, 0x03, 0x04])
         let tuple = extended.extendedValue
-        XCTAssert(tuple != nil)
+        XCTAssertNotNil(tuple)
 
         let (type, data) = tuple!
         XCTAssertEqual(type, 4)
@@ -108,13 +113,13 @@ class ConveniencePropertiesTests: XCTestCase {
 
         let extended = MessagePackValue.Extended(4, [0x00, 0x01, 0x02, 0x03, 0x04])
         let type = extended.extendedType
-        XCTAssert(type != nil)
+        XCTAssertNotNil(type)
         XCTAssertEqual(type!, 4)
     }
 
     func testMapValue() {
         let dictionaryValue = MessagePackValue.Map(["c": "cookie"]).dictionaryValue
-        XCTAssert(dictionaryValue != nil)
+        XCTAssertNotNil(dictionaryValue)
         XCTAssertEqual(dictionaryValue!, ["c": "cookie"])
         XCTAssert(MessagePackValue.Nil.dictionaryValue == nil)
     }

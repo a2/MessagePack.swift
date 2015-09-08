@@ -41,7 +41,7 @@ class StringTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.String("Hello, world!"))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -58,7 +58,7 @@ class StringTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.String(str))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -75,7 +75,7 @@ class StringTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.String(str))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
@@ -92,7 +92,7 @@ class StringTests: XCTestCase {
         do {
             let unpacked = try unpack(packed)
             XCTAssertEqual(unpacked, MessagePackValue.String(str))
-        } catch let error {
+        } catch {
             XCTFail("Caught error: \(error)")
         }
     }
