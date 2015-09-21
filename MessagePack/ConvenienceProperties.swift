@@ -113,11 +113,12 @@ extension MessagePackValue {
     public var stringValue: Swift.String? {
         switch self {
         case .Binary(let data):
-            var string = ""
+            var result = ""
+            result.reserveCapacity(data.count)
             for byte in data {
-                string.append(Character(UnicodeScalar(byte)))
+                result.append(Character(UnicodeScalar(byte)))
             }
-            return string
+            return result
         case let .String(string):
             return string
         default:
