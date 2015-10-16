@@ -24,18 +24,22 @@ func unpackInteger<G: GeneratorType where G.Element == Byte>(inout generator: G,
 ///
 /// - returns: A string representation of `size` bytes of data.
 func unpackString<G: GeneratorType where G.Element == Byte>(inout generator: G, length: Int) throws -> String {
-    var result = ""
-    result.reserveCapacity(length)
+    var bytes = Data()
+    bytes.reserveCapacity(length)
 
     for _ in 0..<length {
         if let byte = generator.next() {
-            result.append(Character(UnicodeScalar(byte)))
+            bytes.append(byte)
         } else {
             throw MessagePackError.InsufficientData
         }
     }
-    
-    return result
+
+    if let result = NSString(bytes: bytes, length: bytes.count, encoding: NSUTF8StringEncoding) as String? {
+        return result
+    } else {
+        throw MessagePackError.InvalidData
+    }
 }
 
 /// Joins bytes from the generator to form a data object.
