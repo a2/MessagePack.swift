@@ -26,7 +26,7 @@ func unpackInteger<G: GeneratorType where G.Element == Byte>(inout generator: G,
 func unpackString<G: GeneratorType where G.Element == Byte>(inout generator: G, length: Int) throws -> String {
     var bytes = Data()
     bytes.reserveCapacity(length)
-    
+
     for _ in 0..<length {
         if let byte = generator.next() {
             bytes.append(byte)
