@@ -35,7 +35,7 @@ func unpackString<G: GeneratorType where G.Element == Byte>(inout generator: G, 
         }
     }
 
-    if let result = NSString(bytes: bytes, length: bytes.count, encoding: NSUTF8StringEncoding) as String? {
+    if let result = String(bytes: bytes, encoding: NSUTF8StringEncoding) {
         return result
     } else {
         throw MessagePackError.InvalidData
