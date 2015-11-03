@@ -8,5 +8,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.9'
   s.source       = { :git => 'https://github.com/a2/MessagePack.swift.git', :tag => '0.1.2' }
-  s.source_files = 'MessagePack/Source/*.{h,swift}'
+  s.source_files = 'MessagePack/*.{h,swift}'
 end
