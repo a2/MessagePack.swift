@@ -32,7 +32,9 @@ struct DispatchDataGenerator: GeneratorType {
             size = mapSize
         }
 
-        return buffer[i++ - offset]
+        let ret = buffer[i - offset]
+        i += 1
+        return ret
     }
 }
 
@@ -66,6 +68,8 @@ struct NSDataGenerator: GeneratorType {
             }
         }
 
-        return buffer[i++ - range.startIndex]
+        let ret = buffer[i - range.startIndex]
+        i += 1
+        return ret
     }
 }
