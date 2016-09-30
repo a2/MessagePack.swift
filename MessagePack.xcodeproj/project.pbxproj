@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		831A8C231B26BA4A0067CEE4 /* MessagePack.h in Headers */ = {isa = PBXBuildFile; fileRef = 838663181AAE0CF400FADC19 /* MessagePack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1FF85A631D9E6F20004F6B67 /* MessagePack.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FF85A601D9E6F20004F6B67 /* MessagePack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8334F1CA1B29FF8A00BDE13D /* EqualityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334F1C91B29FF8A00BDE13D /* EqualityTests.swift */; };
 		8334F1CD1B2A17C100BDE13D /* ConvenienceInitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334F1CC1B2A17C100BDE13D /* ConvenienceInitializersTests.swift */; };
 		8334F1D01B2A1CD300BDE13D /* ConveniencePropertiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8334F1CF1B2A1CD300BDE13D /* ConveniencePropertiesTests.swift */; };
@@ -45,6 +45,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1FF85A5F1D9E6F20004F6B67 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1FF85A601D9E6F20004F6B67 /* MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePack.h; sourceTree = "<group>"; };
+		1FF85A611D9E6F20004F6B67 /* Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		8334F1A81B29FCA000BDE13D /* ConvenienceInitializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvenienceInitializers.swift; sourceTree = "<group>"; };
 		8334F1AA1B29FDD600BDE13D /* ConvenienceProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvenienceProperties.swift; sourceTree = "<group>"; };
 		8334F1C91B29FF8A00BDE13D /* EqualityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualityTests.swift; sourceTree = "<group>"; };
@@ -64,9 +67,6 @@
 		8372C34D1B26CC6100C6D6C5 /* ExtendedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTests.swift; sourceTree = "<group>"; };
 		8372C34F1B2732D100C6D6C5 /* HashValueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashValueTests.swift; sourceTree = "<group>"; };
 		8372C3511B2735AD00C6D6C5 /* DescriptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTests.swift; sourceTree = "<group>"; };
-		838662FE1AAE0C9900FADC19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8386630B1AAE0C9900FADC19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		838663181AAE0CF400FADC19 /* MessagePack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePack.h; sourceTree = "<group>"; };
 		838663191AAE0CF400FADC19 /* MessagePack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MessagePack.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		838997441B28E273000FF79B /* LiteralConvertibles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiteralConvertibles.swift; sourceTree = "<group>"; };
 		838997471B28E2C6000FF79B /* Pack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pack.swift; sourceTree = "<group>"; };
@@ -94,11 +94,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1FF85A5D1D9E6EC0004F6B67 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8334F1A81B29FCA000BDE13D /* ConvenienceInitializers.swift */,
+				8334F1AA1B29FDD600BDE13D /* ConvenienceProperties.swift */,
+				838997441B28E273000FF79B /* LiteralConvertibles.swift */,
+				838663191AAE0CF400FADC19 /* MessagePack.swift */,
+				838997471B28E2C6000FF79B /* Pack.swift */,
+				83A0D51B1B28BB3F0037E355 /* Unpack.swift */,
+			);
+			name = Sources;
+			path = Sources/MessagePack;
+			sourceTree = "<group>";
+		};
+		1FF85A5E1D9E6F20004F6B67 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1FF85A5F1D9E6F20004F6B67 /* Info.plist */,
+				1FF85A601D9E6F20004F6B67 /* MessagePack.h */,
+				1FF85A611D9E6F20004F6B67 /* Tests-Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		838662F01AAE0C9900FADC19 = {
 			isa = PBXGroup;
 			children = (
-				838662FC1AAE0C9900FADC19 /* MessagePack */,
-				838663091AAE0C9900FADC19 /* MessagePackTests */,
+				1FF85A5D1D9E6EC0004F6B67 /* Sources */,
+				1FF85A5E1D9E6F20004F6B67 /* Resources */,
+				838663091AAE0C9900FADC19 /* Tests */,
 				838662FB1AAE0C9900FADC19 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,22 +137,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		838662FC1AAE0C9900FADC19 /* MessagePack */ = {
-			isa = PBXGroup;
-			children = (
-				8334F1A81B29FCA000BDE13D /* ConvenienceInitializers.swift */,
-				8334F1AA1B29FDD600BDE13D /* ConvenienceProperties.swift */,
-				838662FE1AAE0C9900FADC19 /* Info.plist */,
-				838997441B28E273000FF79B /* LiteralConvertibles.swift */,
-				838663181AAE0CF400FADC19 /* MessagePack.h */,
-				838663191AAE0CF400FADC19 /* MessagePack.swift */,
-				838997471B28E2C6000FF79B /* Pack.swift */,
-				83A0D51B1B28BB3F0037E355 /* Unpack.swift */,
-			);
-			path = MessagePack;
-			sourceTree = "<group>";
-		};
-		838663091AAE0C9900FADC19 /* MessagePackTests */ = {
+		838663091AAE0C9900FADC19 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				8372C3471B26CB2400C6D6C5 /* ArrayTests.swift */,
@@ -142,14 +152,14 @@
 				8372C3391B26C5C600C6D6C5 /* FalseTests.swift */,
 				8372C3411B26CA3A00C6D6C5 /* FloatTests.swift */,
 				8372C34F1B2732D100C6D6C5 /* HashValueTests.swift */,
-				8386630B1AAE0C9900FADC19 /* Info.plist */,
 				8372C33D1B26C6AC00C6D6C5 /* IntegerTests.swift */,
 				8372C34B1B26CBFC00C6D6C5 /* MapTests.swift */,
 				8372C3331B26C44500C6D6C5 /* NilTests.swift */,
 				8372C3491B26CBC600C6D6C5 /* StringTests.swift */,
 				8372C3371B26C5A000C6D6C5 /* TrueTests.swift */,
 			);
-			path = MessagePackTests;
+			name = Tests;
+			path = Tests/MessagePackTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,7 +169,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				831A8C231B26BA4A0067CEE4 /* MessagePack.h in Headers */,
+				1FF85A631D9E6F20004F6B67 /* MessagePack.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,6 +356,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -390,6 +402,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -416,9 +430,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = MessagePack/Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "us.pandamonia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MessagePack;
 				SDKROOT = macosx;
@@ -443,9 +456,8 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = MessagePack/Info.plist;
+				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "us.pandamonia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MessagePack;
 				SDKROOT = macosx;
@@ -468,9 +480,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = MessagePackTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = "Resources/Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.pandamonia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MessagePackTests;
@@ -486,9 +496,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = MessagePackTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = "Resources/Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.pandamonia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MessagePackTests;

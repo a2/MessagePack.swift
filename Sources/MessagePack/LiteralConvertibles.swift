@@ -5,14 +5,14 @@ extension MessagePackValue: ExpressibleByArrayLiteral {
 }
 
 extension MessagePackValue: ExpressibleByBooleanLiteral {
-    public init(booleanLiteral value: Swift.Bool) {
+    public init(booleanLiteral value: Bool) {
         self = .bool(value)
     }
 }
 
 extension MessagePackValue: ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (MessagePackValue, MessagePackValue)...) {
-        var dict = [MessagePackValue : MessagePackValue](minimumCapacity: elements.count)
+        var dict = [MessagePackValue: MessagePackValue](minimumCapacity: elements.count)
         for (key, value) in elements {
             dict[key] = value
         }
@@ -22,13 +22,13 @@ extension MessagePackValue: ExpressibleByDictionaryLiteral {
 }
 
 extension MessagePackValue: ExpressibleByExtendedGraphemeClusterLiteral {
-    public init(extendedGraphemeClusterLiteral value: Swift.String) {
+    public init(extendedGraphemeClusterLiteral value: String) {
         self = .string(value)
     }
 }
 
 extension MessagePackValue: ExpressibleByFloatLiteral {
-    public init(floatLiteral value: Swift.Double) {
+    public init(floatLiteral value: Double) {
         self = .double(value)
     }
 }
@@ -46,13 +46,13 @@ extension MessagePackValue: ExpressibleByNilLiteral {
 }
 
 extension MessagePackValue: ExpressibleByStringLiteral {
-    public init(stringLiteral value: Swift.String) {
+    public init(stringLiteral value: String) {
         self = .string(value)
     }
 }
 
 extension MessagePackValue: ExpressibleByUnicodeScalarLiteral {
-    public init(unicodeScalarLiteral value: Swift.String) {
+    public init(unicodeScalarLiteral value: String) {
         self = .string(value)
     }
 }

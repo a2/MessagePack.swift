@@ -2,6 +2,27 @@
 import XCTest
 
 class ConveniencePropertiesTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testCount", testCount),
+            ("testIndexedSubscript", testIndexedSubscript),
+            ("testKeyedSubscript", testKeyedSubscript),
+            ("testIsNil", testIsNil),
+            ("testIntegerValue", testIntegerValue),
+            ("testUnsignedIntegerValue", testUnsignedIntegerValue),
+            ("testArrayValue", testArrayValue),
+            ("testBoolValue", testBoolValue),
+            ("testFloatValue", testFloatValue),
+            ("testDoubleValue", testDoubleValue),
+            ("testStringValue", testStringValue),
+            ("testStringValueWithCompatibility", testStringValueWithCompatibility),
+            ("testDataValue", testDataValue),
+            ("testExtendedValue", testExtendedValue),
+            ("testExtendedType", testExtendedType),
+            ("testMapValue    ", testMapValue    ),
+        ]
+    }()
+
     func testCount() {
         XCTAssert(MessagePackValue.array([0]).count == 1)
         XCTAssert(MessagePackValue.map(["c": "cookie"]).count == 1)

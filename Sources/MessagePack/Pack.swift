@@ -1,3 +1,5 @@
+import Foundation
+
 /// Packs an integer into a byte array.
 ///
 /// - parameter value: The integer to split.

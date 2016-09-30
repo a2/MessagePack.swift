@@ -2,6 +2,14 @@
 import XCTest
 
 class TrueTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testLiteralConversion", testLiteralConversion),
+            ("testPack", testPack),
+            ("testUnpack", testUnpack),
+        ]
+    }()
+
     let packed = Data([0xc3])
 
     func testLiteralConversion() {

@@ -1,3 +1,5 @@
+import Foundation
+
 /// The MessagePackValue enum encapsulates one of the following types: Nil, Bool, Int, UInt, Float, Double, String, Binary, Array, Map, and Extended.
 public enum MessagePackValue {
     case `nil`

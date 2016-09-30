@@ -2,6 +2,23 @@
 import XCTest
 
 class HashValueTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testNilHashValue", testNilHashValue),
+            ("testBoolHashValue", testBoolHashValue),
+            ("testIntHashValue", testIntHashValue),
+            ("testUIntHashValue", testUIntHashValue),
+            ("testFloatHashValue", testFloatHashValue),
+            ("testDoubleHashValue", testDoubleHashValue),
+            ("testStringHashValue", testStringHashValue),
+            ("testBinaryHashValue", testBinaryHashValue),
+            ("testArrayHashValue", testArrayHashValue),
+            ("testMapHashValue", testMapHashValue),
+            ("testExtendedHashValue", testExtendedHashValue),
+        ]
+    }()
+
+
     func testNilHashValue() {
         XCTAssertEqual(MessagePackValue.nil.hashValue, 0)
     }
@@ -51,7 +68,7 @@ class HashValueTests: XCTestCase {
     }
 
     func testMapHashValue() {
-        let values: [MessagePackValue : MessagePackValue] = [
+        let values: [MessagePackValue: MessagePackValue] = [
             "a": "apple",
             "b": "banana",
             "c": "cookie",

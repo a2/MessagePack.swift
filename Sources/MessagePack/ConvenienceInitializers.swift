@@ -1,9 +1,11 @@
+import Foundation
+
 extension MessagePackValue {
     public init() {
         self = .nil
     }
 
-    public init(_ value: Swift.Bool) {
+    public init(_ value: Bool) {
         self = .bool(value)
     }
 
@@ -15,15 +17,15 @@ extension MessagePackValue {
         self = .uint(value.toUIntMax())
     }
 
-    public init(_ value: Swift.Float) {
+    public init(_ value: Float) {
         self = .float(value)
     }
 
-    public init(_ value: Swift.Double) {
+    public init(_ value: Double) {
         self = .double(value)
     }
 
-    public init(_ value: Swift.String) {
+    public init(_ value: String) {
         self = .string(value)
     }
 

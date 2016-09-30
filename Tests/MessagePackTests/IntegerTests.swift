@@ -2,6 +2,36 @@
 import XCTest
 
 class IntegerTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testPosLiteralConversion", testPosLiteralConversion),
+            ("testNegLiteralConversion", testNegLiteralConversion),
+            ("testPackNegFixint", testPackNegFixint),
+            ("testUnpackNegFixint", testUnpackNegFixint),
+            ("testPackPosFixintSigned", testPackPosFixintSigned),
+            ("testUnpackPosFixintSigned", testUnpackPosFixintSigned),
+            ("testPackPosFixintUnsigned", testPackPosFixintUnsigned),
+            ("testUnpackPosFixintUnsigned", testUnpackPosFixintUnsigned),
+            ("testPackUInt8", testPackUInt8),
+            ("testUnpackUInt8", testUnpackUInt8),
+            ("testPackUInt16", testPackUInt16),
+            ("testUnpackUInt16", testUnpackUInt16),
+            ("testPackUInt32", testPackUInt32),
+            ("testUnpackUInt32", testUnpackUInt32),
+            ("testPackUInt64", testPackUInt64),
+            ("testUnpackUInt64", testUnpackUInt64),
+            ("testPackInt8", testPackInt8),
+            ("testUnpackInt8", testUnpackInt8),
+            ("testPackInt16", testPackInt16),
+            ("testUnpackInt16", testUnpackInt16),
+            ("testPackInt32", testPackInt32),
+            ("testUnpackInt32", testUnpackInt32),
+            ("testPackInt64", testPackInt64),
+            ("testUnpackInt64", testUnpackInt64),
+            ("testUnpackInsufficientData", testUnpackInsufficientData),
+        ]
+    }()
+    
     func testPosLiteralConversion() {
         let implicitValue: MessagePackValue = -1
         XCTAssertEqual(implicitValue, MessagePackValue.int(-1))

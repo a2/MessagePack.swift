@@ -2,6 +2,29 @@
 import XCTest
 
 class EqualityTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testNilEqualToNil", testNilEqualToNil),
+            ("testNilNotEqualToBool", testNilNotEqualToBool),
+            ("testBoolEqualToBool", testBoolEqualToBool),
+            ("testIntEqualToInt", testIntEqualToInt),
+            ("testUIntEqualToUInt", testUIntEqualToUInt),
+            ("testIntEqualToUInt", testIntEqualToUInt),
+            ("testUIntEqualToInt", testUIntEqualToInt),
+            ("testUIntNotEqualToInt", testUIntNotEqualToInt),
+            ("testIntNotEqualToUInt", testIntNotEqualToUInt),
+            ("testFloatEqualToFloat", testFloatEqualToFloat),
+            ("testDoubleEqualToDouble", testDoubleEqualToDouble),
+            ("testFloatNotEqualToDouble", testFloatNotEqualToDouble),
+            ("testDoubleNotEqualToFloat", testDoubleNotEqualToFloat),
+            ("testStringEqualToString", testStringEqualToString),
+            ("testBinaryEqualToBinary", testBinaryEqualToBinary),
+            ("testArrayEqualToArray", testArrayEqualToArray),
+            ("testMapEqualToMap", testMapEqualToMap),
+            ("testExtendedEqualToExtended", testExtendedEqualToExtended),
+        ]
+    }()
+
     func testNilEqualToNil() {
         XCTAssertEqual(MessagePackValue.nil, MessagePackValue.nil)
     }

@@ -15,7 +15,7 @@ func payload(_ count: Int) -> Data {
     for i in 0 ..< Int64(count) {
         data.append(pack(.int(i)) + pack(.nil))
     }
-    
+
     return data
 }
 
@@ -48,6 +48,18 @@ func testPackMap(_ count: Int, prefix: Data) {
 }
 
 class MapTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testLiteralConversion", testLiteralConversion),
+            ("testPackFixmap", testPackFixmap),
+            ("testUnpackFixmap", testUnpackFixmap),
+            ("testPackMap16", testPackMap16),
+            ("testUnpackMap16", testUnpackMap16),
+            ("testPackMap32", testPackMap32),
+            ("testUnpackMap32", testUnpackMap32),
+        ]
+    }()
+
     func testLiteralConversion() {
         let implicitValue: MessagePackValue = ["c": "cookie"]
         XCTAssertEqual(implicitValue, MessagePackValue.map([.string("c"): .string("cookie")]))

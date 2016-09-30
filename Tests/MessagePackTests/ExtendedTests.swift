@@ -2,6 +2,28 @@
 import XCTest
 
 class ExtendedTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testPackFixext1", testPackFixext1),
+            ("testUnpackFixext1", testUnpackFixext1),
+            ("testPackFixext2", testPackFixext2),
+            ("testUnpackFixext2", testUnpackFixext2),
+            ("testPackFixext4", testPackFixext4),
+            ("testUnpackFixext4", testUnpackFixext4),
+            ("testPackFixext8", testPackFixext8),
+            ("testUnpackFixext8", testUnpackFixext8),
+            ("testPackFixext16", testPackFixext16),
+            ("testUnpackFixext16", testUnpackFixext16),
+            ("testPackExt8", testPackExt8),
+            ("testUnpackExt8", testUnpackExt8),
+            ("testPackExt16", testPackExt16),
+            ("testUnpackExt16", testUnpackExt16),
+            ("testPackExt32", testPackExt32),
+            ("testUnpackExt32", testUnpackExt32),
+            ("testUnpackInsufficientData", testUnpackInsufficientData),
+        ]
+    }()
+
     func testPackFixext1() {
         let value = MessagePackValue.extended(5, Data([0x00]))
         let packed = Data([0xd4, 0x05, 0x00])

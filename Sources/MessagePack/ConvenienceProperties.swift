@@ -1,6 +1,8 @@
+import Foundation
+
 extension MessagePackValue {
     /// The number of elements in the `.Array` or `.Map`, `nil` otherwise.
-    public var count: Swift.Int? {
+    public var count: Int? {
         switch self {
         case .array(let array):
             return array.count
@@ -12,7 +14,7 @@ extension MessagePackValue {
     }
 
     /// The element at subscript `i` in the `.Array`, `nil` otherwise.
-    public subscript (i: Swift.Int) -> MessagePackValue? {
+    public subscript (i: Int) -> MessagePackValue? {
         switch self {
         case .array(let array):
             return i < array.count ? array[i] : Optional.none

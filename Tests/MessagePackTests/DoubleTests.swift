@@ -2,6 +2,14 @@
 import XCTest
 
 class DoubleTests: XCTestCase {
+    static var allTests = {
+        return [
+            ("testLiteralConversion", testLiteralConversion),
+            ("testPack", testPack),
+            ("testUnpack", testUnpack),
+        ]
+    }()
+
     func testLiteralConversion() {
         let implicitValue: MessagePackValue = 3.14
         XCTAssertEqual(implicitValue, MessagePackValue.double(3.14))
