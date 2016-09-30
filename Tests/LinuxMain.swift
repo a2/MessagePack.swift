@@ -1,3 +1,4 @@
+@testable import MessagePackTests
 import XCTest
 
 XCTMain([
