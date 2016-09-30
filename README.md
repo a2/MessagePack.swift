@@ -1,31 +1,48 @@
 MessagePack.swift
 =================
 
+[![CI Status](http://img.shields.io/travis/a2/MessagePack.swift.svg?style=flat)](https://travis-ci.org/a2/MessagePack.swift)
+[![Version](https://img.shields.io/cocoapods/v/MessagePack.swift.svg?style=flat)](http://cocoapods.org/pods/MessagePack.swift)
+[![License](https://img.shields.io/cocoapods/l/MessagePack.swift.svg?style=flat)](http://cocoapods.org/pods/MessagePack.swift)
+[![Platform](https://img.shields.io/cocoapods/p/MessagePack.swift.svg?style=flat)](http://cocoapods.org/pods/Oberholz)
+
+A fast, zero-dependency MessagePack implementation written in Swift 3. Supports Apple platforms and Linux.
+
+## Installation
+
+### CococaPods
+
+To use CocoaPods, add the following to your Podfile:
+
+```ruby
+pod 'MessagePack.swift', '~> 2.0.0'
+```
+
+### SPM (Swift Package Manager)
+
+You can easily integrate MessagePack.swift in your app with SPM. Just add MessagePack.swift as a dependency:
+
+```swift
+import PackageDescription
+
+let package = Package(
+    name: "MyAwesomeApp",
+    dependencies: [
+        .Package(url: "https://github.com/a2/MessagePack.swift.git", majorVersion: 2, minor: 0),
+    ]
+)
+```
+
+## Version
+
+2.0.0 + Swift 3
+
+Support for Swift 2 was dropped after [1.2.0](https://github.com/a2/MessagePack.swift/releases/tag/1.2.0).
+
+## AUTHORS
+
+Alexsander Akers, me@a2.io
+
 ## License
 
-MessagePack.swift is released under the [MIT license](https://github.com/a2/MessagePack.swift/blob/master/LICENSE), which is reproduced below in its entirety:
-
-> Copyright (c) 2015 Alexsander Akers
-> 
-> Permission is hereby granted, free of charge, to any person obtaining a copy
-> of this software and associated documentation files (the "Software"), to deal
-> in the Software without restriction, including without limitation the rights
-> to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> copies of the Software, and to permit persons to whom the Software is
-> furnished to do so, subject to the following conditions:
-> 
-> The above copyright notice and this permission notice shall be included in all
-> copies or substantial portions of the Software.
-> 
-> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-> SOFTWARE.
-
-
-## Availability
-
-MessagePack.swift is intended for use with Swift 2.0. Compatibility with past and future versions is not guaranteed.
+MessagePack.swift is available under the MIT license. See the LICENSE file for more info.
