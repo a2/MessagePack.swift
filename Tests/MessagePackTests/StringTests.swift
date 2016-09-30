@@ -1,5 +1,6 @@
-@testable import MessagePack
+import Foundation
 import XCTest
+@testable import MessagePack
 
 class StringTests: XCTestCase {
     static var allTests = {

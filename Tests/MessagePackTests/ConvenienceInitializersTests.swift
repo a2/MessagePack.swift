@@ -1,5 +1,6 @@
-@testable import MessagePack
+import Foundation
 import XCTest
+@testable import MessagePack
 
 class ConvenienceInitializersTests: XCTestCase {
     static var allTests = {

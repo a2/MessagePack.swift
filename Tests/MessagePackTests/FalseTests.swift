@@ -1,5 +1,6 @@
-@testable import MessagePack
+import Foundation
 import XCTest
+@testable import MessagePack
 
 class FalseTests: XCTestCase {
     static var allTests = {
@@ -9,7 +10,7 @@ class FalseTests: XCTestCase {
             ("testUnpack", testUnpack),
         ]
     }()
-    
+
     let packed = Data([0xc2])
 
     func testLiteralConversion() {

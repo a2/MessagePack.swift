@@ -1,5 +1,6 @@
-@testable import MessagePack
+import Foundation
 import XCTest
+@testable import MessagePack
 
 func map(_ count: Int) -> [MessagePackValue: MessagePackValue] {
     var dict = [MessagePackValue: MessagePackValue]()

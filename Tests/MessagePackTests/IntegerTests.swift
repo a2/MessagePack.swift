@@ -1,5 +1,6 @@
-@testable import MessagePack
+import Foundation
 import XCTest
+@testable import MessagePack
 
 class IntegerTests: XCTestCase {
     static var allTests = {
@@ -31,7 +32,7 @@ class IntegerTests: XCTestCase {
             ("testUnpackInsufficientData", testUnpackInsufficientData),
         ]
     }()
-    
+
     func testPosLiteralConversion() {
         let implicitValue: MessagePackValue = -1
         XCTAssertEqual(implicitValue, MessagePackValue.int(-1))
