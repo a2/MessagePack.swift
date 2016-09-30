@@ -56,8 +56,6 @@ class MapTests: XCTestCase {
             ("testUnpackFixmap", testUnpackFixmap),
             ("testPackMap16", testPackMap16),
             ("testUnpackMap16", testUnpackMap16),
-            ("testPackMap32", testPackMap32),
-            ("testUnpackMap32", testUnpackMap32),
         ]
     }()
 
@@ -86,16 +84,6 @@ class MapTests: XCTestCase {
     func testUnpackMap16() {
         let unpacked = try? unpack(Data([0xde, 0x00, 0x10]) + payload(16))
         XCTAssertEqual(unpacked?.value, MessagePackValue.map(map(16)))
-        XCTAssertEqual(unpacked?.remainder.count, 0)
-    }
-
-    func testPackMap32() {
-        testPackMap(0x1_0000, prefix: Data([0xdf, 0x00, 0x01, 0x00, 0x00]))
-    }
-
-    func testUnpackMap32() {
-        let unpacked = try? unpack(Data([0xdf, 0x00, 0x01, 0x00, 0x00]) + payload(0x1_0000))
-        XCTAssertEqual(unpacked?.value, MessagePackValue.map(map(0x1_0000)))
         XCTAssertEqual(unpacked?.remainder.count, 0)
     }
 }

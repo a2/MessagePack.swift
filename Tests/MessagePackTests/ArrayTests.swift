@@ -10,8 +10,6 @@ class ArrayTests: XCTestCase {
             ("testUnpackFixarray", testUnpackFixarray),
             ("testPackArray16", testPackArray16),
             ("testUnpackArray16", testUnpackArray16),
-            ("testPackArray32", testPackArray32),
-            ("testUnpackArray32", testUnpackArray32),
         ]
     }()
 
@@ -45,21 +43,6 @@ class ArrayTests: XCTestCase {
     func testUnpackArray16() {
         let packed = Data([0xdc, 0x00, 0x10] + [UInt8](repeating: 0xc0, count: 16))
         let value = [MessagePackValue](repeating: nil, count: 16)
-
-        let unpacked = try? unpack(packed)
-        XCTAssertEqual(unpacked?.value, .array(value))
-        XCTAssertEqual(unpacked?.remainder.count, 0)
-    }
-
-    func testPackArray32() {
-        let value = [MessagePackValue](repeating: nil, count: 0x1_0000)
-        let packed = Data([0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: 0x1_0000))
-        XCTAssertEqual(pack(.array(value)), packed)
-    }
-
-    func testUnpackArray32() {
-        let packed = Data([0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: 0x1_0000))
-        let value = [MessagePackValue](repeating: nil, count: 0x1_0000)
 
         let unpacked = try? unpack(packed)
         XCTAssertEqual(unpacked?.value, .array(value))
