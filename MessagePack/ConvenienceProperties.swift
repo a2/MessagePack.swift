@@ -2,9 +2,9 @@ extension MessagePackValue {
     /// The number of elements in the `.Array` or `.Map`, `nil` otherwise.
     public var count: Swift.Int? {
         switch self {
-        case let .Array(array):
+        case .array(let array):
             return array.count
-        case let .Map(dict):
+        case .map(let dict):
             return dict.count
         default:
             return nil
@@ -14,8 +14,8 @@ extension MessagePackValue {
     /// The element at subscript `i` in the `.Array`, `nil` otherwise.
     public subscript (i: Swift.Int) -> MessagePackValue? {
         switch self {
-        case let .Array(array):
-            return i < array.count ? array[i] : Optional.None
+        case .array(let array):
+            return i < array.count ? array[i] : Optional.none
         default:
             return nil
         }
@@ -24,7 +24,7 @@ extension MessagePackValue {
     /// The element at keyed subscript `key`, `nil` otherwise.
     public subscript (key: MessagePackValue) -> MessagePackValue? {
         switch self {
-        case let .Map(dict):
+        case .map(let dict):
             return dict[key]
         default:
             return nil
@@ -32,9 +32,9 @@ extension MessagePackValue {
     }
 
     /// True if `.Nil`, false otherwise.
-    public var isNil: Swift.Bool {
+    public var isNil: Bool {
         switch self {
-        case .Nil:
+        case .nil:
             return true
         default:
             return false
@@ -44,10 +44,10 @@ extension MessagePackValue {
     /// The integer value if `.Int` or an appropriately valued `.UInt`, `nil` otherwise.
     public var integerValue: Int64? {
         switch self {
-        case let .Int(value):
+        case .int(let value):
             return value
-        case let .UInt(value) where value < numericCast(Swift.Int64.max):
-            return numericCast(value) as Int64
+        case .uint(let value) where value < UInt64(Int64.max):
+            return Int64(value)
         default:
             return nil
         }
@@ -56,9 +56,9 @@ extension MessagePackValue {
     /// The unsigned integer value if `.UInt` or positive `.Int`, `nil` otherwise.
     public var unsignedIntegerValue: UInt64? {
         switch self {
-        case let .Int(value) where value >= 0:
-            return numericCast(value) as UInt64
-        case let .UInt(value):
+        case .int(let value) where value >= 0:
+            return UInt64(value)
+        case .uint(let value):
             return value
         default:
             return nil
@@ -68,7 +68,7 @@ extension MessagePackValue {
     /// The contained array if `.Array`, `nil` otherwise.
     public var arrayValue: [MessagePackValue]? {
         switch self {
-        case let .Array(array):
+        case .array(let array):
             return array
         default:
             return nil
@@ -76,9 +76,9 @@ extension MessagePackValue {
     }
 
     /// The contained boolean value if `.Bool`, `nil` otherwise.
-    public var boolValue: Swift.Bool? {
+    public var boolValue: Bool? {
         switch self {
-        case let .Bool(value):
+        case .bool(let value):
             return value
         default:
             return nil
@@ -86,23 +86,23 @@ extension MessagePackValue {
     }
 
     /// The contained floating point value if `.Float` or `.Double`, `nil` otherwise.
-    public var floatValue: Swift.Float? {
+    public var floatValue: Float? {
         switch self {
-        case let .Float(value):
+        case .float(let value):
             return value
-        case let .Double(value):
-            return Swift.Float(value)
+        case .double(let value):
+            return Float(value)
         default:
             return nil
         }
     }
 
     /// The contained double-precision floating point value if `.Float` or `.Double`, `nil` otherwise.
-    public var doubleValue: Swift.Double? {
+    public var doubleValue: Double? {
         switch self {
-        case let .Float(value):
-            return Swift.Double(value)
-        case let .Double(value):
+        case .float(let value):
+            return Double(value)
+        case .double(let value):
             return value
         default:
             return nil
@@ -110,16 +110,11 @@ extension MessagePackValue {
     }
 
     /// The contained string if `.String`, `nil` otherwise.
-    public var stringValue: Swift.String? {
+    public var stringValue: String? {
         switch self {
-        case .Binary(let data):
-            var result = ""
-            result.reserveCapacity(data.count)
-            for byte in data {
-                result.append(Character(UnicodeScalar(byte)))
-            }
-            return result
-        case let .String(string):
+        case .binary(let data):
+            return String(data: data, encoding: .utf8)
+        case .string(let string):
             return string
         default:
             return nil
@@ -129,9 +124,9 @@ extension MessagePackValue {
     /// The contained data if `.Binary` or `.Extended`, `nil` otherwise.
     public var dataValue: Data? {
         switch self {
-        case let .Binary(bytes):
+        case .binary(let bytes):
             return bytes
-        case let .Extended(_, data):
+        case .extended(_, let data):
             return data
         default:
             return nil
@@ -140,30 +135,27 @@ extension MessagePackValue {
 
     /// The contained type and data if Extended, `nil` otherwise.
     public var extendedValue: (Int8, Data)? {
-        switch self {
-        case let .Extended(type, data):
+        if case .extended(let type, let data) = self {
             return (type, data)
-        default:
+        } else {
             return nil
         }
     }
 
     /// The contained type if `.Extended`, `nil` otherwise.
     public var extendedType: Int8? {
-        switch self {
-        case let .Extended(type, _):
+        if case .extended(let type, _) = self {
             return type
-        default:
+        } else {
             return nil
         }
     }
 
     /// The contained dictionary if `.Map`, `nil` otherwise.
-    public var dictionaryValue: [MessagePackValue : MessagePackValue]? {
-        switch self {
-        case let .Map(dict):
+    public var dictionaryValue: [MessagePackValue: MessagePackValue]? {
+        if case .map(let dict) = self {
             return dict
-        default:
+        } else {
             return nil
         }
     }

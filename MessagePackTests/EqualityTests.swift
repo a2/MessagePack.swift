@@ -3,77 +3,77 @@ import XCTest
 
 class EqualityTests: XCTestCase {
     func testNilEqualToNil() {
-        XCTAssertEqual(MessagePackValue.Nil, MessagePackValue.Nil)
+        XCTAssertEqual(MessagePackValue.nil, MessagePackValue.nil)
     }
 
     func testNilNotEqualToBool() {
-        XCTAssertNotEqual(MessagePackValue.Nil, MessagePackValue.Bool(false))
+        XCTAssertNotEqual(MessagePackValue.nil, MessagePackValue.bool(false))
     }
 
     func testBoolEqualToBool() {
-        XCTAssertEqual(MessagePackValue.Bool(true), MessagePackValue.Bool(true))
-        XCTAssertEqual(MessagePackValue.Bool(false), MessagePackValue.Bool(false))
-        XCTAssertNotEqual(MessagePackValue.Bool(true), MessagePackValue.Bool(false))
-        XCTAssertNotEqual(MessagePackValue.Bool(false), MessagePackValue.Bool(true))
+        XCTAssertEqual(MessagePackValue.bool(true), MessagePackValue.bool(true))
+        XCTAssertEqual(MessagePackValue.bool(false), MessagePackValue.bool(false))
+        XCTAssertNotEqual(MessagePackValue.bool(true), MessagePackValue.bool(false))
+        XCTAssertNotEqual(MessagePackValue.bool(false), MessagePackValue.bool(true))
     }
 
     func testIntEqualToInt() {
-        XCTAssertEqual(MessagePackValue.Int(1), MessagePackValue.Int(1))
+        XCTAssertEqual(MessagePackValue.int(1), MessagePackValue.int(1))
     }
 
     func testUIntEqualToUInt() {
-        XCTAssertEqual(MessagePackValue.UInt(1), MessagePackValue.UInt(1))
+        XCTAssertEqual(MessagePackValue.uint(1), MessagePackValue.uint(1))
     }
 
     func testIntEqualToUInt() {
-        XCTAssertEqual(MessagePackValue.Int(1), MessagePackValue.UInt(1))
+        XCTAssertEqual(MessagePackValue.int(1), MessagePackValue.uint(1))
     }
 
     func testUIntEqualToInt() {
-        XCTAssertEqual(MessagePackValue.UInt(1), MessagePackValue.Int(1))
+        XCTAssertEqual(MessagePackValue.uint(1), MessagePackValue.int(1))
     }
 
     func testUIntNotEqualToInt() {
-        XCTAssertNotEqual(MessagePackValue.UInt(1), MessagePackValue.Int(-1))
+        XCTAssertNotEqual(MessagePackValue.uint(1), MessagePackValue.int(-1))
     }
 
     func testIntNotEqualToUInt() {
-        XCTAssertNotEqual(MessagePackValue.Int(-1), MessagePackValue.UInt(1))
+        XCTAssertNotEqual(MessagePackValue.int(-1), MessagePackValue.uint(1))
     }
 
     func testFloatEqualToFloat() {
-        XCTAssertEqual(MessagePackValue.Float(3.14), MessagePackValue.Float(3.14))
+        XCTAssertEqual(MessagePackValue.float(3.14), MessagePackValue.float(3.14))
     }
 
     func testDoubleEqualToDouble() {
-        XCTAssertEqual(MessagePackValue.Double(3.14), MessagePackValue.Double(3.14))
+        XCTAssertEqual(MessagePackValue.double(3.14), MessagePackValue.double(3.14))
     }
 
     func testFloatNotEqualToDouble() {
-        XCTAssertNotEqual(MessagePackValue.Float(3.14), MessagePackValue.Double(3.14))
+        XCTAssertNotEqual(MessagePackValue.float(3.14), MessagePackValue.double(3.14))
     }
 
     func testDoubleNotEqualToFloat() {
-        XCTAssertNotEqual(MessagePackValue.Double(3.14), MessagePackValue.Float(3.14))
+        XCTAssertNotEqual(MessagePackValue.double(3.14), MessagePackValue.float(3.14))
     }
 
     func testStringEqualToString() {
-        XCTAssertEqual(MessagePackValue.String("Hello, world!"), MessagePackValue.String("Hello, world!"))
+        XCTAssertEqual(MessagePackValue.string("Hello, world!"), MessagePackValue.string("Hello, world!"))
     }
 
     func testBinaryEqualToBinary() {
-        XCTAssertEqual(MessagePackValue.Binary([0x00, 0x01, 0x02, 0x03, 0x04]), MessagePackValue.Binary([0x00, 0x01, 0x02, 0x03, 0x04]))
+        XCTAssertEqual(MessagePackValue.binary(Data([0x00, 0x01, 0x02, 0x03, 0x04])), MessagePackValue.binary(Data([0x00, 0x01, 0x02, 0x03, 0x04])))
     }
 
     func testArrayEqualToArray() {
-        XCTAssertEqual(MessagePackValue.Array([0, 1, 2, 3, 4]), MessagePackValue.Array([0, 1, 2, 3, 4]))
+        XCTAssertEqual(MessagePackValue.array([0, 1, 2, 3, 4]), MessagePackValue.array([0, 1, 2, 3, 4]))
     }
 
     func testMapEqualToMap() {
-        XCTAssertEqual(MessagePackValue.Map(["a": "apple", "b": "banana", "c": "cookie"]), MessagePackValue.Map(["b": "banana", "c": "cookie", "a": "apple"]))
+        XCTAssertEqual(MessagePackValue.map(["a": "apple", "b": "banana", "c": "cookie"]), MessagePackValue.map(["b": "banana", "c": "cookie", "a": "apple"]))
     }
 
     func testExtendedEqualToExtended() {
-        XCTAssertEqual(MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04]), MessagePackValue.Extended(5, [0x00, 0x01, 0x02, 0x03, 0x04]))
+        XCTAssertEqual(MessagePackValue.extended(5, Data([0x00, 0x01, 0x02, 0x03, 0x04])), MessagePackValue.extended(5, Data([0x00, 0x01, 0x02, 0x03, 0x04])))
     }
 }

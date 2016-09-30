@@ -1,81 +1,88 @@
 @testable import MessagePack
 import XCTest
 
-func map(count: Int) -> [MessagePackValue : MessagePackValue] {
-    var dict = [MessagePackValue : MessagePackValue]()
-    for i in 0..<count {
-        dict[.Int(numericCast(i))] = .Nil
+func map(_ count: Int) -> [MessagePackValue: MessagePackValue] {
+    var dict = [MessagePackValue: MessagePackValue]()
+    for i in 0 ..< Int64(count) {
+        dict[.int(i)] = .nil
     }
 
     return dict
 }
 
-func payload(count: Int) -> Data {
+func payload(_ count: Int) -> Data {
     var data = Data()
-    for i in 0..<count {
-        data += pack(.Int(numericCast(i))) + pack(.Nil)
+    for i in 0 ..< Int64(count) {
+        data.append(pack(.int(i)) + pack(.nil))
     }
     
     return data
 }
 
-func testPackMap(count: Int, prefix: Data) {
-    let packed = pack(.Map(map(count)))
+func testPackMap(_ count: Int, prefix: Data) {
+    let packed = pack(.map(map(count)))
 
-    var generator = packed.generate()
-    for expectedByte in prefix {
-        let byte = generator.next()!
-        XCTAssertEqual(byte, expectedByte)
-    }
+    XCTAssertEqual(packed.subdata(in: 0 ..< prefix.count), prefix)
 
+    var remainder = packed.subdata(in: prefix.count ..< packed.count)
     var keys = Set<Int>()
-    for _ in 0..<count {
-        let value = try! unpack(&generator)
-        let key: Int = numericCast(value.integerValue!)
+    do {
+        for _ in 0 ..< count {
+            let value: MessagePackValue
+            (value, remainder) = try unpack(remainder)
+            let key = Int(value.integerValue!)
 
-        XCTAssertFalse(keys.contains(key))
-        keys.insert(key)
+            XCTAssertFalse(keys.contains(key))
+            keys.insert(key)
 
-        let nilValue = try! unpack(&generator)
-        XCTAssertEqual(nilValue, MessagePackValue.Nil)
+            let nilValue: MessagePackValue
+            (nilValue, remainder) = try unpack(remainder)
+            XCTAssertEqual(nilValue, MessagePackValue.nil)
+        }
+    } catch {
+        print(error)
+        XCTFail()
     }
-    
+
     XCTAssertEqual(keys.count, count)
 }
 
 class MapTests: XCTestCase {
     func testLiteralConversion() {
         let implicitValue: MessagePackValue = ["c": "cookie"]
-        XCTAssertEqual(implicitValue, MessagePackValue.Map([.String("c"): .String("cookie")]))
+        XCTAssertEqual(implicitValue, MessagePackValue.map([.string("c"): .string("cookie")]))
     }
 
     func testPackFixmap() {
-        let packed: Data = [0x81, 0xa1, 0x63, 0xa6, 0x63, 0x6f, 0x6f, 0x6b, 0x69, 0x65]
-        XCTAssertEqual(pack(.Map([.String("c"): .String("cookie")])), packed)
+        let packed = Data([0x81, 0xa1, 0x63, 0xa6, 0x63, 0x6f, 0x6f, 0x6b, 0x69, 0x65])
+        XCTAssertEqual(pack(.map([.string("c"): .string("cookie")])), packed)
     }
 
     func testUnpackFixmap() {
-        let packed: Data = [0x81, 0xa1, 0x63, 0xa6, 0x63, 0x6f, 0x6f, 0x6b, 0x69, 0x65]
+        let packed = Data([0x81, 0xa1, 0x63, 0xa6, 0x63, 0x6f, 0x6f, 0x6b, 0x69, 0x65])
 
         let unpacked = try? unpack(packed)
-        XCTAssertEqual(unpacked, MessagePackValue.Map([.String("c"): .String("cookie")]))
+        XCTAssertEqual(unpacked?.value, MessagePackValue.map([.string("c"): .string("cookie")]))
+        XCTAssertEqual(unpacked?.remainder.count, 0)
     }
 
     func testPackMap16() {
-        testPackMap(16, prefix: [0xde, 0x00, 0x10])
+        testPackMap(16, prefix: Data([0xde, 0x00, 0x10]))
     }
 
     func testUnpackMap16() {
-        let unpacked = try? unpack([0xde, 0x00, 0x10] + payload(16))
-        XCTAssertEqual(unpacked, MessagePackValue.Map(map(16)))
+        let unpacked = try? unpack(Data([0xde, 0x00, 0x10]) + payload(16))
+        XCTAssertEqual(unpacked?.value, MessagePackValue.map(map(16)))
+        XCTAssertEqual(unpacked?.remainder.count, 0)
     }
 
     func testPackMap32() {
-        testPackMap(0x1_0000, prefix: [0xdf, 0x00, 0x01, 0x00, 0x00])
+        testPackMap(0x1_0000, prefix: Data([0xdf, 0x00, 0x01, 0x00, 0x00]))
     }
 
     func testUnpackMap32() {
-        let unpacked = try? unpack([0xdf, 0x00, 0x01, 0x00, 0x00] + payload(0x1_0000))
-        XCTAssertEqual(unpacked, MessagePackValue.Map(map(0x1_0000)))
+        let unpacked = try? unpack(Data([0xdf, 0x00, 0x01, 0x00, 0x00]) + payload(0x1_0000))
+        XCTAssertEqual(unpacked?.value, MessagePackValue.map(map(0x1_0000)))
+        XCTAssertEqual(unpacked?.remainder.count, 0)
     }
 }

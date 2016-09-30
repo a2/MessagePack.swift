@@ -3,64 +3,64 @@ import XCTest
 
 class DescriptionTests: XCTestCase {
     func testNilDescription() {
-        XCTAssertEqual(MessagePackValue.Nil.description, "Nil")
+        XCTAssertEqual(MessagePackValue.nil.description, "nil")
     }
 
     func testBoolDescription() {
-        XCTAssertEqual(MessagePackValue.Bool(true).description, "Bool(true)")
-        XCTAssertEqual(MessagePackValue.Bool(false).description, "Bool(false)")
+        XCTAssertEqual(MessagePackValue.bool(true).description, "bool(true)")
+        XCTAssertEqual(MessagePackValue.bool(false).description, "bool(false)")
     }
 
     func testIntDescription() {
-        XCTAssertEqual(MessagePackValue.Int(-1).description, "Int(-1)")
-        XCTAssertEqual(MessagePackValue.Int(0).description, "Int(0)")
-        XCTAssertEqual(MessagePackValue.Int(1).description, "Int(1)")
+        XCTAssertEqual(MessagePackValue.int(-1).description, "int(-1)")
+        XCTAssertEqual(MessagePackValue.int(0).description, "int(0)")
+        XCTAssertEqual(MessagePackValue.int(1).description, "int(1)")
     }
 
     func testUIntDescription() {
-        XCTAssertEqual(MessagePackValue.UInt(0).description, "UInt(0)")
-        XCTAssertEqual(MessagePackValue.UInt(1).description, "UInt(1)")
-        XCTAssertEqual(MessagePackValue.UInt(2).description, "UInt(2)")
+        XCTAssertEqual(MessagePackValue.uint(0).description, "uint(0)")
+        XCTAssertEqual(MessagePackValue.uint(1).description, "uint(1)")
+        XCTAssertEqual(MessagePackValue.uint(2).description, "uint(2)")
     }
 
     func testFloatDescription() {
-        XCTAssertEqual(MessagePackValue.Float(0.0).description, "Float(0.0)")
-        XCTAssertEqual(MessagePackValue.Float(1.618).description, "Float(1.618)")
-        XCTAssertEqual(MessagePackValue.Float(3.14).description, "Float(3.14)")
+        XCTAssertEqual(MessagePackValue.float(0.0).description, "float(0.0)")
+        XCTAssertEqual(MessagePackValue.float(1.618).description, "float(1.618)")
+        XCTAssertEqual(MessagePackValue.float(3.14).description, "float(3.14)")
     }
 
     func testDoubleDescription() {
-        XCTAssertEqual(MessagePackValue.Double(0.0).description, "Double(0.0)")
-        XCTAssertEqual(MessagePackValue.Double(1.618).description, "Double(1.618)")
-        XCTAssertEqual(MessagePackValue.Double(3.14).description, "Double(3.14)")
+        XCTAssertEqual(MessagePackValue.double(0.0).description, "double(0.0)")
+        XCTAssertEqual(MessagePackValue.double(1.618).description, "double(1.618)")
+        XCTAssertEqual(MessagePackValue.double(3.14).description, "double(3.14)")
     }
 
     func testStringDescription() {
-        XCTAssertEqual(MessagePackValue.String("").description, "String()".description)
-        XCTAssertEqual(MessagePackValue.String("MessagePack").description, "String(MessagePack)".description)
+        XCTAssertEqual(MessagePackValue.string("").description, "string()".description)
+        XCTAssertEqual(MessagePackValue.string("MessagePack").description, "string(MessagePack)".description)
     }
 
     func testBinaryDescription() {
-        XCTAssertEqual(MessagePackValue.Binary([]).description, "Data([])")
-        XCTAssertEqual(MessagePackValue.Binary([0x00, 0x01, 0x02, 0x03, 0x04]).description, "Data([0x00, 0x01, 0x02, 0x03, 0x04])")
+        XCTAssertEqual(MessagePackValue.binary(Data()).description, "data(0 bytes)")
+        XCTAssertEqual(MessagePackValue.binary(Data(Data([0x00, 0x01, 0x02, 0x03, 0x04]))).description, "data(5 bytes)")
     }
 
     func testArrayDescription() {
         let values: [MessagePackValue] = [1, true, ""]
-        XCTAssertEqual(MessagePackValue.Array(values).description, "Array([Int(1), Bool(true), String()])")
+        XCTAssertEqual(MessagePackValue.array(values).description, "array([int(1), bool(true), string()])")
     }
 
     func testMapDescription() {
-        let values: [MessagePackValue : MessagePackValue] = [
+        let values: [MessagePackValue: MessagePackValue] = [
             "a": "apple",
             "b": "banana",
             "c": "cookie",
         ]
 
         let components = [
-            "String(a): String(apple)",
-            "String(b): String(banana)",
-            "String(c): String(cookie)",
+            "string(a): string(apple)",
+            "string(b): string(banana)",
+            "string(c): string(cookie)",
         ]
 
         let indexPermutations: [[Int]] = [
@@ -72,13 +72,13 @@ class DescriptionTests: XCTestCase {
             [2, 1, 0],
         ]
 
-        let description = MessagePackValue.Map(values).description
+        let description = MessagePackValue.map(values).description
 
         var isValid = false
         for indices in indexPermutations {
-            let permutation = PermutationGenerator(elements: components, indices: indices)
-            let innerDescription = permutation.joinWithSeparator(", ")
-            if description == "Map([\(innerDescription)])" {
+            let permutation = indices.map { index in components[index] }
+            let innerDescription = permutation.joined(separator: ", ")
+            if description == "map([\(innerDescription)])" {
                 isValid = true
                 break
             }
@@ -88,7 +88,7 @@ class DescriptionTests: XCTestCase {
     }
 
     func testExtendedDescription() {
-        XCTAssertEqual(MessagePackValue.Extended(5, []).description, "Extended(5, [])")
-        XCTAssertEqual(MessagePackValue.Extended(5, [0x00, 0x10, 0x20, 0x30, 0x40]).description, "Extended(5, [0x00, 0x10, 0x20, 0x30, 0x40])")
+        XCTAssertEqual(MessagePackValue.extended(5, Data()).description, "extended(5, 0 bytes)")
+        XCTAssertEqual(MessagePackValue.extended(5, Data([0x00, 0x10, 0x20, 0x30, 0x40])).description, "extended(5, 5 bytes)")
     }
 }

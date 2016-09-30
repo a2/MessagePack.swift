@@ -1,58 +1,58 @@
-extension MessagePackValue: ArrayLiteralConvertible {
+extension MessagePackValue: ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: MessagePackValue...) {
-        self = .Array(elements)
+        self = .array(elements)
     }
 }
 
-extension MessagePackValue: BooleanLiteralConvertible {
+extension MessagePackValue: ExpressibleByBooleanLiteral {
     public init(booleanLiteral value: Swift.Bool) {
-        self = .Bool(value)
+        self = .bool(value)
     }
 }
 
-extension MessagePackValue: DictionaryLiteralConvertible {
+extension MessagePackValue: ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (MessagePackValue, MessagePackValue)...) {
         var dict = [MessagePackValue : MessagePackValue](minimumCapacity: elements.count)
         for (key, value) in elements {
             dict[key] = value
         }
 
-        self = .Map(dict)
+        self = .map(dict)
     }
 }
 
-extension MessagePackValue: ExtendedGraphemeClusterLiteralConvertible {
+extension MessagePackValue: ExpressibleByExtendedGraphemeClusterLiteral {
     public init(extendedGraphemeClusterLiteral value: Swift.String) {
-        self = .String(value)
+        self = .string(value)
     }
 }
 
-extension MessagePackValue: FloatLiteralConvertible {
+extension MessagePackValue: ExpressibleByFloatLiteral {
     public init(floatLiteral value: Swift.Double) {
-        self = .Double(value)
+        self = .double(value)
     }
 }
 
-extension MessagePackValue: IntegerLiteralConvertible {
+extension MessagePackValue: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int64) {
-        self = .Int(value)
+        self = .int(value)
     }
 }
 
-extension MessagePackValue: NilLiteralConvertible {
+extension MessagePackValue: ExpressibleByNilLiteral {
     public init(nilLiteral: ()) {
-        self = .Nil
+        self = .nil
     }
 }
 
-extension MessagePackValue: StringLiteralConvertible {
+extension MessagePackValue: ExpressibleByStringLiteral {
     public init(stringLiteral value: Swift.String) {
-        self = .String(value)
+        self = .string(value)
     }
 }
 
-extension MessagePackValue: UnicodeScalarLiteralConvertible {
+extension MessagePackValue: ExpressibleByUnicodeScalarLiteral {
     public init(unicodeScalarLiteral value: Swift.String) {
-        self = .String(value)
+        self = .string(value)
     }
 }

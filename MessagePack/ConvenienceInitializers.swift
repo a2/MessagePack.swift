@@ -1,41 +1,41 @@
 extension MessagePackValue {
     public init() {
-        self = .Nil
+        self = .nil
     }
 
     public init(_ value: Swift.Bool) {
-        self = .Bool(value)
+        self = .bool(value)
     }
 
-    public init<S: SignedIntegerType>(_ value: S) {
-        self = .Int(numericCast(value))
+    public init<S: SignedInteger>(_ value: S) {
+        self = .int(value.toIntMax())
     }
 
-    public init<U: UnsignedIntegerType>(_ value: U) {
-        self = .UInt(numericCast(value))
+    public init<U: UnsignedInteger>(_ value: U) {
+        self = .uint(value.toUIntMax())
     }
 
     public init(_ value: Swift.Float) {
-        self = .Float(value)
+        self = .float(value)
     }
 
     public init(_ value: Swift.Double) {
-        self = .Double(value)
+        self = .double(value)
     }
 
     public init(_ value: Swift.String) {
-        self = .String(value)
+        self = .string(value)
     }
 
     public init(_ value: [MessagePackValue]) {
-        self = .Array(value)
+        self = .array(value)
     }
 
-    public init(_ value: [MessagePackValue : MessagePackValue]) {
-        self = .Map(value)
+    public init(_ value: [MessagePackValue: MessagePackValue]) {
+        self = .map(value)
     }
 
     public init(_ value: Data) {
-        self = .Binary(value)
+        self = .binary(value)
     }
 }

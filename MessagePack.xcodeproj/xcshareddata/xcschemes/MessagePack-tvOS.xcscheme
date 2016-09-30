@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0720"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1F7A012F1C7B020E005F93F9"
-               BuildableName = "MessagePack-tvOS.framework"
+               BuildableName = "MessagePack.framework"
                BlueprintName = "MessagePack-tvOS"
                ReferencedContainer = "container:MessagePack.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1F7A01381C7B020E005F93F9"
-               BuildableName = "MessagePackTests-tvOS.xctest"
+               BuildableName = "MessagePackTests.xctest"
                BlueprintName = "MessagePackTests-tvOS"
                ReferencedContainer = "container:MessagePack.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1F7A012F1C7B020E005F93F9"
-            BuildableName = "MessagePack-tvOS.framework"
+            BuildableName = "MessagePack.framework"
             BlueprintName = "MessagePack-tvOS"
             ReferencedContainer = "container:MessagePack.xcodeproj">
          </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1F7A012F1C7B020E005F93F9"
-            BuildableName = "MessagePack-tvOS.framework"
+            BuildableName = "MessagePack.framework"
             BlueprintName = "MessagePack-tvOS"
             ReferencedContainer = "container:MessagePack.xcodeproj">
          </BuildableReference>
@@ -83,7 +83,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1F7A012F1C7B020E005F93F9"
-            BuildableName = "MessagePack-tvOS.framework"
+            BuildableName = "MessagePack.framework"
             BlueprintName = "MessagePack-tvOS"
             ReferencedContainer = "container:MessagePack.xcodeproj">
          </BuildableReference>

@@ -1,117 +1,102 @@
-public typealias Byte = UInt8
-public typealias Data = [Byte]
-
 /// The MessagePackValue enum encapsulates one of the following types: Nil, Bool, Int, UInt, Float, Double, String, Binary, Array, Map, and Extended.
 public enum MessagePackValue {
-    case Nil
-    case Bool(Swift.Bool)
-    case Int(Int64)
-    case UInt(UInt64)
-    case Float(Swift.Float)
-    case Double(Swift.Double)
-    case String(Swift.String)
-    case Binary(Data)
-    case Array([MessagePackValue])
-    case Map([MessagePackValue : MessagePackValue])
-    case Extended(Int8, Data)
-}
-
-extension MessagePackValue: Hashable {
-    public var hashValue: Swift.Int {
-        switch self {
-        case .Nil: return 0
-        case .Bool(let value): return value.hashValue
-        case .Int(let value): return value.hashValue
-        case .UInt(let value): return value.hashValue
-        case .Float(let value): return value.hashValue
-        case .Double(let value): return value.hashValue
-        case .String(let string): return string.hashValue
-        case .Binary(let data): return data.count
-        case .Array(let array): return array.count
-        case .Map(let dict): return dict.count
-        case .Extended(let type, let data): return type.hashValue ^ data.count
-        }
-    }
-}
-
-public func ==(lhs: MessagePackValue, rhs: MessagePackValue) -> Bool {
-    switch (lhs, rhs) {
-    case (.Nil, .Nil):
-        return true
-    case let (.Bool(lhv), .Bool(rhv)):
-        return lhv == rhv
-    case let (.Int(lhv), .Int(rhv)):
-        return lhv == rhv
-    case let (.UInt(lhv), .UInt(rhv)):
-        return lhv == rhv
-    case let (.Int(lhv), .UInt(rhv)):
-        return lhv >= 0 && numericCast(lhv) == rhv
-    case let (.UInt(lhv), .Int(rhv)):
-        return rhv >= 0 && lhv == numericCast(rhv)
-    case let (.Float(lhv), .Float(rhv)):
-        return lhv == rhv
-    case let (.Double(lhv), .Double(rhv)):
-        return lhv == rhv
-    case let (.String(lhv), .String(rhv)):
-        return lhv == rhv
-    case let (.Binary(lhv), .Binary(rhv)):
-        return lhv == rhv
-    case let (.Array(lhv), .Array(rhv)):
-        return lhv == rhv
-    case let (.Map(lhv), .Map(rhv)):
-        return lhv == rhv
-    case let (.Extended(lht, lhb), .Extended(rht, rhb)):
-        return lht == rht && lhb == rhb
-    default:
-        return false
-    }
+    case `nil`
+    case bool(Bool)
+    case int(Int64)
+    case uint(UInt64)
+    case float(Float)
+    case double(Double)
+    case string(String)
+    case binary(Data)
+    case array([MessagePackValue])
+    case map([MessagePackValue: MessagePackValue])
+    case extended(Int8, Data)
 }
 
 extension MessagePackValue: CustomStringConvertible {
-    public var description: Swift.String {
+    public var description: String {
         switch self {
-        case .Nil:
-            return "Nil"
-        case let .Bool(value):
-            return "Bool(\(value))"
-        case let .Int(value):
-            return "Int(\(value))"
-        case let .UInt(value):
-            return "UInt(\(value))"
-        case let .Float(value):
-            return "Float(\(value))"
-        case let .Double(value):
-            return "Double(\(value))"
-        case let .String(string):
-            return "String(\(string))"
-        case let .Binary(data):
-            return "Data(\(dataDescription(data)))"
-        case let .Array(array):
-            return "Array(\(array.description))"
-        case let .Map(dict):
-            return "Map(\(dict.description))"
-        case let .Extended(type, data):
-            return "Extended(\(type), \(dataDescription(data)))"
+        case .nil:
+            return "nil"
+        case .bool(let value):
+            return "bool(\(value))"
+        case .int(let value):
+            return "int(\(value))"
+        case .uint(let value):
+            return "uint(\(value))"
+        case .float(let value):
+            return "float(\(value))"
+        case .double(let value):
+            return "double(\(value))"
+        case .string(let string):
+            return "string(\(string))"
+        case .binary(let data):
+            return "data(\(data))"
+        case .array(let array):
+            return "array(\(array.description))"
+        case .map(let dict):
+            return "map(\(dict.description))"
+        case .extended(let type, let data):
+            return "extended(\(type), \(data))"
         }
     }
 }
 
-public enum MessagePackError: ErrorType {
-    case InsufficientData
-    case InvalidData
+extension MessagePackValue: Equatable {
+    public static func ==(lhs: MessagePackValue, rhs: MessagePackValue) -> Bool {
+        switch (lhs, rhs) {
+        case (.nil, .nil):
+            return true
+        case (.bool(let lhv), .bool(let rhv)):
+            return lhv == rhv
+        case (.int(let lhv), .int(let rhv)):
+            return lhv == rhv
+        case (.uint(let lhv), .uint(let rhv)):
+            return lhv == rhv
+        case (.int(let lhv), .uint(let rhv)):
+            return lhv >= 0 && UInt64(lhv) == rhv
+        case (.uint(let lhv), .int(let rhv)):
+            return rhv >= 0 && lhv == UInt64(rhv)
+        case (.float(let lhv), .float(let rhv)):
+            return lhv == rhv
+        case (.double(let lhv), .double(let rhv)):
+            return lhv == rhv
+        case (.string(let lhv), .string(let rhv)):
+            return lhv == rhv
+        case (.binary(let lhv), .binary(let rhv)):
+            return lhv == rhv
+        case (.array(let lhv), .array(let rhv)):
+            return lhv == rhv
+        case (.map(let lhv), .map(let rhv)):
+            return lhv == rhv
+        case (.extended(let lht, let lhb), .extended(let rht, let rhb)):
+            return lht == rht && lhb == rhb
+        default:
+            return false
+        }
+    }
 }
 
-func dataDescription(data: Data) -> String {
-    let bytes = data.map { byte -> String in
-        let prefix: String
-        if byte < 0x10 {
-            prefix = "0x0"
-        } else {
-            prefix = "0x"
+extension MessagePackValue: Hashable {
+    public var hashValue: Int {
+        switch self {
+        case .nil: return 0
+        case .bool(let value): return value.hashValue
+        case .int(let value): return value.hashValue
+        case .uint(let value): return value.hashValue
+        case .float(let value): return value.hashValue
+        case .double(let value): return value.hashValue
+        case .string(let string): return string.hashValue
+        case .binary(let data): return data.count
+        case .array(let array): return array.count
+        case .map(let dict): return dict.count
+        case .extended(let type, let data): return 31 &* type.hashValue &+ data.count
         }
-
-        return prefix + String(byte, radix: 16)
     }
+}
 
-    return "[" + bytes.joinWithSeparator(", ") + "]"
+public enum MessagePackError: Error {
+    case invalidArgument
+    case insufficientData
+    case invalidData
 }
