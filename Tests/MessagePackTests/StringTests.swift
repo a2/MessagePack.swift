@@ -8,6 +8,7 @@ class StringTests: XCTestCase {
             ("testLiteralConversion", testLiteralConversion),
             ("testPackFixstr", testPackFixstr),
             ("testUnpackFixstr", testUnpackFixstr),
+            ("testUnpackFixstrEmpty", testUnpackFixstrEmpty),
             ("testPackStr8", testPackStr8),
             ("testUnpackStr8", testUnpackStr8),
             ("testPackStr16", testPackStr16),
@@ -43,6 +44,14 @@ class StringTests: XCTestCase {
         XCTAssertEqual(unpacked?.remainder.count, 0)
     }
 
+    func testUnpackFixstrEmpty() {
+        let packed = Data([0xa0])
+        
+        let unpacked = try? unpack(packed)
+        XCTAssertEqual(unpacked?.value, .string(""))
+        XCTAssertEqual(unpacked?.remainder.count, 0)
+    }
+  
     func testPackStr8() {
         let string = String(repeating: "*", count: 0x20)
         XCTAssertEqual(pack(.string(string)), Data([0xd9, 0x20]) + string.data(using: .utf8)!)

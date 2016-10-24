@@ -32,7 +32,7 @@ func unpackInteger(_ data: Data, count: Int) throws -> (value: UInt64, remainder
 /// - returns: A string representation of `size` bytes of data.
 func unpackString(_ data: Data, count: Int) throws -> (value: String, remainder: Data) {
     guard count > 0 else {
-        throw MessagePackError.invalidArgument
+        return ("", data)
     }
 
     guard data.count >= count else {
