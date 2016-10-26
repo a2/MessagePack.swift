@@ -113,8 +113,8 @@ public func unpack(_ data: Data, compatibility: Bool = false) throws -> (value: 
         throw MessagePackError.insufficientData
     }
 
-    var data = data
-    let value = data.removeFirst()
+    let value = data.first!
+    let data = data.subdata(in: 1..<data.endIndex)
 
     switch value {
 
