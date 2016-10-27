@@ -73,13 +73,15 @@ func unpackData(_ data: Data, count: Int) throws -> (value: Data, remainder: Dat
 ///
 /// - returns: An array of `count` elements.
 func unpackArray(_ data: Data, count: Int, compatibility: Bool) throws -> (value: [MessagePackValue], remainder: Data) {
-    var values:[MessagePackValue] = []
-    var newValue:MessagePackValue
-    var remainder:Data = data
+    var values = [MessagePackValue]())
+    var remainder = data
+    var newValue: MessagePackValue
+
     for _ in 0 ..< count {
         (newValue, remainder) = try unpack(remainder, compatibility: compatibility)
         values.append(newValue)
     }
+
     return (values, remainder)
 }
 
