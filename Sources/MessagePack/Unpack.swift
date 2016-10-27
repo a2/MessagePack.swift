@@ -114,7 +114,7 @@ public func unpack(_ data: Data, compatibility: Bool = false) throws -> (value: 
     }
 
     let value = data.first!
-    let data = data.subdata(in: 1..<data.endIndex)
+    let data = data.subdata(in: 1 ..< data.endIndex)
 
     switch value {
 
