@@ -48,7 +48,7 @@ extension MessagePackValue {
         switch self {
         case .int(let value):
             return value
-        case .uint(let value) where value < UInt64(Int64.max):
+        case .uint(let value) where value <= UInt64(Int64.max):
             return Int64(value)
         default:
             return nil
