@@ -23,7 +23,7 @@ pod 'MessagePack.swift', '~> 2.0.0'
 To use Carthage, add the following to your Cartfile:
 
 ```ogdl
-github "a2/MPMessagePack.swift" >= 2.0.2
+github "a2/MessagePack.swift" >= 2.0.2
 ```
 
 ### SPM (Swift Package Manager)
