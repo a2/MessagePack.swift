@@ -80,12 +80,10 @@ public func pack(_ value: MessagePackValue) -> Data {
         return packPositiveInteger(value)
 
     case .float(let value):
-        let integerValue = unsafeBitCast(value, to: UInt32.self)
-        return Data([0xca]) + packInteger(UInt64(integerValue), parts: 4)
+        return Data([0xca]) + packInteger(UInt64(value.bitPattern), parts: 4)
 
     case .double(let value):
-        let integerValue = unsafeBitCast(value, to: UInt64.self)
-        return Data([0xcb]) + packInteger(integerValue, parts: 8)
+        return Data([0xcb]) + packInteger(value.bitPattern, parts: 8)
 
     case .string(let string):
         let utf8 = string.utf8

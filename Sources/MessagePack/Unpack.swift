@@ -185,13 +185,13 @@ public func unpack(_ data: Data, compatibility: Bool = false) throws -> (value: 
     // float 32
     case 0xca:
         let (intValue, remainder) = try unpackInteger(data, count: 4)
-        let float = unsafeBitCast(UInt32(truncatingBitPattern: intValue), to: Float.self)
+        let float = Float(bitPattern: UInt32(truncatingBitPattern: intValue))
         return (.float(float), remainder)
 
     // float 64
     case 0xcb:
         let (intValue, remainder) = try unpackInteger(data, count: 8)
-        let double = unsafeBitCast(intValue, to: Double.self)
+        let double = Double(bitPattern: intValue)
         return (.double(double), remainder)
 
     // uint 8, 16, 32, 64
