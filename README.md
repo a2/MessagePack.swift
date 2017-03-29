@@ -10,12 +10,20 @@ A fast, zero-dependency MessagePack implementation written in Swift 3. Supports 
 
 ## Installation
 
-### CococaPods
+### CocoaPods
 
 To use CocoaPods, add the following to your Podfile:
 
 ```ruby
 pod 'MessagePack.swift', '~> 2.0.0'
+```
+
+### Carthage
+
+To use Carthage, add the following to your Cartfile:
+
+```ogdl
+github "a2/MessagePack.swift" >= 2.0.2
 ```
 
 ### SPM (Swift Package Manager)
@@ -35,7 +43,7 @@ let package = Package(
 
 ## Version
 
-2.0.0 supports Swift 3. Support for Swift 2 was dropped after [1.2.0](https://github.com/a2/MessagePack.swift/releases/tag/1.2.0).
+2.x supports Swift 3. Support for Swift 2 was dropped after [1.2.0](https://github.com/a2/MessagePack.swift/releases/tag/1.2.0).
 
 ## Xcode Support
 
