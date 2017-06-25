@@ -25,7 +25,7 @@ func testPackMap(_ count: Int, prefix: Data) {
 
     XCTAssertEqual(packed.subdata(in: 0 ..< prefix.count), prefix)
 
-    var remainder = packed.subdata(in: prefix.count ..< packed.count)
+    var remainder = Subdata(data: packed, startIndex: prefix.count, endIndex: packed.count)
     var keys = Set<Int>()
     do {
         for _ in 0 ..< count {

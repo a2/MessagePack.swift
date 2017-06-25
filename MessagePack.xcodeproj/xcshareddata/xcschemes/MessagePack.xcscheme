@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_38"
+               BlueprintIdentifier = "OBJ_39"
                BuildableName = "MessagePack.framework"
                BlueprintName = "MessagePack"
                ReferencedContainer = "container:MessagePack.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_50"
+               BlueprintIdentifier = "OBJ_52"
                BuildableName = "MessagePackTests.xctest"
                BlueprintName = "MessagePackTests"
                ReferencedContainer = "container:MessagePack.xcodeproj">
@@ -55,7 +55,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "OBJ_38"
+            BlueprintIdentifier = "OBJ_39"
             BuildableName = "MessagePack.framework"
             BlueprintName = "MessagePack"
             ReferencedContainer = "container:MessagePack.xcodeproj">
