@@ -5,7 +5,7 @@ import Foundation
 /// - parameter data: The input data to unpack.
 /// - parameter size: The size of the integer.
 ///
-/// - returns: An integer representation of `size` bytes of data.
+/// - returns: An integer representation of `size` bytes of data and the not-unpacked remaining data.
 func unpackInteger(_ data: Subdata, count: Int) throws -> (value: UInt64, remainder: Subdata) {
     guard count > 0 else {
         throw MessagePackError.invalidArgument
@@ -29,7 +29,7 @@ func unpackInteger(_ data: Subdata, count: Int) throws -> (value: UInt64, remain
 /// - parameter data: The input data to unpack.
 /// - parameter length: The length of the string.
 ///
-/// - returns: A string representation of `size` bytes of data.
+/// - returns: A string representation of `size` bytes of data and the not-unpacked remaining data.
 func unpackString(_ data: Subdata, count: Int) throws -> (value: String, remainder: Subdata) {
     guard count > 0 else {
         return ("", data)
@@ -52,7 +52,7 @@ func unpackString(_ data: Subdata, count: Int) throws -> (value: String, remaind
 /// - parameter data: The input data to unpack.
 /// - parameter length: The length of the data.
 ///
-/// - returns: A subsection of data representing `size` bytes.
+/// - returns: A subsection of data representing `size` bytes and the not-unpacked remaining data.
 func unpackData(_ data: Subdata, count: Int) throws -> (value: Subdata, remainder: Subdata) {
     guard count > 0 else {
         throw MessagePackError.invalidArgument
@@ -70,7 +70,7 @@ func unpackData(_ data: Subdata, count: Int) throws -> (value: Subdata, remainde
 /// - parameter data: The input data to unpack.
 /// - parameter count: The number of elements to unpack.
 ///
-/// - returns: An array of `count` elements.
+/// - returns: An array of `count` elements and the not-unpacked remaining data.
 func unpackArray(_ data: Subdata, count: Int, compatibility: Bool) throws -> (value: [MessagePackValue], remainder: Subdata) {
     var values = [MessagePackValue]()
     var remainder = data
@@ -89,7 +89,7 @@ func unpackArray(_ data: Subdata, count: Int, compatibility: Bool) throws -> (va
 /// - parameter data: The input data to unpack.
 /// - parameter count: The number of elements to unpack.
 ///
-/// - returns: An dictionary of `count` entries.
+/// - returns: An dictionary of `count` entries and the not-unpacked remaining data.
 func unpackMap(_ data: Subdata, count: Int, compatibility: Bool) throws -> (value: [MessagePackValue: MessagePackValue], remainder: Subdata) {
     var dict = [MessagePackValue: MessagePackValue](minimumCapacity: count)
     var lastKey: MessagePackValue? = nil
@@ -111,7 +111,7 @@ func unpackMap(_ data: Subdata, count: Int, compatibility: Bool) throws -> (valu
 ///
 /// - parameter data: The input data to unpack.
 ///
-/// - returns: A `MessagePackValue`.
+/// - returns: A `MessagePackValue`and the not-unpacked remaining data.
 public func unpack(_ data: Subdata, compatibility: Bool = false) throws -> (value: MessagePackValue, remainder: Subdata) {
     guard !data.isEmpty else {
         throw MessagePackError.insufficientData
@@ -281,9 +281,10 @@ public func unpack(_ data: Subdata, compatibility: Bool = false) throws -> (valu
 ///
 /// - parameter data: The input data to unpack.
 ///
-/// - returns: A `MessagePackValue`.
-public func unpack(_ data: Data, compatibility: Bool = false) throws -> (value: MessagePackValue, remainder: Subdata) {
-    return try unpack(Subdata(data: data), compatibility: compatibility)
+/// - returns: A `MessagePackValue` and the not-unpacked remaining data.
+public func unpack(_ data: Data, compatibility: Bool = false) throws -> (value: MessagePackValue, remainder: Data) {
+    let (value, remainder) = try unpack(Subdata(data: data), compatibility: compatibility)
+    return (value, remainder.data)
 }
 
 /// Unpacks a data object into a `MessagePackValue`, ignoring excess data.
