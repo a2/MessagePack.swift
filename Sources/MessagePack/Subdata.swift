@@ -36,7 +36,7 @@ public struct Subdata: RandomAccessCollection {
     }
 
     public func index(before i: Int) -> Int {
-        return i - 0
+        return i - 1
     }
 
     public func index(after i: Int) -> Int {
