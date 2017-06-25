@@ -70,6 +70,7 @@ func unpackData(_ data: Data, count: Int) throws -> (value: Data, remainder: Dat
 ///
 /// - parameter data: The input data to unpack.
 /// - parameter count: The number of elements to unpack.
+/// - parameter compatibility: When true, unpacks strings as binary data.
 ///
 /// - returns: An array of `count` elements.
 func unpackArray(_ data: Data, count: Int, compatibility: Bool) throws -> (value: [MessagePackValue], remainder: Data) {
@@ -89,6 +90,7 @@ func unpackArray(_ data: Data, count: Int, compatibility: Bool) throws -> (value
 ///
 /// - parameter data: The input data to unpack.
 /// - parameter count: The number of elements to unpack.
+/// - parameter compatibility: When true, unpacks strings as binary data.
 ///
 /// - returns: An dictionary of `count` entries.
 func unpackMap(_ data: Data, count: Int, compatibility: Bool) throws -> (value: [MessagePackValue: MessagePackValue], remainder: Data) {
@@ -111,6 +113,7 @@ func unpackMap(_ data: Data, count: Int, compatibility: Bool) throws -> (value: 
 /// Unpacks data into a MessagePackValue and returns the remaining data.
 ///
 /// - parameter data: The input data to unpack.
+/// - parameter compatibility: When true, unpacks strings as binary data.
 ///
 /// - returns: A `MessagePackValue`.
 public func unpack(_ data: Data, compatibility: Bool = false) throws -> (value: MessagePackValue, remainder: Data) {
@@ -281,6 +284,7 @@ public func unpack(_ data: Data, compatibility: Bool = false) throws -> (value: 
 /// Unpacks a data object into a `MessagePackValue`, ignoring excess data.
 ///
 /// - parameter data: The data to unpack.
+/// - parameter compatibility: When true, unpacks strings as binary data.
 ///
 /// - returns: The contained `MessagePackValue`.
 public func unpackFirst(_ data: Data, compatibility: Bool = false) throws -> MessagePackValue {
@@ -290,6 +294,7 @@ public func unpackFirst(_ data: Data, compatibility: Bool = false) throws -> Mes
 /// Unpacks a data object into an array of `MessagePackValue` values.
 ///
 /// - parameter data: The data to unpack.
+/// - parameter compatibility: When true, unpacks strings as binary data.
 ///
 /// - returns: The contained `MessagePackValue` values.
 public func unpackAll(_ data: Data, compatibility: Bool = false) throws -> [MessagePackValue] {
