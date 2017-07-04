@@ -15,7 +15,7 @@ A fast, zero-dependency MessagePack implementation written in Swift 3. Supports 
 To use CocoaPods, add the following to your Podfile:
 
 ```ruby
-pod 'MessagePack.swift', '~> 2.0.0'
+pod 'MessagePack.swift', '~> 2.1.0'
 ```
 
 ### Carthage
@@ -23,7 +23,7 @@ pod 'MessagePack.swift', '~> 2.0.0'
 To use Carthage, add the following to your Cartfile:
 
 ```ogdl
-github "a2/MessagePack.swift" >= 2.0.2
+github "a2/MessagePack.swift" >= 2.1.0
 ```
 
 ### SPM (Swift Package Manager)
@@ -36,7 +36,7 @@ import PackageDescription
 let package = Package(
     name: "MyAwesomeApp",
     dependencies: [
-        .Package(url: "https://github.com/a2/MessagePack.swift.git", majorVersion: 2, minor: 0),
+        .Package(url: "https://github.com/a2/MessagePack.swift.git", majorVersion: 2, minor: 1),
     ]
 )
 ```
