@@ -45,14 +45,6 @@ let package = Package(
 
 2.x supports Swift 3. Support for Swift 2 was dropped after [1.2.0](https://github.com/a2/MessagePack.swift/releases/tag/1.2.0).
 
-## Xcode Support
-
-As MessagePack.swift supports Swift Package Manager, you can develop the library in your text editor of choice. If you want to use Xcode, generate an Xcode projec with the following command:
-
-```sh
-$ swift package generate-xcodeproj
-```
-
 ## Authors
 
 Alexsander Akers, me@a2.io
