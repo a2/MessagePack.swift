@@ -26,7 +26,7 @@ func packPositiveInteger(_ value: UInt64) -> Data {
         return Data([0xcc, UInt8(truncatingBitPattern: value)])
     } else if value <= 0xffff {
         return Data([0xcd]) + packInteger(value, parts: 2)
-    } else if value <= 0xffff_ffff {
+    } else if value <= 0xffff_ffff as UInt64 {
         return Data([0xce]) + packInteger(value, parts: 4)
     } else {
         return Data([0xcf]) + packInteger(value, parts: 8)
@@ -88,7 +88,7 @@ public func pack(_ value: MessagePackValue) -> Data {
     case .string(let string):
         let utf8 = string.utf8
         let count = UInt32(utf8.count)
-        precondition(count <= 0xffff_ffff)
+        precondition(count <= 0xffff_ffff as UInt32)
 
         let prefix: Data
         if count <= 0x19 {
@@ -105,7 +105,7 @@ public func pack(_ value: MessagePackValue) -> Data {
 
     case .binary(let data):
         let count = UInt32(data.count)
-        precondition(count <= 0xffff_ffff)
+        precondition(count <= 0xffff_ffff as UInt32)
 
         let prefix: Data
         if count <= 0xff {
@@ -120,7 +120,7 @@ public func pack(_ value: MessagePackValue) -> Data {
 
     case .array(let array):
         let count = UInt32(array.count)
-        precondition(count <= 0xffff_ffff)
+        precondition(count <= 0xffff_ffff as UInt32)
 
         let prefix: Data
         if count <= 0xe {
@@ -150,7 +150,7 @@ public func pack(_ value: MessagePackValue) -> Data {
 
     case .extended(let type, let data):
         let count = UInt32(data.count)
-        precondition(count <= 0xffff_ffff)
+        precondition(count <= 0xffff_ffff as UInt32)
 
         let unsignedType = UInt8(bitPattern: type)
         var prefix: Data
