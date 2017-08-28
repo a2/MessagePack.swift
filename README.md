@@ -4,7 +4,7 @@ MessagePack.swift
 [![CI Status](http://img.shields.io/travis/a2/MessagePack.swift.svg?style=flat)](https://travis-ci.org/a2/MessagePack.swift)
 [![Version](https://img.shields.io/cocoapods/v/MessagePack.swift.svg?style=flat)](http://cocoapods.org/pods/MessagePack.swift)
 [![License](https://img.shields.io/cocoapods/l/MessagePack.swift.svg?style=flat)](http://cocoapods.org/pods/MessagePack.swift)
-[![Platform](https://img.shields.io/cocoapods/p/MessagePack.swift.svg?style=flat)](http://cocoapods.org/pods/Oberholz)
+[![Platform](https://img.shields.io/cocoapods/p/MessagePack.swift.svg?style=flat)](http://cocoapods.org/pods/MessagePack.swift)
 
 A fast, zero-dependency MessagePack implementation written in Swift 3. Supports Apple platforms and Linux.
 
