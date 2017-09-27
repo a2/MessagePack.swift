@@ -480,6 +480,7 @@
 					};
 					825321FB1EFFCB2A00914B55 = {
 						CreatedOnToolsVersion = 8.3.3;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					825322031EFFCB2B00914B55 = {
@@ -839,7 +840,7 @@
 				PRODUCT_NAME = MessagePack;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -858,7 +859,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = us.pandamonia.MessagePack;
 				PRODUCT_NAME = MessagePack;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1013,7 +1014,8 @@
 				PRODUCT_NAME = MessagePack;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1034,7 +1036,8 @@
 				PRODUCT_NAME = MessagePack;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1107,6 +1110,7 @@
 				825321DA1EFFCAED00914B55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		825321F11EFFCAFA00914B55 /* Build configuration list for PBXNativeTarget "MessagePack-tvOS" */ = {
 			isa = XCConfigurationList;
@@ -1115,6 +1119,7 @@
 				825321F31EFFCAFA00914B55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		825321F41EFFCAFA00914B55 /* Build configuration list for PBXNativeTarget "MessagePackTests-tvOS" */ = {
 			isa = XCConfigurationList;
@@ -1123,6 +1128,7 @@
 				825321F61EFFCAFA00914B55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8253220D1EFFCB2B00914B55 /* Build configuration list for PBXNativeTarget "MessagePack-macOS" */ = {
 			isa = XCConfigurationList;
@@ -1131,6 +1137,7 @@
 				8253220F1EFFCB2B00914B55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		825322101EFFCB2B00914B55 /* Build configuration list for PBXNativeTarget "MessagePackTests-macOS" */ = {
 			isa = XCConfigurationList;
@@ -1139,6 +1146,7 @@
 				825322121EFFCB2B00914B55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
