@@ -9,7 +9,7 @@ import Foundation
 func packInteger(_ value: UInt64, parts: Int) -> Data {
     precondition(parts > 0)
     let bytes = stride(from: (8 * (parts - 1)), through: 0, by: -8).map { shift in
-        return UInt8(truncatingBitPattern: value >> UInt64(shift))
+        return UInt8(truncatingIfNeeded: value >> UInt64(shift))
     }
     return Data(bytes)
 }
@@ -21,9 +21,9 @@ func packInteger(_ value: UInt64, parts: Int) -> Data {
 /// - returns: A MessagePack byte representation.
 func packPositiveInteger(_ value: UInt64) -> Data {
     if value <= 0x7f {
-        return Data([UInt8(truncatingBitPattern: value)])
+        return Data([UInt8(truncatingIfNeeded: value)])
     } else if value <= 0xff {
-        return Data([0xcc, UInt8(truncatingBitPattern: value)])
+        return Data([0xcc, UInt8(truncatingIfNeeded: value)])
     } else if value <= 0xffff {
         return Data([0xcd]) + packInteger(value, parts: 2)
     } else if value <= 0xffff_ffff as UInt64 {
@@ -41,7 +41,7 @@ func packPositiveInteger(_ value: UInt64) -> Data {
 func packNegativeInteger(_ value: Int64) -> Data {
     precondition(value < 0)
     if value >= -0x20 {
-        return Data([0xe0 + 0x1f & UInt8(truncatingBitPattern: value)])
+        return Data([0xe0 + 0x1f & UInt8(truncatingIfNeeded: value)])
     } else if value >= -0x7f {
         return Data([0xd0, UInt8(bitPattern: Int8(value))])
     } else if value >= -0x7fff {

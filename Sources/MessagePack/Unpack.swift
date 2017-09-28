@@ -187,7 +187,7 @@ public func unpack(_ data: Subdata, compatibility: Bool = false) throws -> (valu
     // float 32
     case 0xca:
         let (intValue, remainder) = try unpackInteger(data, count: 4)
-        let float = Float(bitPattern: UInt32(truncatingBitPattern: intValue))
+        let float = Float(bitPattern: UInt32(truncatingIfNeeded: intValue))
         return (.float(float), remainder)
 
     // float 64
@@ -214,13 +214,13 @@ public func unpack(_ data: Subdata, compatibility: Bool = false) throws -> (valu
     // int 16
     case 0xd1:
         let (bytes, remainder) = try unpackInteger(data, count: 2)
-        let integer = Int16(bitPattern: UInt16(truncatingBitPattern: bytes))
+        let integer = Int16(bitPattern: UInt16(truncatingIfNeeded: bytes))
         return (.int(Int64(integer)), remainder)
 
     // int 32
     case 0xd2:
         let (bytes, remainder) = try unpackInteger(data, count: 4)
-        let integer = Int32(bitPattern: UInt32(truncatingBitPattern: bytes))
+        let integer = Int32(bitPattern: UInt32(truncatingIfNeeded: bytes))
         return (.int(Int64(integer)), remainder)
 
     // int 64

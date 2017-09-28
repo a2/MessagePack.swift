@@ -10,11 +10,11 @@ extension MessagePackValue {
     }
 
     public init<S: SignedInteger>(_ value: S) {
-        self = .int(value.toIntMax())
+        self = .int(Int64(value))
     }
 
     public init<U: UnsignedInteger>(_ value: U) {
-        self = .uint(value.toUIntMax())
+        self = .uint(UInt64(value))
     }
 
     public init(_ value: Float) {
