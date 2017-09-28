@@ -248,7 +248,8 @@
 				8253219C1EFFCA0D00914B55 /* Subdata.swift */,
 				8253219D1EFFCA0D00914B55 /* Unpack.swift */,
 			);
-			path = MessagePack;
+			name = MessagePack;
+			path = Sources/MessagePack;
 			sourceTree = "<group>";
 		};
 		8253218A1EFFC9C500914B55 /* MessagePackTests */ = {
@@ -273,7 +274,8 @@
 				825321B51EFFCA1C00914B55 /* SubdataTests.swift */,
 				825321B61EFFCA1C00914B55 /* TrueTests.swift */,
 			);
-			path = MessagePackTests;
+			name = MessagePackTests;
+			path = Tests/MessagePackTests;
 			sourceTree = "<group>";
 		};
 		825321C91EFFCA2800914B55 /* Resources */ = {
