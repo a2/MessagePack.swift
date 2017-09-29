@@ -77,11 +77,11 @@ class ConveniencePropertiesTests: XCTestCase {
 
         var floatValue = MessagePackValue.float(3.14).floatValue
         XCTAssertNotNil(floatValue)
-        XCTAssertEqualWithAccuracy(floatValue!, 3.14, accuracy: 0.0001)
+        XCTAssertEqual(floatValue!, 3.14, accuracy: 0.0001)
 
         floatValue = MessagePackValue.double(3.14).floatValue
         XCTAssertNotNil(floatValue)
-        XCTAssertEqualWithAccuracy(floatValue!, 3.14, accuracy: 0.0001)
+        XCTAssertEqual(floatValue!, 3.14, accuracy: 0.0001)
     }
 
     func testDoubleValue() {
@@ -89,11 +89,11 @@ class ConveniencePropertiesTests: XCTestCase {
 
         var doubleValue = MessagePackValue.float(3.14).doubleValue
         XCTAssertNotNil(doubleValue)
-        XCTAssertEqualWithAccuracy(doubleValue!, 3.14, accuracy: 0.0001)
+        XCTAssertEqual(doubleValue!, 3.14, accuracy: 0.0001)
 
         doubleValue = MessagePackValue.double(3.14).doubleValue
         XCTAssertNotNil(doubleValue)
-        XCTAssertEqualWithAccuracy(doubleValue!, 3.14, accuracy: 0.0001)
+        XCTAssertEqual(doubleValue!, 3.14, accuracy: 0.0001)
     }
 
     func testStringValue() {
