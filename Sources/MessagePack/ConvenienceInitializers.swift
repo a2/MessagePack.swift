@@ -40,4 +40,9 @@ extension MessagePackValue {
     public init(_ value: Data) {
         self = .binary(value)
     }
+    
+    public init(type: Int8, data: Data) {
+        self = .extended(type, data)
+    }
+    
 }
