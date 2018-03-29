@@ -19,7 +19,6 @@ class DescriptionTests: XCTestCase {
         ]
     }()
 
-
     func testNilDescription() {
         XCTAssertEqual(MessagePackValue.nil.description, "nil")
     }

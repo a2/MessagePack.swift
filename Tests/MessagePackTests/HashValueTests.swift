@@ -19,7 +19,6 @@ class HashValueTests: XCTestCase {
         ]
     }()
 
-
     func testNilHashValue() {
         XCTAssertEqual(MessagePackValue.nil.hashValue, 0)
     }

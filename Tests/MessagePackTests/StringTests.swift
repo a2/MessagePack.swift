@@ -46,12 +46,12 @@ class StringTests: XCTestCase {
 
     func testUnpackFixstrEmpty() {
         let packed = Data([0xa0])
-        
+
         let unpacked = try? unpack(packed)
         XCTAssertEqual(unpacked?.value, .string(""))
         XCTAssertEqual(unpacked?.remainder.count, 0)
     }
-  
+
     func testPackStr8() {
         let string = String(repeating: "*", count: 0x20)
         XCTAssertEqual(pack(.string(string)), Data([0xd9, 0x20]) + string.data(using: .utf8)!)

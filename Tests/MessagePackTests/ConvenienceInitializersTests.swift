@@ -18,6 +18,7 @@ class ConvenienceInitializersTests: XCTestCase {
             ("testExtended", testExtended),
         ]
     }()
+
     func testNil() {
         XCTAssertEqual(MessagePackValue(), MessagePackValue.nil)
     }
@@ -72,11 +73,10 @@ class ConvenienceInitializersTests: XCTestCase {
         let data = Data([0x00, 0x01, 0x02, 0x03, 0x04])
         XCTAssertEqual(MessagePackValue(data), MessagePackValue.binary(data))
     }
-    
+
     func testExtended() {
         let type: Int8 = 9
         let data = Data([0x00, 0x01, 0x02, 0x03, 0x04])
         XCTAssertEqual(MessagePackValue(type: type, data: data), MessagePackValue.extended(type, data))
     }
-    
 }
