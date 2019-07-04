@@ -34,6 +34,21 @@ class BinaryTests: XCTestCase {
         XCTAssertEqual(unpacked?.remainder.count, 0)
     }
 
+    func testPackBinEmpty() {
+        let value = Data()
+        let expectedPacked = Data([0xc4, 0x00]) + value
+        XCTAssertEqual(pack(.binary(value)), expectedPacked)
+    }
+
+    func testUnpackBinEmpty() {
+        let data = Data()
+        let packed = Data([0xc4, 0x00]) + data
+
+        let unpacked = try? unpack(packed, compatibility: true)
+        XCTAssertEqual(unpacked?.value, MessagePackValue.binary(data))
+        XCTAssertEqual(unpacked?.remainder.count, 0)
+    }
+
     func testPackBin16() {
         let value = Data(count: 0xff)
         let expectedPacked = Data([0xc4, 0xff]) + value
@@ -135,4 +150,5 @@ class BinaryTests: XCTestCase {
         XCTAssertEqual(unpacked?.value, MessagePackValue.binary(data))
         XCTAssertEqual(unpacked?.remainder.count, 0)
     }
+
 }
