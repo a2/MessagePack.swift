@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'MessagePack.swift'
-  s.version      = '3.0.0'
+  s.version      = '3.0.1'
   s.summary      = "It's like JSON, but fast and small...and Swift!"
   s.homepage     = 'https://github.com/a2/MessagePack.swift'
   s.license      = 'MIT'
