@@ -11,5 +11,6 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
   s.source       = { :git => 'https://github.com/a2/MessagePack.swift.git', :tag => s.version.to_s }
   s.source_files = 'Sources/MessagePack/*.swift'
+  s.swift_version = '4.0'
   s.module_name  = 'MessagePack'
 end
