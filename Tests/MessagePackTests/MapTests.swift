@@ -31,7 +31,7 @@ func testPackMap(_ count: Int, prefix: Data) {
         for _ in 0 ..< count {
             let value: MessagePackValue
             (value, remainder) = try unpack(remainder)
-            let key = Int(value.integerValue!)
+            let key = Int(value.int64Value!)
 
             XCTAssertFalse(keys.contains(key))
             keys.insert(key)

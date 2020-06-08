@@ -80,6 +80,10 @@ extension MessagePackValue: Equatable {
 }
 
 extension MessagePackValue: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(hashValue)
+    }
+    
     public var hashValue: Int {
         switch self {
         case .nil: return 0

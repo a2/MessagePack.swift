@@ -77,7 +77,7 @@ class HashValueTests: XCTestCase {
     }
 
     func testExtendedHashValue() {
-        XCTAssertEqual(MessagePackValue.extended(5, Data()).hashValue, Int(5).hashValue * 31 + Int(0))
-        XCTAssertEqual(MessagePackValue.extended(5, Data([0x00, 0x01, 0x02, 0x03, 0x04])).hashValue, Int(5).hashValue * 31 + Int(5))
+        XCTAssertEqual(MessagePackValue.extended(5, Data()).hashValue, 31 &* Int8(5).hashValue &+ Int(0))
+        XCTAssertEqual(MessagePackValue.extended(5, Data([0x00, 0x01, 0x02, 0x03, 0x04])).hashValue, 31 &* Int8(5).hashValue &+ Int(5))
     }
 }
